@@ -162,7 +162,7 @@ export default class Player {
 
     } else if (bodyA === this.sensors.bottom) {
       // check if player hit bottom world bounds
-      if (this.sprite.y > 480) {
+      if (this.sprite.y > 500) {
         this.lives -= 1;
         console.log('lives left: ' + this.lives);
 

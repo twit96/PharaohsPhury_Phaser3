@@ -29,7 +29,7 @@ export default class level9 extends Phaser.Scene {
     //Add event listeners
     ChangeScene.addSceneEventListeners(this);
 
-    this.levelNum = 0;
+    this.levelNum = 9;
     this.killedCount = 0;
     this.completedLevel = false;
 
@@ -46,9 +46,8 @@ export default class level9 extends Phaser.Scene {
     layer = map.setTileIndexCallback([7],setCompletedLevel.emitBlock);
 
     this.matter.world.convertTilemapLayer(layer);
-    //this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
     this.cameras.main.setBounds(0, 0, 960, 480);
-    this.matter.world.setBounds(0, 0, 960, 480);
+    this.matter.world.setBounds(0, 0, 960, 550);
 
     //place player
     this.player = new Player(this, 100, 280);
