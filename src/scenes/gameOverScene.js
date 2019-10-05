@@ -22,13 +22,17 @@ export default class gameOverScene extends Phaser.Scene {
   }
 
   preload () {
-    console.log('[GAMEOVERSCENE]');
+    console.log('\n[GAMEOVERSCENE]');
     console.log('[preload]');
     this.centerX = this.cameras.main.width / 2;
   }
 
   create (data) {
     console.log('[create]');
+
+    //Add change scene event listeners
+    ChangeScene.addSceneEventListeners(this);
+
     // create the text that display on the screen
     const level = "Level: " + this.levelNum;
     const diamond = "Diamonds Collected: " + this.diamondCollected;
