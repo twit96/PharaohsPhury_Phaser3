@@ -38,7 +38,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     //tank
     this.tankMoveCounter = 0
-    this.tankDifficulties = [1000, 500, 250, 100];
+    this.tankDifficulties = [1000, 500, 250, 100];  //not implemented yet, to give tank faster firing and movement as he gets closer to dying
     this.tankHealth = 100;
     this.tankSpeed = 1.00;
 
@@ -78,7 +78,7 @@ export default class finalBossLevel extends Phaser.Scene {
       defaultKey: "shell"
     });
 
-    //long range attacks
+    //player long range attacks
     this.beams = this.physics.add.group({
       defaultKey: "mummyBeam",
       allowGravity: false
@@ -163,10 +163,10 @@ export default class finalBossLevel extends Phaser.Scene {
 
 
   //PLAYER HELPER FUNCTIONS
-  resetPlayer(){
+  resetPlayer() {
     /*
     function to restore player sprite defaults after a change in tint,
-    canAttack, or being disable after taking damage.
+    canAttack, or being disabled after taking damage.
     */
     console.log('[resetPlayer]');
     this.player.setTint();
@@ -207,6 +207,8 @@ export default class finalBossLevel extends Phaser.Scene {
 
   playerMove() {
     //handle keyboard inputs
+
+    //movement
     if (this.cursors.left.isDown) {
       this.player.flipX = true;
       this.player.setVelocityX(-160);
@@ -223,15 +225,19 @@ export default class finalBossLevel extends Phaser.Scene {
       this.beamAngle = Phaser.ANGLE_RIGHT;
       this.beamSpeed = 1000;
 
+    //idle
     } else {
       this.player.setVelocityX(0);
       this.player.anims.play("mummyIdleAnim", true);
     }
+
+    //jumping
     if (this.cursors.up.isDown && this.player.body.onFloor())  {
       //only jumps if sprite body is on ground
       this.player.setVelocityY(-330);
     }
 
+    //long range attacks
     if (this.cursors.space.isDown && this.playerCanAttack) {
       this.playerShoot();
     }
@@ -267,8 +273,8 @@ export default class finalBossLevel extends Phaser.Scene {
   playerRanIntoTank(player, enemy) {
     /*
     function to handle special case of player taking damage: running into tank.
-    hurts player just like getting hit by a bullet would, but also respawns
-    the player sprite so the function won't get called over and over
+    player loses one life and then respawns away from the tank so this function
+    won't get called over and over
     */
     console.log('[playerRanIntoTank]')
 
@@ -306,7 +312,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
-    //delay and reset player at new spawn, then enable
+    //delay and reset player at new spawn, then re-enable player sprite
     this.time.addEvent({
       delay: 500,
       callback: this.resetPlayer,
@@ -314,7 +320,7 @@ export default class finalBossLevel extends Phaser.Scene {
       loop: false
     });
 
-    //disabled tank set to respawn with a slower delay than player
+    //disabled tank set to respawn with a longer delay than player sprite
     this.time.addEvent({
       delay: 2500,
       callback: this.resetTank,
@@ -339,7 +345,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     //UNFINISHED
     //needs overlap detector in update function that calls this function:
-      //nearly identical to the way the tank shells are declared near line 170
+      //nearly identical to the way the tank shells are declared near line 140
 
   }
 
@@ -397,7 +403,7 @@ export default class finalBossLevel extends Phaser.Scene {
     /*
     function to check each worldLayer tile the tank shell overlaps with for
     its collides property. destroys the shell if it encounters a tile with
-    collides = true
+    collides = true (i.e. the shell hit a wall tile)
     */
     if (worldLayer.collides) {
       console.log('[shellHitWall]');
@@ -407,9 +413,8 @@ export default class finalBossLevel extends Phaser.Scene {
 
   shellHitPlayer(shell, player) {
     /*
-    function to check each worldLayer tile the tank shell overlaps with for
-    its collides property and destroy the shell if it encounters one with
-    collides = true
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
     */
     console.log('[shellHitPlayer]');
 
