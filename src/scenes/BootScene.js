@@ -82,14 +82,25 @@ export default class BootScene extends Phaser.Scene {
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
+    this.load.audio('beam', './assets/sounds/beam.mp3');
     this.load.audio('pops', './assets/sounds/buttonPops.mp3');
+    this.load.audio('creepy', './assets/sounds/creepy.mp3');
+    this.load.audio('diedCry', './assets/sounds/dyingSound_1.mp3');
+    this.load.audio('diedYell', './assets/sounds/dyingSound_2.mp3');
+    this.load.audio('bomb', './assets/sounds/explosion.mp3');
+    this.load.audio('HE', './assets/sounds/HappyEndingPlay.mp3');
+    this.load.audio('pickup', './assets/sounds/pickup.mp3');
+    this.load.audio('short', './assets/sounds/short.mp3');
+    this.load.audio('platformerSound', './assets/sounds/typicalPlatformer.mp3');
     console.log('loaded audio assets');
   }
 
   create (data) {
     console.log('[create]');
-
-    this.add.text(20, 20, "Loading game...");
+    this.loadingTxt = this.add.text(380, 400, "Loading game...",{
+      fontFamily: 'Arial',
+      fontSize: 52,
+      color: '#FFFFFF'});
 
     //CREATE SPRITE ANIMATIONS
     //player (mummy)
@@ -161,5 +172,6 @@ export default class BootScene extends Phaser.Scene {
 
   update (time, delta) {
     // Update the scene
+    this.loadingTxt.text = "Loading game.." + ".";
   }
 }
