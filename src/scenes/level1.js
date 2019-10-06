@@ -1,6 +1,7 @@
 /*globals Phaser*/
 import * as ChangeScene from './ChangeScene.js';
-export default class finalBossLevel extends Phaser.Scene {
+
+export default class level1 extends Phaser.Scene {
   constructor () {
     super('level1');
   }
@@ -8,6 +9,7 @@ export default class finalBossLevel extends Phaser.Scene {
   preload() {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
+    this.load.json("levelSetting","./src/data/levelSetting.json");
   }
 
   create() {
@@ -30,13 +32,19 @@ export default class finalBossLevel extends Phaser.Scene {
     this.beamSpeed = 1000;
     this.beamAngle;
 
+    // LevelScene Property
+    this.levelName = 1;
     this.diamondsCollected = 0;
     this.enemiesKilled = 0;
     this.gameOver = false;
     this.levelCompleted = false;
 
-    //level
-    this.levelName = '1';
+    // level Data parse from json
+    this.levelSettingInfo = this.cache.json.get('levelSetting');
+    this.enemyACount = this.levelSettingInfo.enemyA[this.levelName];
+    this.enemySCount = this.levelSettingInfo.enemyS[this.levelName];
+    console.log("populating " + this.enemyACount + "enemyA");
+    console.log("populating " + this.enemySCount + "enemyS");
 
     //CREATE LEVEL
     //declare map and tilesets
@@ -44,11 +52,24 @@ export default class finalBossLevel extends Phaser.Scene {
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map1 = this.make.tilemap({ key: "level1map" });
     const worldTileset = map1.addTilesetImage("inca_front", "incaFrontTiles");
+    this.weight = map1.widthInPixels;
+    this.height = map1.heightInPixels;
 
     //render map/player/enemies in specific order
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+
+    // player
     this.player = this.physics.add.sprite(this.spawnX, this.spawnY, "mummyWalk");
+    // enemy
+    var a,s;
+    for (a = 0; a < this.enemyACount; a++) {
+      this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist');
+    }
+    for (s = 0; s < this.enemySCount; s++) {
+      this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier');
+    }
+
     const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
     console.log('created map layers and sprites');
 

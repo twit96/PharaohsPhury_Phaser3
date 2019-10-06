@@ -28,7 +28,6 @@ export default class BootScene extends Phaser.Scene {
 
     this.load.image("bullet", "../assets/sprites/soldierBullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
-
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
