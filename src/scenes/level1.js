@@ -124,6 +124,10 @@ export default class level1 extends Phaser.Scene {
     this.playerMove();
     //check if player on map
     this.playerFellOffMap(this.player);
+    //enemy motion
+    this.enemies.getChildren().forEach(function(enemy) {
+      enemy.speed = Math.random() * 2 + 1;
+    }, this);
   }
 
 
@@ -218,7 +222,9 @@ export default class level1 extends Phaser.Scene {
     beam
       .enableBody(true, this.player.x, this.player.y, true, true)
       .setVelocity(this.beamSpeed, 0)
-      .setScale(2.5)
+      .setScale(2.5);
+
+    //this.physics.add.overlap(this.enemies, beam, enemyHit﻿, null, this);﻿
 
     //enable player attacks again after a delay
     this.time.addEvent({
@@ -228,6 +234,10 @@ export default class level1 extends Phaser.Scene {
       loop: false
     });
   }
+
+/*  enemyHit﻿(enemy, beam){
+    enemy.destory();
+  } */
 
   playerFellOffMap(player) {
     /*
