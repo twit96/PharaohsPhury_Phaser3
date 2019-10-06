@@ -43,8 +43,8 @@ export default class level1 extends Phaser.Scene {
     this.levelSettingInfo = this.cache.json.get('levelSetting');
     this.enemyACount = this.levelSettingInfo.enemyA[this.levelName];
     this.enemySCount = this.levelSettingInfo.enemyS[this.levelName];
-    console.log("populating " + this.enemyACount + "enemyA");
-    console.log("populating " + this.enemySCount + "enemyS");
+    console.log("populating " + this.enemyACount + " enemyA");
+    console.log("populating " + this.enemySCount + " enemyS");
 
     //CREATE LEVEL
     //declare map and tilesets
@@ -59,16 +59,19 @@ export default class level1 extends Phaser.Scene {
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
 
-    // player
-    this.player = this.physics.add.sprite(this.spawnX, this.spawnY, "mummyWalk");
     // enemy
+    this.enemies = this.add.group();
+    this.enemies.enableBody = true;
     var a,s;
     for (a = 0; a < this.enemyACount; a++) {
-      this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist');
+      this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist'));
     }
     for (s = 0; s < this.enemySCount; s++) {
-      this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier');
+      this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier'));
     }
+
+    // player
+    this.player = this.physics.add.sprite(this.spawnX, this.spawnY, "mummyWalk");
 
     const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
     console.log('created map layers and sprites');
@@ -77,7 +80,6 @@ export default class level1 extends Phaser.Scene {
     this.player.body.setSize(40, 64, 50, 50);
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //long range attacks
@@ -95,13 +97,15 @@ export default class level1 extends Phaser.Scene {
     this.boundaryBox = map1.heightInPixels - this.player.body.height;
 
     this.physics.add.collider(this.player, worldLayer);
+    this.physics.add.collider(this.enemies, worldLayer);
+    this.physics.add.collider(this.enemies, this.player);
+
     console.log('configured sprites and physics');
     console.log('completed create function');
-
-
   }
 
   update() {
+
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
