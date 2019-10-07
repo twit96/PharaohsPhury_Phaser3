@@ -20,6 +20,10 @@ export default class menu extends Phaser.Scene {
   create (data) {
     console.log('[create]');
 
+    // Audio
+    this.backgroundMusic = this.sound.add("short");
+    this.backgroundMusic.play({loop:true});
+
     //configure audio
     var sound = this.sound.add('pops');
     sound.addMarker({
@@ -66,7 +70,7 @@ export default class menu extends Phaser.Scene {
     });
     newGameText.on("pointerup", function () {
       sound.play('high');
-
+      this.backgroundMusic.stop();
       console.log('[MENU COMPLETE]');
       this.scene.start('levelPicker');
     }, this);
