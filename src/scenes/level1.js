@@ -20,6 +20,7 @@ export default class level1 extends Phaser.Scene {
     this.shootBeam = this.sound.add("beam");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
+    this.pickupSound = this.sound.add("pickupSound");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -72,6 +73,9 @@ export default class level1 extends Phaser.Scene {
     itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
 */
 
+    // Diamond
+    this.collectItems = this.add.group();
+    this.collectItems.enableBody = true;
     // enemy
     this.enemies = this.add.group();
     this.enemies.enableBody = true;
@@ -108,13 +112,16 @@ export default class level1 extends Phaser.Scene {
 
     //configure sprite collisions
     this.boundaryBox = map1.heightInPixels - this.player.body.height;
-
+    this.physics.add.overlap(this.player,this.collectItems,this.pickup,null,this);
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.collider(this.enemies, worldLayer);
     this.physics.add.collider(this.enemies, this.player);
+    this.physics.add.collider(this.collectItems, worldLayer);
 
     console.log('configured sprites and physics');
     console.log('completed create function');
+
+
   }
 
   update() {
@@ -147,6 +154,11 @@ export default class level1 extends Phaser.Scene {
     this.levelCompleted = true;
   }
 
+  pickup(player,item){
+    item.destroy();
+    this.diamondsCollected++;
+    this.pickupSound.play();
+  }
   //PLAYER HELPER FUNCTIONS
   resetPlayer(){
     /*
@@ -255,8 +267,13 @@ export default class level1 extends Phaser.Scene {
   }
 
   enemyHit﻿(enemy, beam){
+    this.spwanDiamond(enemy.x,enemy.y);
     enemy.destroy();
     this.cry.play();
+  }
+
+  spwanDiamond(diamondX,diamondY){
+    this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
   }
 
   playerFellOffMap(player) {
