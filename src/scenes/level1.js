@@ -14,6 +14,11 @@ export default class level1 extends Phaser.Scene {
 
   create() {
     console.log('[create]');
+    // Audio
+    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic.play({loop:true});
+    this.shootBeam = this.sound.add("beam");
+    this.yell = this.sound.add("diedYell");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -224,6 +229,9 @@ export default class level1 extends Phaser.Scene {
       .setVelocity(this.beamSpeed, 0)
       .setScale(2.5);
 
+    // AUDIO
+    this.shootBeam.play({volume: 1});
+
     //this.physics.add.overlap(this.enemies, beam, enemyHit﻿, null, this);﻿
 
     //enable player attacks again after a delay
@@ -250,6 +258,7 @@ export default class level1 extends Phaser.Scene {
       this.player.x = this.spawnX;
       this.player.y = this.spawnY;
       this.updatePlayerHealth(100);
+      this.yell.play({volume: 5});
 
       //delay and reset player at spawn, then enable
       this.time.addEvent({
