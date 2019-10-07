@@ -39,12 +39,12 @@ export default class BootScene extends Phaser.Scene {
 
     //player (mummy)
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
-      frameWidth: 44,
-      frameHeight: 80
+      frameWidth: 64,
+      frameHeight: 64
     });
     this.load.spritesheet("mummyWalk", "../assets/spriteSheets/MummyWalk.png", {
-      frameWidth: 41,
-      frameHeight: 80
+      frameWidth: 64,
+      frameHeight: 64
     });
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
       frameWidth: 44,
