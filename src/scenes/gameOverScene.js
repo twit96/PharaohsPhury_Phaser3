@@ -15,7 +15,7 @@ export default class gameOverScene extends Phaser.Scene {
         done: this.isCompleted
       });
     */
-    this.levelNum = data.level;
+    this.levelName = data.level;
     this.diamondCollected = data.diamond;
     this.enemiesKilled = data.killed;
     this.isCompleted = data.done;
@@ -29,14 +29,14 @@ export default class gameOverScene extends Phaser.Scene {
 
   create (data) {
     console.log('[create]');
-    this.HESound = this.sound.add("HESound");
+    this.HESound = this.sound.add("HE");
     this.HESound.play({loop:true});
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
     // create the text that display on the screen
-    const level = "Level: " + this.levelNum;
+    const level = "Level: " + this.levelName;
     const diamond = "Diamonds Collected: " + this.diamondCollected;
     const enemyKilled = "Enemies Killed: " + this.enemiesKilled;
 
@@ -44,13 +44,15 @@ export default class gameOverScene extends Phaser.Scene {
     this.add.text(300, 300, diamond, { font: '16px Courier', fill: '#FFFFFF' });
     this.add.text(300, 400, enemyKilled, { font: '16px Courier', fill: '#FFFFFF' });
 
-    var btnText = "Continue";
-
-    if (this.levelNum = "Final Boss" && this.isCompleted ) {
+    var btnText = "Please try again";
+    if (this.isCompleted){
+      btnText = "Click to continue.";
+    }
+    if (this.levelName === "Final Boss" && this.isCompleted ) {
       btnText = "You just won. \n You are now free";
     }
 
-    this.nextButton = this.add.text(600, 500, btnText, { fill: '#0f0' })
+    this.nextButton = this.add.text(550, 500, btnText, { fill: '#0f0' })
       .setInteractive()
       //.on('pointerdown', () => this.getLevelScene(this.isCompleted,this.levelNum))
       .on('pointerdown', () => this.getLevelScene())
