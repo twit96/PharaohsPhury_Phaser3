@@ -88,7 +88,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('diedYell', './assets/sounds/dyingSound_2.mp3');
     this.load.audio('bomb', './assets/sounds/explosion.mp3');
     this.load.audio('HE', './assets/sounds/HappyEndingPlay.mp3');
-    this.load.audio('pickup', './assets/sounds/pickup.mp3');
+    this.load.audio('pickupSound', './assets/sounds/pickup.mp3');
     this.load.audio('short', './assets/sounds/short.mp3');
     this.load.audio('platformerSound', './assets/sounds/typicalPlatformer.mp3');
     console.log('loaded audio assets');

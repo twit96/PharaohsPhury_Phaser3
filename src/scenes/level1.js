@@ -157,6 +157,7 @@ export default class level1 extends Phaser.Scene {
   pickup(player,item){
     item.destroy();
     this.diamondsCollected++;
+    console.log("Now Diamonds count is:" + this.diamondsCollected);
     this.pickupSound.play();
   }
   //PLAYER HELPER FUNCTIONS
