@@ -9,13 +9,8 @@ export default class menu extends Phaser.Scene {
   }
 
   preload () {
-    // Preload assets
-    this.load.spritesheet('buttons', './assets/spriteSheets/buttons.png', {
-      frameHeight: 100,
-      frameWidth: 200
-    });
-
-    this.load.audio('pops', './assets/sounds/buttonPops.mp3');
+    console.log('\n[MENU]')
+    console.log('[preload]');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -23,10 +18,13 @@ export default class menu extends Phaser.Scene {
   }
 
   create (data) {
-    //Add event listeners
-    //ChangeScene.addSceneEventListeners(this);
+    console.log('[create]');
 
-    //Create the scene
+    // Audio
+    this.backgroundMusic = this.sound.add("short");
+    this.backgroundMusic.play({loop:true});
+
+    //configure audio
     var sound = this.sound.add('pops');
     sound.addMarker({
       name: 'low',
@@ -39,35 +37,41 @@ export default class menu extends Phaser.Scene {
       duration: 1.5
     });
 
-    //text
-     this.titleText;
-     this.titleText = this.add.text(this.centerX-320, this.centerY-250, "Pharaoh's Phury", {
-    fontSize: "70px",
-    //fill: "#110"
-    });
-
-    var newGameText = this.add.text(this.centerX - 125, this.centerY-100, 'New Game', {
-      fontFamily: 'Arial',
-      fontSize: 52,
-      color: '#fcba03' });
+    //create text
+    this.titleText = this.add.text(
+      this.centerX-320,
+      this.centerY-250,
+      "Pharaoh's Phury", {
+        fontSize: "70px"
+      }
+    );
+    var newGameText = this.add.text(
+      this.centerX - 125,
+      this.centerY-100,
+      "New Game", {
+        fontFamily: 'Arial',
+        fontSize: 52,
+        color: '#fcba03'
+      }
+    );
     newGameText.setInteractive();
 
-    //var b2 = this.add.sprite(400, 500, 'buttons', 2).setInteractive();
+    //handle player interaction
     newGameText.on("pointerover", function() {
       sound.play('low');
       this.setScale(1.5);
       this.x -= 70;
       this.setTintFill(0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff);
     });
-
     newGameText.on("pointerout", function () {
       this.setTintFill(0xfcba03, 0xfcba03, 0xfcba03, 0xfcba03);
       this.x += 70;
       this.setScale(1);
     });
-
     newGameText.on("pointerup", function () {
       sound.play('high');
+      this.backgroundMusic.stop();
+      console.log('[MENU COMPLETE]');
       this.scene.start('levelPicker');
     }, this);
 }

@@ -1,75 +1,160 @@
 /*global Phaser*/
-import * as ChangeScene from './ChangeScene.js';
 export default class BootScene extends Phaser.Scene {
-  constructor() {
-    super("Boot");
+  constructor () {
+    super('Boot');
   }
 
-  preload(){
-    this.load.image("backgroundScene9", "assets/images/backgroundScene9.png");
-    //
-    this.load.spritesheet("ship", "assets/spritesheets/ship.png",{
-      frameWidth: 16,
-      frameHeight: 16
-    });
-    this.load.spritesheet("ship2", "assets/spritesheets/ship2.png",{
-      frameWidth: 32,
-      frameHeight: 16
-    });
-    this.load.spritesheet("ship3", "assets/spritesheets/ship3.png",{
-      frameWidth: 32,
-      frameHeight: 32
-    });
-    this.load.spritesheet("explosion", "assets/spritesheets/explosion.png",{
-      frameWidth: 16,
-      frameHeight: 16
-    });
-    this.load.spritesheet("power-up", "assets/spritesheets/power-up.png",{
-      frameWidth: 16,
-      frameHeight: 16
-    });
-    this.load.spritesheet("playership", "assets/spritesheets/playership.png",{
-      frameWidth: 16,
-      frameHeight: 24
-    });
-    this.load.spritesheet("beam", "assets/spritesheets/beam.png",{
-      frameWidth: 16,
-      frameHeight: 16
+  preload () {
+    console.log('\n[BOOTSCENE]');
+    console.log('[preload]');
+
+    //LOAD LEVEL ASSETS
+    //tile maps
+    this.load.image("incaBackTiles", "../assets/tilesets/inca_back.png");
+    this.load.image("incaFrontTiles", "../assets/tilesets/inca_front.png");
+
+    this.load.tilemapTiledJSON("level1map", "../assets/tilemaps/level1map.json");
+    this.load.tilemapTiledJSON("level2map", "../assets/tilemaps/level2map.json");
+    this.load.tilemapTiledJSON("level3map", "../assets/tilemaps/level3map.json");
+    this.load.tilemapTiledJSON("level4map", "../assets/tilemaps/level4map.json");
+    this.load.tilemapTiledJSON("level5map", "../assets/tilemaps/level5map.json");
+    this.load.tilemapTiledJSON("level6map", "../assets/tilemaps/level6map.json");
+    this.load.tilemapTiledJSON("level7map", "../assets/tilemaps/level7map.json");
+    this.load.tilemapTiledJSON("finalBossMap", "../assets/tilemaps/finalBossMap.json");
+
+    //items
+    this.load.image("gem", "../assets/sprites/gem.png");
+    this.load.image("cane", "../assets/sprites/mummyCane.png");
+
+    this.load.image("bullet", "../assets/sprites/soldierBullet.png");
+    this.load.image("shell", "../assets/sprites/bomb.png");
+    console.log('loaded level assets');
+
+    //LOAD SPRITESHEET ASSETS
+    //levelPicker
+    this.load.spritesheet('buttons', './assets/spriteSheets/buttons.png', {
+      frameHeight: 100,
+      frameWidth: 200
     });
 
-    this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
+    //player (mummy)
+    this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("mummyWalk", "../assets/spriteSheets/MummyWalk.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
+      frameWidth: 44,
+      frameHeight: 48
+    });
 
-    // 1.1 load sounds in both formats mp3 and ogg
-    this.load.audio("audio_beam", ["assets/sounds/beam.ogg", "assets/sounds/beam.mp3"]);
-    this.load.audio("audio_explosion", ["assets/sounds/explosion.ogg", "assets/sounds/explosion.mp3"]);
-    this.load.audio("audio_pickup", ["assets/sounds/pickup.ogg", "assets/sounds/pickup.mp3"]);
-    this.load.audio("music", ["assets/sounds/sci-fi_platformer12.ogg", "assets/sounds/sci-fi_platformer12.mp3"]);
+    //enemies
+    this.load.spritesheet("archeologist", "../assets/spriteSheets/archeologist.png", {
+      frameWidth: 40.66666667,
+      frameHeight: 80
+    });
+    this.load.spritesheet("soldier", "../assets/spriteSheets/britishSoldier.png", {
+      frameWidth: 40.66666667,
+      frameHeight: 80
+    });
+
+    //final boss (tank)
+    this.load.spritesheet("tankMove", "../assets/spriteSheets/tankMove.png", {
+      frameWidth: 201,
+      frameHeight: 140
+    });
+    this.load.spritesheet("tankAttack", "../assets/spriteSheets/tankAttack.png", {
+      frameWidth: 197,
+      frameHeight: 136
+    });
+    this.load.spritesheet("tankAttackHigh", "../assets/spriteSheets/tankAttackHigh.png", {
+      frameWidth: 196.4,
+      frameHeight: 136
+    });
+    this.load.spritesheet("explosion", "../assets/spriteSheets/tankAttackHigh.png", {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+    console.log('loaded spritesheet assets');
+
+    //LOAD AUDIO ASSETS
+    this.load.audio('beam', './assets/sounds/beam.mp3');
+    this.load.audio('pops', './assets/sounds/buttonPops.mp3');
+    this.load.audio('creepy', './assets/sounds/creepy.mp3');
+    this.load.audio('diedCry', './assets/sounds/dyingSound_1.mp3');
+    this.load.audio('diedYell', './assets/sounds/dyingSound_2.mp3');
+    this.load.audio('bomb', './assets/sounds/explosion.mp3');
+    this.load.audio('HE', './assets/sounds/HappyEndingPlay.mp3');
+    this.load.audio('pickupSound', './assets/sounds/pickup.mp3');
+    this.load.audio('short', './assets/sounds/short.mp3');
+    this.load.audio('platformerSound', './assets/sounds/typicalPlatformer.mp3');
+    console.log('loaded audio assets');
   }
 
-  create() {
+  create (data) {
+    console.log('[create]');
+    this.loadingTxt = this.add.text(380, 400, "Loading game...",{
+      fontFamily: 'Arial',
+      fontSize: 52,
+      color: '#FFFFFF'});
 
-    this.add.text(20, 20, "Loading game...");
-    this.scene.start("Scene5matter");
-
+    //CREATE SPRITE ANIMATIONS
+    //player (mummy)
     this.anims.create({
-      key: "ship1_anim",
-      frames: this.anims.generateFrameNumbers("ship"),
-      frameRate: 20,
+      key: "mummyIdleAnim",
+      frames: this.anims.generateFrameNumbers("mummyIdle"),
+      frameRate: 4,
       repeat: -1
     });
     this.anims.create({
-      key: "ship2_anim",
-      frames: this.anims.generateFrameNumbers("ship2"),
-      frameRate: 20,
+      key: "mummyWalkAnim",
+      frames: this.anims.generateFrameNumbers("mummyWalk"),
+      frameRate: 10,
       repeat: -1
     });
     this.anims.create({
-      key: "ship3_anim",
-      frames: this.anims.generateFrameNumbers("ship3"),
-      frameRate: 20,
+      key: "mummyBeamAnim",
+      frames: this.anims.generateFrameNumbers("mummyBeam"),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    //enemies
+    this.anims.create({
+      key: "archeologistAnim",
+      frames: this.anims.generateFrameNumbers("archeologist"),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "soldierAnim",
+      frames: this.anims.generateFrameNumbers("soldier"),
+      frameRate: 10,
       repeat: -1
     });
 
+    //final boss (tank)
+    this.anims.create({
+      key: "tankMove",
+      frames: this.anims.generateFrameNumbers("tankMove"),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "tankAttack",
+      frames: this.anims.generateFrameNumbers("tankAttack"),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "tankAttackHigh",
+      frames: this.anims.generateFrameNumbers("tankAttackHigh"),
+      frameRate: 4,
+      repeat: -1
+    });
     this.anims.create({
       key: "explode",
       frames: this.anims.generateFrameNumbers("explosion"),
@@ -77,40 +162,15 @@ export default class BootScene extends Phaser.Scene {
       repeat: 0,
       hideOnComplete: true
     });
-
-    this.anims.create({
-      key: "red",
-      frames: this.anims.generateFrameNumbers("power-up", {
-        start: 0,
-        end: 1
-      }),
-      frameRate: 20,
-      repeat: -1
-    });
-    this.anims.create({
-      key: "gray",
-      frames: this.anims.generateFrameNumbers("power-up", {
-        start: 2,
-        end: 3
-      }),
-      frameRate: 20,
-      repeat: -1
-    });
-    this.anims.create({
-      key: "thrust",
-      frames: this.anims.generateFrameNumbers("playership"),
-      frameRate: 20,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: "beam_anim",
-      frames: this.anims.generateFrameNumbers("beam"),
-      frameRate: 20,
-      repeat: -1
-    });
+    console.log('created spritesheet animations');
 
 
+    console.log('[BOOTSCENE COMPLETE]');
+    this.scene.start("menu");
+  }
 
+  update (time, delta) {
+    // Update the scene
+    this.loadingTxt.text = "Loading game.." + ".";
   }
 }
