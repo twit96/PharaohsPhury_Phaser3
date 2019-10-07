@@ -15,6 +15,9 @@ export default class finalBossLevel extends Phaser.Scene {
     // Audio
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
+    this.bomb = this.sound.add("bomb");
+    this.shootBeam = this.sound.add("beam");
+    this.cry = this.sound.add("diedCry");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -26,7 +29,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     this.playerLives = 3;
     this.playerHealth = 100;
-
+    this.playerAttackPoint = 5;
     this.playerCanAttack = true;
     this.beamSpeed = 1000;
     this.beamAngle;
@@ -116,6 +119,9 @@ export default class finalBossLevel extends Phaser.Scene {
   }
 
   update() {
+    if (this.tankHealth <= 0) {
+      this.levelCompleted = true;
+    }
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
@@ -262,7 +268,12 @@ export default class finalBossLevel extends Phaser.Scene {
     beam
       .enableBody(true, this.player.x, this.player.y, true, true)
       .setVelocity(this.beamSpeed, 0)
-      .setScale(2.5)
+      .setScale(2.5);
+
+    // AUDIO
+    this.shootBeam.play({volume: 1});
+
+    this.physics.add.overlap(this.tank, beam, this.enemyHit﻿, null, this);﻿
 
     //enable player attacks again after a delay
     this.time.addEvent({
@@ -271,6 +282,11 @@ export default class finalBossLevel extends Phaser.Scene {
       callbackScope: this,
       loop: false
     });
+  }
+
+  enemyHit﻿(tank, beam){
+    this.tankHealth = this.tankHealth - this.playerAttackPoint;
+    console.log(this.tankHealth);
   }
 
   playerRanIntoTank(player, enemy) {
@@ -411,6 +427,7 @@ export default class finalBossLevel extends Phaser.Scene {
     if (worldLayer.collides) {
       console.log('[shellHitWall]');
       shell.disableBody(true, true);
+      this.bomb.play();
     }
   }
 
@@ -420,6 +437,7 @@ export default class finalBossLevel extends Phaser.Scene {
     (i.e. tank shell hit player)
     */
     console.log('[shellHitPlayer]');
+    this.bomb.play();
 
     //disable shell
     shell.disableBody(true, true);
