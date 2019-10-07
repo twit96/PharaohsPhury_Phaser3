@@ -44,6 +44,10 @@ export default class gameOverScene extends Phaser.Scene {
 
     var btnText = "Continue";
 
+    if (this.levelNum = "Final Boss" && this.isCompleted ) {
+      btnText = "You just win the British Army. \n You are now free";
+    }
+
     this.nextButton = this.add.text(this.centerX - 50, 500, btnText, { fill: '#0f0' })
       .setInteractive()
       //.on('pointerdown', () => this.getLevelScene(this.isCompleted,this.levelNum))

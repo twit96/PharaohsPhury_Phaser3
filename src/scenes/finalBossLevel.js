@@ -273,7 +273,7 @@ export default class finalBossLevel extends Phaser.Scene {
     // AUDIO
     this.shootBeam.play({volume: 1});
 
-    this.physics.add.overlap(this.tank, beam, this.enemyHit﻿, null, this);﻿
+    this.physics.add.overlap(this.tank, beam, this.updateTankHealth(5), null, this);﻿
 
     //enable player attacks again after a delay
     this.time.addEvent({
@@ -282,11 +282,6 @@ export default class finalBossLevel extends Phaser.Scene {
       callbackScope: this,
       loop: false
     });
-  }
-
-  enemyHit﻿(tank, beam){
-    this.tankHealth = this.tankHealth - this.playerAttackPoint;
-    console.log(this.tankHealth);
   }
 
   playerRanIntoTank(player, enemy) {
@@ -361,6 +356,8 @@ export default class finalBossLevel extends Phaser.Scene {
     will subtract damage from tank health and if tank health = 0,
     it will update level levelCompleted status
     */
+    this.tankHealth = this.tankHealth - damage;
+    console.log(this.tankHealth);
 
     //UNFINISHED
     //needs overlap detector in update function that calls this function:
