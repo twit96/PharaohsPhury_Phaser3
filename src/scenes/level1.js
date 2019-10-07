@@ -232,7 +232,7 @@ export default class level1 extends Phaser.Scene {
     // AUDIO
     this.shootBeam.play({volume: 1});
 
-    //this.physics.add.overlap(this.enemies, beam, enemyHit﻿, null, this);﻿
+    this.physics.add.overlap(this.enemies, beam, this.enemyHit﻿, null, this);﻿
 
     //enable player attacks again after a delay
     this.time.addEvent({
@@ -243,9 +243,9 @@ export default class level1 extends Phaser.Scene {
     });
   }
 
-/*  enemyHit﻿(enemy, beam){
-    enemy.destory();
-  } */
+  enemyHit﻿(enemy, beam){
+    enemy.destroy();
+  }
 
   playerFellOffMap(player) {
     /*

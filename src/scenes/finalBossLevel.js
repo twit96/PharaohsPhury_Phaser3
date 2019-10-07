@@ -13,9 +13,9 @@ export default class finalBossLevel extends Phaser.Scene {
   create() {
     console.log('[create]');
     // Audio
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
-    
+
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
