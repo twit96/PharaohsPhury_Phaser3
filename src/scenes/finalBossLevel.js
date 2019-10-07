@@ -121,6 +121,7 @@ export default class finalBossLevel extends Phaser.Scene {
   update() {
     if (this.tankHealth <= 0) {
       this.levelCompleted = true;
+      this.backgroundMusic.stop();
     }
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {

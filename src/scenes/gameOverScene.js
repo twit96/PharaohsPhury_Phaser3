@@ -29,6 +29,8 @@ export default class gameOverScene extends Phaser.Scene {
 
   create (data) {
     console.log('[create]');
+    this.HESound = this.sound.add("HESound");
+    this.HESound.play({loop:true});
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -45,10 +47,10 @@ export default class gameOverScene extends Phaser.Scene {
     var btnText = "Continue";
 
     if (this.levelNum = "Final Boss" && this.isCompleted ) {
-      btnText = "You just win the British Army. \n You are now free";
+      btnText = "You just won. \n You are now free";
     }
 
-    this.nextButton = this.add.text(this.centerX - 50, 500, btnText, { fill: '#0f0' })
+    this.nextButton = this.add.text(600, 500, btnText, { fill: '#0f0' })
       .setInteractive()
       //.on('pointerdown', () => this.getLevelScene(this.isCompleted,this.levelNum))
       .on('pointerdown', () => this.getLevelScene())
@@ -58,6 +60,7 @@ export default class gameOverScene extends Phaser.Scene {
   }
 
   getLevelScene() {
+    this.HESound.stop();
     this.scene.start('levelPicker');
   }
 
