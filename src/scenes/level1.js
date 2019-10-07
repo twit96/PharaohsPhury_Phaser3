@@ -271,6 +271,7 @@ export default class level1 extends Phaser.Scene {
     this.spwanDiamond(enemy.x,enemy.y);
     enemy.destroy();
     this.cry.play();
+    this.enemyKilled++;
   }
 
   spwanDiamond(diamondX,diamondY){
