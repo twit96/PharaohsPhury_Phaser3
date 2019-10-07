@@ -19,6 +19,7 @@ export default class level1 extends Phaser.Scene {
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.yell = this.sound.add("diedYell");
+    this.cry = this.sound.add("diedCry");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -63,6 +64,13 @@ export default class level1 extends Phaser.Scene {
     //render map/player/enemies in specific order
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+
+/* // for collecting item @ dyven
+    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
+    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
+    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
+*/
 
     // enemy
     this.enemies = this.add.group();
@@ -135,6 +143,9 @@ export default class level1 extends Phaser.Scene {
     }, this);
   }
 
+  hitExit(){
+    this.levelCompleted = true;
+  }
 
   //PLAYER HELPER FUNCTIONS
   resetPlayer(){
@@ -245,6 +256,7 @@ export default class level1 extends Phaser.Scene {
 
   enemyHit﻿(enemy, beam){
     enemy.destroy();
+    this.cry.play();
   }
 
   playerFellOffMap(player) {
