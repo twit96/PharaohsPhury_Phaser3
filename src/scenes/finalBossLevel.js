@@ -1,5 +1,7 @@
 /*globals Phaser*/
 import * as ChangeScene from './ChangeScene.js';
+import Mummy from "./mummy.js";
+
 export default class finalBossLevel extends Phaser.Scene {
   constructor () {
     super('finalBossLevel');
@@ -23,23 +25,9 @@ export default class finalBossLevel extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     //SCENE VARIABLES
-    //player
-    this.player;
-    this.cursors;
-
-    this.playerLives = 3;
-    this.playerHealth = 100;
-    this.playerAttackPoint = 5;
-    this.playerCanAttack = true;
-    this.beamSpeed = 1000;
-    this.beamAngle;
-
-    this.diamondsCollected = 0;
-    this.enemiesKilled = 0;
-    this.gameOver = false;
-    this.levelCompleted = false;
 
     //level
+    this.cursors;
     this.levelName = 'Final Boss';
 
     //tank
@@ -63,14 +51,21 @@ export default class finalBossLevel extends Phaser.Scene {
     const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    this.player = this.physics.add.sprite(25, 500, "mummyWalk");
+
+    this.player = new Mummy({
+      scene: this,
+      key: "mummyWalk",
+      x: 25,
+      y: 500
+    });
+
     this.tank = this.physics.add.sprite(400, 400, "tankMove");
     console.log('created map layers and sprites');
 
     //player physics/input
     this.player.body.setSize(40, 64, 50, 50);
-    this.player.setBounce(0.2);
-    this.player.setCollideWorldBounds(true);
+    this.player.body.setBounce(0.2);
+    this.player.body.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -102,7 +97,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.tank,
-      this.playerRanIntoTank,
+      this.playerRanIntoEnemy,
       null,
       this
     );
@@ -119,15 +114,12 @@ export default class finalBossLevel extends Phaser.Scene {
   }
 
   update() {
-    if (this.tankHealth <= 0) {
-      this.levelCompleted = true;
-      this.backgroundMusic.stop();
-    }
     //check for and handle gameOver or levelCompleted
-    if (this.gameOver || this.levelCompleted) {
+    if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[FINALBOSSLEVEL ENDING]');
 
+      this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
         level: this.levelName,
         diamond: this.diamondsCollected,
@@ -138,7 +130,7 @@ export default class finalBossLevel extends Phaser.Scene {
     }
 
     //player motion
-    this.playerMove();
+    this.player.move();
 
     //tank motion
     this.tankMove(this.tank, this.tankSpeed);
@@ -168,136 +160,20 @@ export default class finalBossLevel extends Phaser.Scene {
         }
       }.bind(this)  //binds the function to each of the children. scope of function
     );
-
   }
 
-
-  //PLAYER HELPER FUNCTIONS
-  resetPlayer() {
-    /*
-    function to restore player sprite defaults after a change in tint,
-    canAttack, or being disabled after taking damage.
-    */
-    console.log('[resetPlayer]');
-    this.player.setTint();
-    this.playerCanAttack = true;
-    var x = this.player.x;
-    var y = this.player.y
-    this.player.enableBody(true, x, y, true, true);
-  }
-
-  updatePlayerHealth(damage) {
-    /*
-    function to subtract damage from player health,
-    take away a life if health reaches 0,
-    and update gameOver status based on that
-    */
-    console.log('[updatePlayerHealth]');
-
-    //give damage to player health
-    this.player.setTint(0xff0000);
-    this.playerCanAttack = false;
-    this.playerHealth -= damage
-    console.log('player health: ' + this.playerHealth);
-
-    //update player lives if needed
-    if (this.playerHealth <= 0) {
-      this.playerLives -= 1;
-      console.log('player lives: ' + this.playerLives);
-      this.playerHealth = 100;
-
-      //initiate gameOver if needed
-      if (this.playerLives == 0) {
-        console.log('gameOver: ' + this.gameOver);
-        this.physics.pause();
-        this.gameOver = true;
-      }
-    }
-  }
-
-  playerMove() {
-    //handle keyboard inputs
-
-    //movement
-    if (this.cursors.left.isDown) {
-      this.player.flipX = true;
-      this.player.setVelocityX(-160);
-      this.player.anims.play("mummyWalkAnim", true);
-
-      this.beamAngle = Phaser.ANGLE_LEFT;
-      this.beamSpeed = -1000;
-
-    } else if (this.cursors.right.isDown) {
-      this.player.flipX = false;
-      this.player.setVelocityX(160);
-      this.player.anims.play("mummyWalkAnim", true);
-
-      this.beamAngle = Phaser.ANGLE_RIGHT;
-      this.beamSpeed = 1000;
-
-    //idle
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("mummyIdleAnim", true);
-    }
-
-    //jumping
-    if (this.cursors.up.isDown && this.player.body.onFloor())  {
-      //only jumps if sprite body is on ground
-      this.player.setVelocityY(-330);
-    }
-
-    //long range attacks
-    if (this.cursors.space.isDown && this.playerCanAttack) {
-      this.playerShoot();
-    }
-
-  }
-
-  playerShoot() {
-    /*
-    function to define behavior of player shooting long range attacks
-    */
-    console.log('[playerShoot]');
-
-    //temporarily disable more attacks
-    this.playerCanAttack = false;
-
-    //generate a beam attack sprite
-    var beam = this.beams.get();
-    beam.setAngle(this.beamAngle);
-    beam
-      .enableBody(true, this.player.x, this.player.y, true, true)
-      .setVelocity(this.beamSpeed, 0)
-      .setScale(2.5);
-
-    // AUDIO
-    this.shootBeam.play({volume: 1});
-
-    this.physics.add.overlap(this.tank, beam, this.updateTankHealth(5), null, this);﻿
-
-    //enable player attacks again after a delay
-    this.time.addEvent({
-      delay: 500,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    });
-  }
-
-  playerRanIntoTank(player, enemy) {
+  playerRanIntoEnemy(player, enemy) {
     /*
     function to handle special case of player taking damage: running into tank.
     player loses one life and then respawns away from the tank so this function
     won't get called over and over
     */
-    console.log('[playerRanIntoTank]')
+    console.log('[playerRanIntoEnemy]')
 
     //disable tank, update player health
     this.activeTank = false;
-    this.updatePlayerHealth(100); //i.e. player loses 1 life
-    player.disableBody(true, false);
-    player.setTint(0xff0000);
+    this.player.updateHealth(100); //i.e. player loses 1 life
+    this.player.setTint(0xff0000);
 
     //MOVE PLAYER SPRITE
     //variables to adjust x value
@@ -306,34 +182,26 @@ export default class finalBossLevel extends Phaser.Scene {
     var enemyLeftX = enemy.x - enemyHalfWidth;
 
     //variables to adjust y value
-    var playerHalfHeight = player.height / 2;
+    var playerHalfHeight = this.player.height / 2;
     var enemyHalfHeight = enemy.height / 2;
     var enemyBottomY = enemy.y + enemyHalfHeight;
 
     //adjust player x
-    if (player.body.touching.right) {
+    if (this.player.body.touching.right) {
       //collision on left side of enemy
-      player.x = enemyLeftX - player.width;
-    } else if (player.body.touching.left) {
+      this.player.x = enemyLeftX - this.player.width;
+    } else if (this.player.body.touching.left) {
       //collision on right side of enemy
-      player.x = enemyRightX + player.width;
+      this.player.x = enemyRightX + this.player.width;
     } else {
       //collision on top or bottom of enemy
-      player.x = enemyLeftX - player.width;
+      this.player.x = enemyLeftX - this.player.width;
     }
 
     //adjust player y
-    player.y = enemyBottomY - playerHalfHeight;
+    this.player.y = enemyBottomY - playerHalfHeight;
 
     console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
-
-    //delay and reset player at new spawn, then re-enable player sprite
-    this.time.addEvent({
-      delay: 500,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    });
 
     //disabled tank set to respawn with a longer delay than player sprite
     this.time.addEvent({
@@ -441,13 +309,7 @@ export default class finalBossLevel extends Phaser.Scene {
     shell.disableBody(true, true);
 
     //update player stats
-    this.updatePlayerHealth(50);
-    this.time.addEvent({
-      delay: 250,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    });
+    this.player.updateHealth(50);
   }
 
 }
