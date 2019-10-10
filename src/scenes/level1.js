@@ -1,6 +1,6 @@
 /*globals Phaser*/
 import * as ChangeScene from './ChangeScene.js';
-
+import EnemyArch from './enemyArch.js';
 export default class level1 extends Phaser.Scene {
   constructor () {
     super('level1');
@@ -90,6 +90,10 @@ export default class level1 extends Phaser.Scene {
     // player
     this.player = this.physics.add.sprite(this.spawnX, this.spawnY, "mummyWalk");
 
+    this.enemy1 = new EnemyArch(this, 600,200)
+    this.enemy1.enableBody = true;
+
+
     const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
     console.log('created map layers and sprites');
 
@@ -114,9 +118,13 @@ export default class level1 extends Phaser.Scene {
     this.boundaryBox = map1.heightInPixels - this.player.body.height;
     this.physics.add.overlap(this.player,this.collectItems,this.pickup,null,this);
     this.physics.add.collider(this.player, worldLayer);
+    this.physics.add.collider(this.player, worldLayer);
     this.physics.add.collider(this.enemies, worldLayer);
     this.physics.add.collider(this.enemies, this.player);
     this.physics.add.collider(this.collectItems, worldLayer);
+    //class enemies colliders
+    this.physics.add.collider(this.player, this.enemy1.sprite)
+    this.physics.add.collider(worldLayer, this.enemy1.sprite)
 
     console.log('configured sprites and physics');
     console.log('completed create function');
