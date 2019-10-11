@@ -1,6 +1,6 @@
-export default class EnemyArch extends Phaser.GameObjects.Sprite{
+export default class EnemySoldier extends Phaser.GameObjects.Sprite{
   constructor(config) {
-    super(config.scene, config.x, config.y, config.key);
+    super(config.scene, config.x, config.y, config.key, config.worldLayer);
 
     // Create the physics-based sprite that we will move around and animate
     //this.sprite = config.scene.physics.add.sprite(config.x, config.y, "archeologist");
@@ -17,6 +17,20 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
     config.scene.events.on("update", this.update, this);
     config.scene.events.once("shutdown", this.destroy, this);
     config.scene.events.once("destroy", this.destroy, this);
+
+    //tank shells
+    this.shells = config.scene.physics.add.group({
+      defaultKey: "bullet"
+    });
+
+
+    config.scene.physics.add.overlap(
+      this.shells,
+      config.worldLayer,
+      this.shellHitWall,
+      null,
+      this
+    );
   }
 
   update() {
@@ -34,19 +48,52 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
 
     //count update for movment
     this.count ++
-    if (this.count >= 200) {this.count = 0;}
-    //console.log(this.count)
+    if (this.count >= 300) {this.count = 0;}
 
+    //Soldier Movement and Animations
     if (this.count <= 100){
+      this.body.setSize(40, 64, 50, 50);
       this.body.setVelocityX(moveForce);
       this.setFlipX(false);
-      this.anims.play("archeologistAnim", true);
-    } else {
+      this.anims.play("soldierAnim", true);
+
+    } else if (this.count > 100 && this.count <= 170 ){
+        this.body.setVelocityX(0);
+        this.anims.play("soldierShotAnim", true);
+        this.shoot()
+        this.body.setSize(40, 64, 100, 100);
+
+    } else if (this.count >= 170) {
+      this.body.setSize(40, 64, 50, 50);
       this.body.setVelocityX(-moveForce);
       this.setFlipX(true);
-      this.anims.play("archeologistAnim", true);
+      this.anims.play("soldierAnim", true);
     }
 
+
+
+}
+
+shoot(){
+  var shell = this.shells.get();
+  shell.setAngle(180);
+  shell
+    .enableBody(true, this.x, this.y, true, true)
+    .setVelocity(2000,0)
+
+}
+
+//TANK SHELLS HELPER FUNCTIONS
+shellHitWall(shell, worldLayer) {
+  /*
+  function to check each worldLayer tile the tank shell overlaps with for
+  its collides property. destroys the shell if it encounters a tile with
+  collides = true (i.e. the shell hit a wall tile)
+  */
+  if (worldLayer.collides) {
+    console.log('[shellHitWall]');
+    shell.disableBody(true, true);
+  }
 }
 
 

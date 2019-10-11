@@ -26,7 +26,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("gem", "../assets/sprites/gem.png");
     this.load.image("cane", "../assets/sprites/mummyCane.png");
 
-    this.load.image("bullet", "../assets/sprites/soldierBullet.png");
+    this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
     console.log('loaded level assets');
 
@@ -52,14 +52,20 @@ export default class BootScene extends Phaser.Scene {
     });
 
     //enemies
-    this.load.spritesheet("archeologist", "../assets/spriteSheets/archeologist.png", {
-      frameWidth: 40.66666667,
-      frameHeight: 80
+    this.load.spritesheet("archeologist", "../assets/spriteSheets/Sprite_Archelogist_Walk.png", {
+      frameWidth: 64,
+      frameHeight: 64
     });
     this.load.spritesheet("soldier", "../assets/spriteSheets/britishSoldier.png", {
       frameWidth: 40.66666667,
       frameHeight: 80
     });
+    this.load.spritesheet("soldierShot", "../assets/spriteSheets/Sprite_British_Soldier_Shot.png", {
+      frameWidth: 96,
+      frameHeight: 64
+    });
+
+
 
     //final boss (tank)
     this.load.spritesheet("tankMove", "../assets/spriteSheets/tankMove.png", {
@@ -132,6 +138,12 @@ export default class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "soldierAnim",
       frames: this.anims.generateFrameNumbers("soldier"),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "soldierShotAnim",
+      frames: this.anims.generateFrameNumbers("soldierShot"),
       frameRate: 10,
       repeat: -1
     });
