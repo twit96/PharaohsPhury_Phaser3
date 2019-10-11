@@ -47,7 +47,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     take away a life if health reaches 0,
     and update gameOver status based on that
     */
-    console.log('[updatePlayerHealth]');
+    console.log('[mummy.updateHealth]');
 
     //give damage to player health
     this.tint = 0xff0000;
@@ -79,8 +79,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
   }
 
   move() {
-    //handle keyboard inputs
-
     //movement
     if (this.scene.cursors.left.isDown) {
       this.flipX = true;
@@ -137,8 +135,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     // AUDIO
     this.scene.shootBeam.play({volume: 1});
 
-    //this.physics.add.overlap(this.tank, beam, this.updateTankHealth(5), null, this);﻿
-
     //enable player attacks again after a delay
     this.scene.time.addEvent({
       delay: 500,
@@ -146,6 +142,49 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       callbackScope: this,
       loop: false
     });
+  }
+
+  //PLAYER BEAMS HELPER FUNCTIONS
+  beamHitWall(beam, worldLayer) {
+    /*
+    function to check each worldLayer tile the player beam overlaps with for
+    its collides property. destroys the beam if it encounters a tile with
+    collides = true (i.e. the beam hit a wall tile)
+    */
+
+    //make sure beam is outside of player before detecting collisions
+    var playerWidthBox = this.player.width / 2;
+    var playerHeightBox = this.player.height / 2;
+    var toleranceX = Math.abs(this.player.x - beam.x);
+    var toleranceY = Math.abs(this.player.y - beam.y);
+    var beamHittingPlayer = true;
+
+    //update beamHittingPlayer if beam is outside of player
+    if (toleranceX > playerWidthBox && toleranceY > playerHeightBox) {
+      beamHittingPlayer = false;
+    }
+
+    //test each worldLayer tile outside of player for collides = true
+    if (worldLayer.collides && !beamHittingPlayer) {
+      console.log('[beamHitWall]');
+      beam.disableBody(true, true);
+      this.shootBeam.play();
+    }
+  }
+
+  beamHitTank(beam, tank) {
+    /*
+    function to handle overlap between player beam and tank
+    (i.e. player beam hit tank)
+    */
+    console.log('[mummy.beamHitTank]');
+    this.shootBeam.play();
+
+    //disable shell
+    beam.disableBody(true, true);
+
+    //update player stats
+    this.tank.updateHealth(50);
   }
 
 }
