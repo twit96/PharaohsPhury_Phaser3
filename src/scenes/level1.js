@@ -1,6 +1,7 @@
 /*globals Phaser*/
 import * as ChangeScene from './ChangeScene.js';
-
+import EnemyArch from './enemyArch.js';
+import EnemySoldier from './enemySoldier.js';
 export default class level1 extends Phaser.Scene {
   constructor () {
     super('level1');
@@ -77,18 +78,35 @@ export default class level1 extends Phaser.Scene {
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
     // enemy
-    this.enemies = this.add.group();
-    this.enemies.enableBody = true;
-    var a,s;
-    for (a = 0; a < this.enemyACount; a++) {
-      this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist'));
-    }
-    for (s = 0; s < this.enemySCount; s++) {
-      this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier'));
-    }
+    // this.enemies = this.add.group();
+    // this.enemies.enableBody = true;
+    // var a,s;
+    // for (a = 0; a < this.enemyACount; a++) {
+    //   this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist'));
+    // }
+    // for (s = 0; s < this.enemySCount; s++) {
+    //   this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier'));
+    // }
 
     // player
     this.player = this.physics.add.sprite(this.spawnX, this.spawnY, "mummyWalk");
+
+    //Enemy Spawing
+    this.enemy1 = new EnemyArch({
+      scene: this,
+      key: "archeologist",
+      x: 500,
+      y: 500
+    });
+
+    this.enemy2 = new EnemySoldier({
+      scene: this,
+      key: "soldier",
+      x: 600,
+      y: 600,
+      worldLayer: worldLayer
+    });
+
 
     const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
     console.log('created map layers and sprites');
@@ -114,9 +132,16 @@ export default class level1 extends Phaser.Scene {
     this.boundaryBox = map1.heightInPixels - this.player.body.height;
     this.physics.add.overlap(this.player,this.collectItems,this.pickup,null,this);
     this.physics.add.collider(this.player, worldLayer);
-    this.physics.add.collider(this.enemies, worldLayer);
-    this.physics.add.collider(this.enemies, this.player);
+    this.physics.add.collider(this.player, worldLayer);
+    // this.physics.add.collider(this.enemies, worldLayer);
+    // this.physics.add.collider(this.enemies, this.player);
     this.physics.add.collider(this.collectItems, worldLayer);
+    //class enemies colliders
+    this.physics.add.collider(this.player, this.enemy1)
+    this.physics.add.collider(worldLayer, this.enemy1)
+    this.physics.add.collider(this.player, this.enemy2)
+    this.physics.add.collider(worldLayer, this.enemy2)
+
 
     console.log('configured sprites and physics');
     console.log('completed create function');
@@ -164,10 +189,47 @@ export default class level1 extends Phaser.Scene {
     this.playerMove();
     //check if player on map
     this.playerFellOffMap(this.player);
-    //enemy motion
-    this.enemies.getChildren().forEach(function(enemy) {
-      enemy.speed = Math.random() * 2 + 1;
-    }, this);
+
+    //configure active tank shells
+    this.enemy2.shells.children.each(
+      function (b) {
+        if (b.active) {
+          this.physics.add.overlap(
+            b,
+            this.player,
+            this.shellHitPlayer,
+            null,
+            this
+          );
+
+          //deactivate shells once they leave the screen
+          if (b.y < 0) {
+            b.setActive(false)
+          } else if (b.y > this.cameras.main.height) {
+            b.setActive(false)
+          } else if (b.x < 0) {
+            b.setActive(false)
+          } else if (b.x > this.cameras.main.width) {
+            b.setActive(false)
+          }
+        }
+      }.bind(this)  //binds the function to each of the children. scope of function
+    );
+  }
+
+  shellHitPlayer(shell, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[shellHitPlayer]');
+
+
+    //disable shell
+    shell.disableBody(true, true);
+
+    //update player stats
+    player.updatePlayerHealth(20);
   }
 
   hitExit(){
@@ -276,7 +338,10 @@ export default class level1 extends Phaser.Scene {
     // AUDIO
     this.shootBeam.play({volume: 1});
 
-    this.physics.add.overlap(this.enemies, beam, this.enemyHit﻿, null, this);﻿
+    //this.physics.add.overlap(this.enemies, beam, this.enemyHit﻿, null, this);﻿
+    this.physics.add.overlap(this.enemy1, beam, this.enemyHit﻿, null, this);﻿
+      this.physics.add.overlap(this.enemy2, beam, this.enemyHit﻿, null, this);﻿
+
 
     //enable player attacks again after a delay
     this.time.addEvent({
@@ -288,8 +353,8 @@ export default class level1 extends Phaser.Scene {
   }
 
   enemyHit﻿(enemy, beam){
+    enemy.destro();
     this.spwanDiamond(enemy.x,enemy.y);
-    enemy.destroy();
     this.cry.play();
     this.enemyKilled++;
   }
