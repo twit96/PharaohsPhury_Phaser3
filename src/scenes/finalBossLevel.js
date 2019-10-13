@@ -106,10 +106,47 @@ export default class finalBossLevel extends Phaser.Scene {
 
     console.log('configured sprites and physics');
     console.log('completed create function');
+    // Create display bar
+    //var graphics = this.add.graphics();
+    //graphics.fillStyle(0x000000,1);
+    //graphics.beginPath();
+    //graphics.lineTo(config.width,0);
+    //graphics.lineTo(config.width,20);
+    //graphics.lineTo(0,20);
+    //graphics.lineTo(0,0);
+    //graphics.closePath();
+    //graphics.fillPath();
 
+    // Create timer
+    this.startTime = new Date();
+    this.endTime = new Date();
+    this.duration = this.endTime-this.startTime
+
+    // create score
+    this.score = 0;
+
+    // Generate Display text
+    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
+    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
+    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
+
+    console.log("completed configurating display")
   }
 
   update() {
+    // Update duration and score
+    this.endTime = new Date();
+    this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
+    this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
+    // Update Display
+    this.timerDisplay.setText("Timer: "+ this.duration);
+    this.ScoreDisplay.setText("Score: "+ this.score);
+    this.HealthDisplay.setText("Health: " + this.player.health);
+    this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
+
     //check for and handle gameOver or levelCompleted
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
@@ -118,8 +155,8 @@ export default class finalBossLevel extends Phaser.Scene {
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
         level: this.levelName,
-        diamond: this.diamondsCollected,
-        killed: this.enemiesKilled,
+        diamond: this.player.diamondsCollected,
+        killed: this.player.enemiesKilled,
         done: this.levelCompleted
       });
       return;

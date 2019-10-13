@@ -121,10 +121,30 @@ export default class level1 extends Phaser.Scene {
     console.log('configured sprites and physics');
     console.log('completed create function');
 
+    // Create timer
+    this.startTime = new Date();
+    this.endTime = new Date();
+    this.duration = this.endTime-this.startTime
 
+    // create score
+    
+    // Generate Display text
+    this.timerDisplay = this.add.text(10,10,this.duration);
+    this.ScoreDisplay = this.add.text(10,30,this.score);
+    this.HealthDisplay = this.add.text(10,50,this.player.health);
+    this.LifeDisplay = this.add.text(10,70,this.player.lives);
+    //this.EnemyHealthBar = this.add.text();
   }
 
   update() {
+    // Upate Display Text
+    this.endTime = new Date();
+
+    this.timerDisplay.Text = "";
+    this.ScoreDisplay.Text = this.score;
+    this.HealthDisplay.Text = this.player.health;
+    this.LifeDisplay.Text = this.player.life;
+    this.EnemyHealthBar.Text = this.add.text();
 
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
