@@ -36,11 +36,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to restore sprite defaults after a change in tint,
     canAttack, or being disabled after taking damage.
     */
-
     this.anims.play("mummyIdleAnim", true);
-
-
     console.log('[resetPlayer]');
+
     this.body.setSize(40, 64, 50, 50);
     this.setTint();
     this.canAttack = true;
@@ -95,7 +93,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
       this.beamAngle = Phaser.ANGLE_LEFT;
       this.beamSpeed = -1000;
-
     } else if (this.scene.cursors.right.isDown) {
       this.flipX = false;
       this.body.setVelocityX(160);
@@ -103,7 +100,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
       this.beamAngle = Phaser.ANGLE_RIGHT;
       this.beamSpeed = 1000;
-
     //idle
   } else if (this.canAttack) {
       this.body.setVelocityX(0);
@@ -143,8 +139,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.body.setSize(64, 64, 50, 50);
 
     this.anims.play("mummyCaneAnim", true);
-
-
     //attack audio
 
     //enable player attacks again after a delay
@@ -241,7 +235,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     beam.disableBody(true, true);
 
     //update player stats
-    enemy.destro();
+    enemy.destroy();
   }
 
 }
