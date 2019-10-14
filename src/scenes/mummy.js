@@ -7,11 +7,13 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     config.scene.add.existing(this);
 
     this.body.setSize(40, 64, 50, 50);
+    this.body.setBounce(0.2);
 
     //variables
     this.lives = 3;
     this.health = 100;
     this.canAttack = true;
+    this.isAttacking = false;
     this.beamSpeed = 1000;
     this.beamAngle;
 
@@ -34,9 +36,15 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to restore sprite defaults after a change in tint,
     canAttack, or being disabled after taking damage.
     */
+
+    this.anims.play("mummyIdleAnim", true);
+
+
     console.log('[resetPlayer]');
+    this.body.setSize(40, 64, 50, 50);
     this.setTint();
     this.canAttack = true;
+    this.isAttacking = false;
     var x = this.x;
     var y = this.y
   }
@@ -97,7 +105,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.beamSpeed = 1000;
 
     //idle
-    } else {
+  } else if (this.canAttack) {
       this.body.setVelocityX(0);
       this.anims.play("mummyIdleAnim", true);
     }
@@ -108,6 +116,11 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.body.setVelocityY(-330);
     }
 
+    //short range attacks
+    if (this.scene.cursors.shift.isDown) {
+      this.shortRangeAttack();
+    }
+
     //long range attacks
     if (this.scene.cursors.space.isDown && this.canAttack) {
       this.shoot();
@@ -115,11 +128,40 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
   }
 
+  shortRangeAttack() {
+    /*
+    function to define behavior of player using melee (short-range) attacks
+    */
+    console.log('[mummy.shortRangeAttack]');
+
+    //temporarily disable more attacks
+    this.canAttack = false;
+    this.isAttacking = true;
+
+    //generate a cane attack (or replace mummy sprite with attack sprite)
+    this.caneAttack = this.scene.physics.add.sprite('mummyCane');
+    this.body.setSize(64, 64, 50, 50);
+
+    this.anims.play("mummyCaneAnim", true);
+
+
+    //attack audio
+
+    //enable player attacks again after a delay
+    this.scene.time.addEvent({
+      delay: 500,
+      callback: this.reset,
+      callbackScope: this,
+      loop: false
+    });
+  }
+
+
   shoot() {
     /*
     function to define behavior of player shooting long range attacks
     */
-    console.log('[playerShoot]');
+    console.log('[mummy.shoot]');
 
     //temporarily disable more attacks
     this.canAttack = false;

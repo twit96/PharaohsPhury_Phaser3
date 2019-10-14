@@ -50,6 +50,10 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 44,
       frameHeight: 48
     });
+    this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCaneAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
 
     //enemies
     this.load.spritesheet("archeologist", "../assets/spriteSheets/Sprite_Archelogist_Walk.png", {
@@ -120,6 +124,12 @@ export default class BootScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("mummyWalk"),
       frameRate: 10,
       repeat: -1
+    });
+    this.anims.create({
+      key: "mummyCaneAnim",
+      frames: this.anims.generateFrameNumbers("mummyCane"),
+      frameRate: 10,
+      repeat: 0
     });
     this.anims.create({
       key: "mummyBeamAnim",
