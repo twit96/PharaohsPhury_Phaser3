@@ -56,12 +56,9 @@ export default class finalBossLevel extends Phaser.Scene {
       y: 400
     });
 
-    //this.tank = this.physics.add.sprite(400, 400, "tankMove");
     console.log('created map layers and sprites');
 
     //player physics/input
-    this.player.body.setSize(40, 64, 50, 50);
-    this.player.body.setBounce(0.2);
     this.player.body.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -128,7 +125,7 @@ export default class finalBossLevel extends Phaser.Scene {
     //player motion
     this.player.move();
 
-    //configure active player beams
+    //configure overlaps for active player beams
     this.player.beams.children.each(
       function (b) {
         if (b.active) {
@@ -140,7 +137,7 @@ export default class finalBossLevel extends Phaser.Scene {
             this
           );
 
-          //deactivate shells once they leave the screen
+          //deactivate beams once they leave the screen
           if (b.y < 0) {
             b.setActive(false)
           } else if (b.y > this.cameras.main.height) {
@@ -154,11 +151,10 @@ export default class finalBossLevel extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
-
     //tank motion
     this.tank.move();
 
-    //configure active tank shells
+    //configure overlaps for active tank shells
     this.tank.shells.children.each(
       function (s) {
         if (s.active) {
