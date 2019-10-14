@@ -10,10 +10,13 @@ export default class level1 extends Phaser.Scene {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
+    this.load.image('background1', './assets/images/egyptianbackground.jpg');
   }
 
   create() {
     console.log('[create]');
+    // background image
+    this.add.image(2240,384,'background1');
     // Audio
     this.backgroundMusic = this.sound.add("creepy");
     this.backgroundMusic.play({loop:true});

@@ -8,10 +8,13 @@ export default class finalBossLevel extends Phaser.Scene {
   preload() {
     console.log('\n[FINALBOSSLEVEL]');
     console.log('[preload]')
+    this.load.image('bossbackground', './assets/images/bossbackground.jpg');
   }
 
   create() {
     console.log('[create]');
+    // background image
+    this.add.image(2560, 384, 'bossbackground');
     // Audio
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});

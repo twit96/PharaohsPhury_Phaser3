@@ -7,6 +7,9 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
+    this.load.image('title', './assets/images/gametitle.png');
+
+
 
     //LOAD LEVEL ASSETS
     //tile maps
@@ -96,6 +99,9 @@ export default class BootScene extends Phaser.Scene {
 
   create (data) {
     console.log('[create]');
+
+    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
+
     this.loadingTxt = this.add.text(380, 400, "Loading game...",{
       fontFamily: 'Arial',
       fontSize: 52,
