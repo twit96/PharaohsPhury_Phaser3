@@ -173,7 +173,7 @@ export default class levelPicker extends Phaser.Scene {
     });
     b9.on("pointerup", function () {
       sound.play('high');
-      //this.scene.start('level8');
+      this.scene.start('finalBossLevel');
     }, this
     );
 
