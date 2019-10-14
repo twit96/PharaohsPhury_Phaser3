@@ -15,18 +15,21 @@ export default class finalBossLevel extends Phaser.Scene {
 
   create() {
     console.log('[create]');
-    // Audio
+
+    //Add change scene event listeners
+    ChangeScene.addSceneEventListeners(this);
+
+    //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
     this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.cry = this.sound.add("diedCry");
 
-    //Add change scene event listeners
-    ChangeScene.addSceneEventListeners(this);
-
-    //level variables
-    this.cursors;
+    //VARIABLES
+    //player
+    this.spawnX = 25;
+    this.spawnY = 500;
     this.levelName = 'Final Boss';
 
     //CREATE LEVEL
@@ -45,8 +48,8 @@ export default class finalBossLevel extends Phaser.Scene {
     this.player = new Mummy({
       scene: this,
       key: "mummyWalk",
-      x: 25,
-      y: 500
+      x: this.spawnX,
+      y: this.spawnY
     });
 
     this.tank = new Tank({
@@ -60,7 +63,6 @@ export default class finalBossLevel extends Phaser.Scene {
 
     //player physics/input
     this.player.body.setCollideWorldBounds(true);
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //tank physics
@@ -133,16 +135,22 @@ export default class finalBossLevel extends Phaser.Scene {
   }
 
   update() {
-    // Update duration and score
+    //duration and score
     this.endTime = new Date();
     this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
     this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
-    // Update Display
+
+    //display
     this.timerDisplay.setText("Timer: "+ this.duration);
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
     this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
+
+    //detect if tank died
+    if (this.tank.health == 0) {
+      this.player.levelCompleted = true;
+    }
 
     //check for and handle gameOver or levelCompleted
     if (this.player.gameOver || this.player.levelCompleted) {
@@ -232,6 +240,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.tank.isActive = false;
     this.player.updateHealth(100); //i.e. player loses 1 life
     this.player.setTint(0xff0000);
+    this.player.setVelocity = 0;
 
     //MOVE PLAYER SPRITE
     //variables to adjust x value

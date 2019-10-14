@@ -33,11 +33,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     it will update level levelCompleted status
     */
     console.log('[tank.updateHealth]');
-    this.tankHealth = this.tankHealth - damage;
-
-    //UNFINISHED
-    //needs overlap detector in update function that calls this function:
-      //nearly identical to the way the tank shells are declared near line 140
+    this.health = this.health - damage;
   }
 
   move() {

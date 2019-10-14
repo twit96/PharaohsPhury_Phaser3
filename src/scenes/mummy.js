@@ -226,7 +226,22 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     beam.disableBody(true, true);
 
     //update player stats
-    this.tank.updateHealth(50);
+    this.tank.updateHealth(10);
+  }
+
+  beamHitEnemy(beam, enemy) {
+    /*
+    function to handle overlap between player beam and enemy
+    (i.e. player beam hit enemy)
+    */
+    console.log('[mummy.beamHitEnemy]');
+    this.shootBeam.play();
+
+    //disable beam
+    beam.disableBody(true, true);
+
+    //update player stats
+    enemy.destro();
   }
 
 }
