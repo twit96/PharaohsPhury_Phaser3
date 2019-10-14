@@ -158,6 +158,7 @@ export default class finalBossLevel extends Phaser.Scene {
       console.log('[FINALBOSSLEVEL ENDING]');
 
       this.backgroundMusic.stop();
+
       this.scene.start('gameOverScene', {
         level: this.levelName,
         diamond: this.player.diamondsCollected,

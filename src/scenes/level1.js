@@ -38,18 +38,25 @@ export default class level1 extends Phaser.Scene {
     //CREATE LEVEL
     // level Data parse from json
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACount = this.levelSettingInfo.enemyA[this.levelName];
-    this.enemySCount = this.levelSettingInfo.enemyS[this.levelName];
-    console.log("populating " + this.enemyACount + " enemyA");
-    console.log("populating " + this.enemySCount + " enemyS");
+    this.enemyACount = this.levelSettingInfo.enemyA[this.levelName-1];
+    this.enemySCount = this.levelSettingInfo.enemyS[this.levelName-1];
+    console.log("populating " + this.enemyALocation + " enemyA");
+    console.log("populating " + this.enemySLocation + " enemyS");
+    this.enemyALocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyA;
+    this.enemySLocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyS;
+
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map1 = this.make.tilemap({ key: "level1map" });
+    const below2Tileset =map1.addTilesetImage("inca_back2", "incaBack2Tiles");
+    //const belowTileset = map1.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map1.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
+    const bgLayer = map1.createStaticLayer("Below Player", below2Tileset, 0, 0);
+    //const belowLayer = map1.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
@@ -100,10 +107,11 @@ export default class level1 extends Phaser.Scene {
       key: "soldier",
       x: 600,
       y: 600,
-      worldLayer: worldLayer
+      //worldLayer: worldLayer
     });
 
-    const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
+    //const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
+
     console.log('created map layers and sprites');
 
     //player physics/input
@@ -146,13 +154,19 @@ export default class level1 extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(
+      this.player.beams,
+      worldLayer,
+      this.player.beamHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
       this.enemy2.bullets,
-      this.worldLayer,
+      worldLayer,
       this.enemy2.bulletHitWall,
       null,
       this
     );
-
     this.physics.add.overlap(
       this.player,
       this.collectItems,
@@ -170,13 +184,16 @@ export default class level1 extends Phaser.Scene {
     this.duration = this.endTime-this.startTime
 
     // create score
+    this.score = 0;
 
     // Generate Display text
-    this.timerDisplay = this.add.text(10,10,this.duration);
-    this.ScoreDisplay = this.add.text(10,30,this.score);
-    this.HealthDisplay = this.add.text(10,50,this.player.health);
-    this.LifeDisplay = this.add.text(10,70,this.player.lives);
-    this.EnemyHealthBar = this.add.text();
+    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
+    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
+    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
+
+    console.log("completed configurating display")
   }
 
   update() {
@@ -190,6 +207,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
@@ -211,7 +229,6 @@ export default class level1 extends Phaser.Scene {
 
     //check if player on map
     this.playerFellOffMap(this.player);
-
 
     //configure overlaps for active player beams
     this.player.beams.children.each(
@@ -279,8 +296,8 @@ export default class level1 extends Phaser.Scene {
 
   pickup(player,item) {
     item.destroy();
-    this.diamondsCollected++;
-    console.log("Now Diamonds count is:" + this.diamondsCollected);
+    this.player.diamondsCollected++;
+    console.log("Now Diamonds count is:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
 
@@ -300,7 +317,8 @@ export default class level1 extends Phaser.Scene {
     //destroy enemy, update player stats
     enemy.destro();
     this.cry.play();
-    this.enemyKilled++;
+    this.player.enemyKilled++;
+    console.log("Now killed count is:" + this.player.enemyKilled);
   }
 
   playerRanIntoEnemy(player, enemy) {
