@@ -98,15 +98,15 @@ export default class level1 extends Phaser.Scene {
     this.enemy1 = new EnemyArch({
       scene: this,
       key: "archeologist",
-      x: 500,
-      y: 500
+      x: 700,
+      y: 300
     });
 
     this.enemy2 = new EnemySoldier({
       scene: this,
       key: "soldier",
-      x: 600,
-      y: 600,
+      x: 2100,
+      y: 300,
       //worldLayer: worldLayer
     });
 
