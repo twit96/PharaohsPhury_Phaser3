@@ -36,6 +36,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
 
     //Soldier Movement and Animations
     if (this.moveCounter <= 100) {
+      this.body.setSize(40, 64, 50, 50);
       this.x += this.speed;
       this.setFlipX(false);
       this.anims.play("soldierAnim", true);
@@ -46,6 +47,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
         this.body.setSize(40, 64, 100, 100);
 
     } else if (this.moveCounter >= 170) {
+      this.body.setSize(40, 64, 50, 50);
       this.x -= this.speed;
       this.setFlipX(true);
       this.anims.play("soldierAnim", true);
