@@ -294,6 +294,21 @@ export default class level1 extends Phaser.Scene {
     this.levelCompleted = true;
   }
 
+  shellHitPlayer(shell, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[shellHitPlayer]');
+
+
+    //disable shell
+    shell.disableBody(true, true);
+
+    //update player stats
+    player.updateHealth(20);
+  }
+
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
@@ -321,7 +336,7 @@ export default class level1 extends Phaser.Scene {
     this.cry.play();
     this.player.enemyKilled++;
     console.log("Now killed count is:" + this.player.enemyKilled);
-    
+
     this.spawnDiamond(enemy.x, enemy.y);
 
   }
