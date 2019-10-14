@@ -236,6 +236,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //update player stats
     enemy.destro();
+    this.spawnDiamond(enemy.x,enemy.y)
   }
 
 }

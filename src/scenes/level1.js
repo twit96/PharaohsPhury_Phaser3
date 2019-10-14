@@ -304,13 +304,15 @@ export default class level1 extends Phaser.Scene {
   enemyHit﻿(enemy, beam){
 
     //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(5));
+    var randAmount = Math.floor(Math.random() * Math.floor(10));
+    var x;
     for (x = 0; x < randAmount; x++) {
-      randomShiftX = Math.floor(Math.random() * Math.floor(25));
-      randomShiftY = Math.floor(Math.random() * Math.floor(25));
+      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
 
       var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y + randomShiftY;
+      var diamondY = enemy.y - randomShiftY;
       this.spawnDiamond(diamondX, diamondY);
     }
 
@@ -319,6 +321,9 @@ export default class level1 extends Phaser.Scene {
     this.cry.play();
     this.player.enemyKilled++;
     console.log("Now killed count is:" + this.player.enemyKilled);
+    
+    this.spawnDiamond(enemy.x, enemy.y);
+
   }
 
   playerRanIntoEnemy(player, enemy) {
