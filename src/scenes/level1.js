@@ -209,7 +209,7 @@ export default class level1 extends Phaser.Scene {
     shell.disableBody(true, true);
 
     //update player stats
-    player.updatePlayerHealth(20);
+    this.updatePlayerHealth(20);
   }
 
   hitExit(){
