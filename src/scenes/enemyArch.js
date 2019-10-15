@@ -29,9 +29,11 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
     this.moveCounter += 1
 
     if (this.moveCounter < 250) {
-      this.x += this.speed
+      this.body.setVelocityX(this.speed+100);
+      this.setFlipX(false);
     } else {
-      this.x -= this.speed
+      this.body.setVelocityX(-this.speed-100);
+      this.setFlipX(true);
     }
 
     //reset count at 500 to repeat the behavior loop
