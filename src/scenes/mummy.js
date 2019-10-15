@@ -139,6 +139,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to define behavior of player using melee (short-range) attacks
     */
     console.log('[mummy.shortRangeAttack]');
+    this.scene.meleeSound.play({volume: 2,rate:1.1});
 
     //temporarily disable more attacks
     this.canAttack = false;
