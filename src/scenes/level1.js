@@ -306,15 +306,7 @@ export default class level1 extends Phaser.Scene {
     shell.disableBody(true, true);
 
     //update player stats
-<<<<<<< HEAD
-    this.updatePlayerHealth(20);
-  }
-
-  hitExit(){
-    this.levelCompleted = true;
-=======
     player.updateHealth(20);
->>>>>>> development
   }
 
   pickup(player,item) {
