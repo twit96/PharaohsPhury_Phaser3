@@ -188,12 +188,15 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives);
+    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health);
+    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score);
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
-
+    this.LifeDisplay.setScrollFactor(1);
+    this.HealthDisplay.setScrollFactor(1);
+    this.timerDisplay.setScrollFactor(1);
+    this.ScoreDisplay.setScrollFactor(1);
     console.log("completed configurating display")
   }
 

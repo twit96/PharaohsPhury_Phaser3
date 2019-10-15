@@ -23,6 +23,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
     this.bomb = this.sound.add("bomb");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.shootBeam = this.sound.add("beam");
     this.cry = this.sound.add("diedCry");
 
@@ -125,10 +126,10 @@ export default class finalBossLevel extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives);
+    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health);
+    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score);
     this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
     console.log("completed configurating display")
