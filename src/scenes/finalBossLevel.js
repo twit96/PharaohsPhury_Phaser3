@@ -126,11 +126,11 @@ export default class finalBossLevel extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives);
-    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health);
-    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score);
-    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
+    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives).setScrollFactor(1);
+    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health).setScrollFactor(1);
+    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration).setScrollFactor(1);
+    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score).setScrollFactor(1);
+    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health).setScrollFactor(1);
 
     console.log("completed configurating display")
   }
