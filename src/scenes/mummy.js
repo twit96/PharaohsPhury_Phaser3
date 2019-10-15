@@ -7,11 +7,13 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     config.scene.add.existing(this);
 
     this.body.setSize(40, 64, 50, 50);
+    this.body.setBounce(0.2);
 
     //variables
     this.lives = 3;
     this.health = 100;
     this.canAttack = true;
+    this.isAttacking = false;
     this.beamSpeed = 1000;
     this.beamAngle;
 
@@ -34,9 +36,13 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to restore sprite defaults after a change in tint,
     canAttack, or being disabled after taking damage.
     */
+    this.anims.play("mummyCaneIdleAnim", true);
     console.log('[resetPlayer]');
+
+    this.body.setSize(40, 64, 50, 50);
     this.setTint();
     this.canAttack = true;
+    this.isAttacking = false;
     var x = this.x;
     var y = this.y
   }
@@ -47,7 +53,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     take away a life if health reaches 0,
     and update gameOver status based on that
     */
-    console.log('[updatePlayerHealth]');
+    console.log('[mummy.updateHealth]');
 
     //give damage to player health
     this.tint = 0xff0000;
@@ -79,29 +85,25 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
   }
 
   move() {
-    //handle keyboard inputs
-
     //movement
     if (this.scene.cursors.left.isDown) {
       this.flipX = true;
       this.body.setVelocityX(-160);
-      this.anims.play("mummyWalkAnim", true);
+      this.anims.play("mummyCaneWalkAnim", true);
 
       this.beamAngle = Phaser.ANGLE_LEFT;
       this.beamSpeed = -1000;
-
     } else if (this.scene.cursors.right.isDown) {
       this.flipX = false;
       this.body.setVelocityX(160);
-      this.anims.play("mummyWalkAnim", true);
+      this.anims.play("mummyCaneWalkAnim", true);
 
       this.beamAngle = Phaser.ANGLE_RIGHT;
       this.beamSpeed = 1000;
-
     //idle
-    } else {
+  } else if (this.canAttack) {
       this.body.setVelocityX(0);
-      this.anims.play("mummyIdleAnim", true);
+      this.anims.play("mummyCaneIdleAnim", true);
     }
 
     //jumping
@@ -110,18 +112,61 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.body.setVelocityY(-330);
     }
 
+    //short range attacks
+    if (this.scene.cursors.shift.isDown) {
+      this.shortRangeAttack();
+    }
+
     //long range attacks
     if (this.scene.cursors.space.isDown && this.canAttack) {
-      this.shoot();
+      this.anims.play("mummyRangeCaneAnim", true);
+        this.shoot();
+
+
+      // this.scene.time.addEvent({
+      //   delay: 10000000,
+      //   callback: this.shoot(),
+      //   callbackScope: this,
+      //   loop: false
+      // });
+
     }
 
   }
+
+  shortRangeAttack() {
+    /*
+    function to define behavior of player using melee (short-range) attacks
+    */
+    console.log('[mummy.shortRangeAttack]');
+
+    //temporarily disable more attacks
+    this.canAttack = false;
+    this.isAttacking = true;
+
+    //generate a cane attack (or replace mummy sprite with attack sprite)
+    this.caneAttack = this.scene.physics.add.sprite('mummyCane');
+    this.body.setSize(64, 64, 50, 50);
+
+    this.anims.play("mummyCaneAnim", true);
+    //attack audio
+
+    //enable player attacks again after a delay
+    this.scene.time.addEvent({
+      delay: 500,
+      callback: this.reset,
+      callbackScope: this,
+      loop: false
+    });
+  }
+
 
   shoot() {
     /*
     function to define behavior of player shooting long range attacks
     */
-    console.log('[playerShoot]');
+    console.log('[mummy.shoot]');
+
 
     //temporarily disable more attacks
     this.canAttack = false;
@@ -137,8 +182,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     // AUDIO
     this.scene.shootBeam.play({volume: 1});
 
-    //this.physics.add.overlap(this.tank, beam, this.updateTankHealth(5), null, this);﻿
-
     //enable player attacks again after a delay
     this.scene.time.addEvent({
       delay: 500,
@@ -146,6 +189,65 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       callbackScope: this,
       loop: false
     });
+  }
+
+  //PLAYER BEAMS HELPER FUNCTIONS
+  beamHitWall(beam, worldLayer) {
+    /*
+    function to check each worldLayer tile the player beam overlaps with for
+    its collides property. destroys the beam if it encounters a tile with
+    collides = true (i.e. the beam hit a wall tile)
+    */
+
+    //make sure beam is outside of player before detecting collisions
+    var playerWidthBox = this.player.width / 2;
+    var playerHeightBox = this.player.height / 2;
+    var toleranceX = Math.abs(this.player.x - beam.x);
+    var toleranceY = Math.abs(this.player.y - beam.y);
+    var beamHittingPlayer = true;
+
+    //update beamHittingPlayer if beam is outside of player
+    if (toleranceX > playerWidthBox && toleranceY > playerHeightBox) {
+      beamHittingPlayer = false;
+    }
+
+    //test each worldLayer tile outside of player for collides = true
+    if (worldLayer.collides && !beamHittingPlayer) {
+      console.log('[beamHitWall]');
+      beam.disableBody(true, true);
+      this.shootBeam.play();
+    }
+  }
+
+  beamHitTank(beam, tank) {
+    /*
+    function to handle overlap between player beam and tank
+    (i.e. player beam hit tank)
+    */
+    console.log('[mummy.beamHitTank]');
+    this.shootBeam.play();
+
+    //disable shell
+    beam.disableBody(true, true);
+
+    //update player stats
+    this.tank.updateHealth(10);
+  }
+
+  beamHitEnemy(beam, enemy) {
+    /*
+    function to handle overlap between player beam and enemy
+    (i.e. player beam hit enemy)
+    */
+    console.log('[mummy.beamHitEnemy]');
+    this.shootBeam.play();
+
+    //disable beam
+    beam.disableBody(true, true);
+
+    //update player stats
+    enemy.destro();
+    this.spawnDiamond(enemy.x,enemy.y)
   }
 
 }

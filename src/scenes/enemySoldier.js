@@ -2,100 +2,96 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
   constructor(config) {
     super(config.scene, config.x, config.y, config.key, config.worldLayer);
 
-    // Create the physics-based sprite that we will move around and animate
-    //this.sprite = config.scene.physics.add.sprite(config.x, config.y, "archeologist");
-
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
     this.body.setSize(40, 64, 50, 50);
 
-    //intialize count
-    this.count = 0;
-
+    //variables
+    this.moveCounter = 0;
+    this.speed = 1.0;
     this.destroyed = false;
+
     config.scene.events.on("update", this.update, this);
     config.scene.events.once("shutdown", this.destroy, this);
     config.scene.events.once("destroy", this.destroy, this);
 
-    //tank shells
-    this.shells = config.scene.physics.add.group({
-      defaultKey: "bullet"
+    //soldier bullets
+    this.bullets = config.scene.physics.add.group({
+      defaultKey: "bullet",
+      allowGravity: false
     });
-
-
-    config.scene.physics.add.overlap(
-      this.shells,
-      config.worldLayer,
-      this.shellHitWall,
-      null,
-      this
-    );
   }
 
   update() {
     if (this.destroyed) return;
+    this.move();
+  }
 
-    const sprite = this.sprite;
-    //const velocity = sprite.body.velocity;
-    //const isOnGround = this.isTouching.ground;
-    //const isInAir = !isOnGround;
+  move() {
 
-    // Adjust the movement so that the player is slower in the air
-    //const moveForce = isOnGround ? 0.01 : 0.005;
-    const moveForce = 140;
-    //sprite.applyForce({ x: -moveForce, y: 0 });
-
-    //count update for movment
-    this.count ++
-    if (this.count >= 300) {this.count = 0;}
+    this.moveCounter ++;
+    if (this.moveCounter >= 300) {
+      this.moveCounter = 0;
+    }
 
     //Soldier Movement and Animations
-    if (this.count <= 100){
+    if (this.moveCounter <= 100) {
       this.body.setSize(40, 64, 50, 50);
-      this.body.setVelocityX(moveForce);
+      this.body.setVelocityX(this.speed+100);
       this.setFlipX(false);
       this.anims.play("soldierAnim", true);
 
-    } else if (this.count > 100 && this.count <= 170 ){
-        this.body.setVelocityX(0);
+    } else if (this.moveCounter > 100 && this.moveCounter <= 170 ) {
         this.anims.play("soldierShotAnim", true);
-        this.shoot()
+        this.body.setVelocityX(0);
+        this.shoot();
         this.body.setSize(40, 64, 100, 100);
 
-    } else if (this.count >= 170) {
+    } else if (this.moveCounter >= 170) {
       this.body.setSize(40, 64, 50, 50);
-      this.body.setVelocityX(-moveForce);
+      this.body.setVelocityX(-this.speed-100);
       this.setFlipX(true);
       this.anims.play("soldierAnim", true);
     }
 
-
-
-}
-
-shoot(){
-  var shell = this.shells.get();
-  shell.setAngle(180);
-  shell
-    .enableBody(true, this.x, this.y, true, true)
-    .setVelocity(2000,0)
-
-}
-
-//TANK SHELLS HELPER FUNCTIONS
-shellHitWall(shell, worldLayer) {
-  /*
-  function to check each worldLayer tile the tank shell overlaps with for
-  its collides property. destroys the shell if it encounters a tile with
-  collides = true (i.e. the shell hit a wall tile)
-  */
-  if (worldLayer.collides) {
-    console.log('[shellHitWall]');
-    shell.disableBody(true, true);
   }
-}
 
+  shoot () {
+    var bullet = this.bullets.get();
+    bullet.setAngle(180);
+    bullet
+      .enableBody(true, this.x, this.y, true, true)
+      .setVelocity(2000,0)
+  }
+
+  //SOLDIER BULLETS HELPER FUNCTIONS
+  bulletHitWall(bullet, worldLayer) {
+    /*
+    function to check each worldLayer tile the soldier bullet overlaps with for
+    its collides property. destroys the bullet if it encounters a tile with
+    collides = true (i.e. the bullet hit a wall tile)
+    */
+    if (worldLayer.collides) {
+      console.log('[bulletHitWall]');
+      bullet.disableBody(true, true);
+    }
+  }
+
+  bulletHitPlayer(bullet, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[enemySoldier.bulletHitPlayer]');
+    this.bomb.play();
+
+    //disable shell
+    bullet.disableBody(true, true);
+
+    //update player stats
+    this.player.updateHealth(50);
+  }
 
 
  destro() {
@@ -106,10 +102,7 @@ shellHitWall(shell, worldLayer) {
    this.scene.events.off("shutdown", this.destroy, this);
    this.scene.events.off("destroy", this.destroy, this);
 
-
    this.destroy();
  }
-
-
 
 }

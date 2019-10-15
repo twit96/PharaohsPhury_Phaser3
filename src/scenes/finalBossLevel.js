@@ -1,6 +1,7 @@
 /*globals Phaser*/
 import * as ChangeScene from './ChangeScene.js';
 import Mummy from "./mummy.js";
+import Tank from "./tank.js";
 
 export default class finalBossLevel extends Phaser.Scene {
   constructor () {
@@ -14,30 +15,22 @@ export default class finalBossLevel extends Phaser.Scene {
 
   create() {
     console.log('[create]');
-    // Audio
+
+    //Add change scene event listeners
+    ChangeScene.addSceneEventListeners(this);
+
+    //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
     this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.cry = this.sound.add("diedCry");
 
-    //Add change scene event listeners
-    ChangeScene.addSceneEventListeners(this);
-
-    //SCENE VARIABLES
-
-    //level
-    this.cursors;
+    //VARIABLES
+    //player
+    this.spawnX = 25;
+    this.spawnY = 500;
     this.levelName = 'Final Boss';
-
-    //tank
-    this.tankMoveCounter = 0
-    this.tankDifficulties = [1000, 500, 250, 100];  //not implemented yet, to give tank faster firing and movement as he gets closer to dying
-    this.tankHealth = 100;
-    this.tankSpeed = 1.00;
-
-    this.shellSpeed = 1000;
-    this.activeTank = true;
 
     //CREATE LEVEL
     //declare map and tilesets
@@ -55,35 +48,27 @@ export default class finalBossLevel extends Phaser.Scene {
     this.player = new Mummy({
       scene: this,
       key: "mummyWalk",
-      x: 25,
-      y: 500
+      x: this.spawnX,
+      y: this.spawnY
     });
 
-    this.tank = this.physics.add.sprite(400, 400, "tankMove");
+    this.tank = new Tank({
+      scene: this,
+      key: "tankMove",
+      x: 400,
+      y: 400
+    });
+
     console.log('created map layers and sprites');
 
     //player physics/input
-    this.player.body.setSize(40, 64, 50, 50);
-    this.player.body.setBounce(0.2);
     this.player.body.setCollideWorldBounds(true);
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //tank physics
-    this.tank.setCollideWorldBounds(true);
     this.tank.play("tankMove");
+    this.tank.body.setCollideWorldBounds(true);
     this.tank.setInteractive();
-
-    //tank shells
-    this.shells = this.physics.add.group({
-      defaultKey: "shell"
-    });
-
-    //player long range attacks
-    this.beams = this.physics.add.group({
-      defaultKey: "mummyBeam",
-      allowGravity: false
-    });
 
     //world/camera bounds
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -97,33 +82,87 @@ export default class finalBossLevel extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.tank,
-      this.playerRanIntoEnemy,
+      this.playerRanIntoTank,
       null,
       this
     );
+
     this.physics.add.overlap(
-      this.shells,
+      this.player.beams,
       worldLayer,
-      this.shellHitWall,
+      this.player.beamHitWall,
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.tank.shells,
+      worldLayer,
+      this.tank.shellHitWall,
+      null,
+      this
+    );
+
     console.log('configured sprites and physics');
     console.log('completed create function');
+    // Create display bar
+    //var graphics = this.add.graphics();
+    //graphics.fillStyle(0x000000,1);
+    //graphics.beginPath();
+    //graphics.lineTo(config.width,0);
+    //graphics.lineTo(config.width,20);
+    //graphics.lineTo(0,20);
+    //graphics.lineTo(0,0);
+    //graphics.closePath();
+    //graphics.fillPath();
 
+    // Create timer
+    this.startTime = new Date();
+    this.endTime = new Date();
+    this.duration = this.endTime-this.startTime
+
+    // create score
+    this.score = 0;
+
+    // Generate Display text
+    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
+    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
+    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
+
+    console.log("completed configurating display")
   }
 
   update() {
+    //duration and score
+    this.endTime = new Date();
+    this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
+    this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
+
+    //display
+    this.timerDisplay.setText("Timer: "+ this.duration);
+    this.ScoreDisplay.setText("Score: "+ this.score);
+    this.HealthDisplay.setText("Health: " + this.player.health);
+    this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
+
+    //detect if tank died
+    if (this.tank.health == 0) {
+      this.player.levelCompleted = true;
+    }
+
     //check for and handle gameOver or levelCompleted
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[FINALBOSSLEVEL ENDING]');
 
       this.backgroundMusic.stop();
+
       this.scene.start('gameOverScene', {
         level: this.levelName,
-        diamond: this.diamondsCollected,
-        killed: this.enemiesKilled,
+        diamond: this.player.diamondsCollected,
+        killed: this.player.enemiesKilled,
         done: this.levelCompleted
       });
       return;
@@ -132,22 +171,19 @@ export default class finalBossLevel extends Phaser.Scene {
     //player motion
     this.player.move();
 
-    //tank motion
-    this.tankMove(this.tank, this.tankSpeed);
-
-    //configure active tank shells
-    this.shells.children.each(
+    //configure overlaps for active player beams
+    this.player.beams.children.each(
       function (b) {
         if (b.active) {
           this.physics.add.overlap(
             b,
-            this.player,
-            this.shellHitPlayer,
+            this.tank,
+            this.player.beamHitTank,
             null,
             this
           );
 
-          //deactivate shells once they leave the screen
+          //deactivate beams once they leave the screen
           if (b.y < 0) {
             b.setActive(false)
           } else if (b.y > this.cameras.main.height) {
@@ -160,156 +196,87 @@ export default class finalBossLevel extends Phaser.Scene {
         }
       }.bind(this)  //binds the function to each of the children. scope of function
     );
+
+    //tank motion
+    this.tank.move();
+
+    //configure overlaps for active tank shells
+    this.tank.shells.children.each(
+      function (s) {
+        if (s.active) {
+          this.physics.add.overlap(
+            s,
+            this.player,
+            this.tank.shellHitPlayer,
+            null,
+            this
+          );
+
+          //deactivate shells once they leave the screen
+          if (s.y < 0) {
+            s.setActive(false)
+          } else if (s.y > this.cameras.main.height) {
+            s.setActive(false)
+          } else if (s.x < 0) {
+            s.setActive(false)
+          } else if (s.x > this.cameras.main.width) {
+            s.setActive(false)
+          }
+        }
+      }.bind(this)  //binds the function to each of the children. scope of function
+    );
+
   }
 
-  playerRanIntoEnemy(player, enemy) {
+
+  playerRanIntoTank(player, tank) {
     /*
     function to handle special case of player taking damage: running into tank.
     player loses one life and then respawns away from the tank so this function
-    won't get called over and over
+    won't get called over and over.
     */
-    console.log('[playerRanIntoEnemy]')
+    console.log('[playerRanIntoTank]')
 
-    //disable tank, update player health
-    this.activeTank = false;
+    //disable enemy, update player health
+    this.tank.isActive = false;
     this.player.updateHealth(100); //i.e. player loses 1 life
     this.player.setTint(0xff0000);
+    this.player.setVelocity = 0;
 
     //MOVE PLAYER SPRITE
     //variables to adjust x value
-    var enemyHalfWidth = enemy.width / 2;
-    var enemyRightX = enemy.x + enemyHalfWidth;
-    var enemyLeftX = enemy.x - enemyHalfWidth;
+    var tankHalfWidth = tank.width / 2;
+    var tankRightX = tank.x + tankHalfWidth;
+    var tankLeftX = tank.x - tankHalfWidth;
 
     //variables to adjust y value
     var playerHalfHeight = this.player.height / 2;
-    var enemyHalfHeight = enemy.height / 2;
-    var enemyBottomY = enemy.y + enemyHalfHeight;
+    var tankHalfHeight = tank.height / 2;
+    var tankBottomY = tank.y + tankHalfHeight;
 
     //adjust player x
     if (this.player.body.touching.right) {
       //collision on left side of enemy
-      this.player.x = enemyLeftX - this.player.width;
+      this.player.x = tankLeftX - this.player.width;
     } else if (this.player.body.touching.left) {
       //collision on right side of enemy
-      this.player.x = enemyRightX + this.player.width;
+      this.player.x = tankRightX + this.player.width;
     } else {
       //collision on top or bottom of enemy
-      this.player.x = enemyLeftX - this.player.width;
+      this.player.x = tankLeftX - this.player.width;
     }
 
     //adjust player y
-    this.player.y = enemyBottomY - playerHalfHeight;
+    this.player.y = tankBottomY - playerHalfHeight;
 
     console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
     //disabled tank set to respawn with a longer delay than player sprite
     this.time.addEvent({
       delay: 2500,
-      callback: this.resetTank,
+      callback: this.tank.reset,
       callbackScope: this,
       loop: false
     });
   }
-
-
-  //TANK HELPER FUNCTIONS
-  resetTank() {
-    console.log('[resetTank]');
-    this.activeTank = true;
-  }
-
-  updateTankHealth(damage) {
-    /*
-    function called when player beam hits tank.
-    will subtract damage from tank health and if tank health = 0,
-    it will update level levelCompleted status
-    */
-    this.tankHealth = this.tankHealth - damage;
-    console.log(this.tankHealth);
-
-    //UNFINISHED
-    //needs overlap detector in update function that calls this function:
-      //nearly identical to the way the tank shells are declared near line 140
-
-  }
-
-  tankMove(tank, speed) {
-    /*
-    function to create tank behavior loop:
-    back and forth movement, calling shoot function periodically.
-    only runs if this.activeTank = true
-    */
-
-    if (this.activeTank) {
-      this.tankMoveCounter += 1
-
-      //tank back and forth movement
-      if (this.tankMoveCounter < 250) {
-        tank.x += speed
-      } else {
-        tank.x -= speed
-      }
-
-      //tank shooting behavior (5 times per back and forth cycle)
-      if (this.tankMoveCounter % 100 == 0) {
-        this.tankShoot(this.tank, this.player);
-      }
-
-      //reset count at 500 to repeat the behavior loop
-      if (this.tankMoveCounter == 500) {
-        this.tankMoveCounter = 0;
-      }
-    }
-  }
-
-  tankShoot() {
-    /*
-    function to define behavior of tank shooting at the player
-    */
-    var betweenPoints = Phaser.Math.Angle.BetweenPoints;
-    var angle = betweenPoints(this.tank, this.player);
-    var velocityFromRotation = this.physics.velocityFromRotation;
-
-    //create a variable called velocity from a vector2
-    var velocity = new Phaser.Math.Vector2();
-    velocityFromRotation(angle, this.shellSpeed, velocity);
-
-    //get the shells group and generate shell
-    var shell = this.shells.get();
-    shell.setAngle(Phaser.Math.RAD_TO_DEG * angle);
-    shell
-      .enableBody(true, this.tank.x, this.tank.y, true, true)
-      .setVelocity(velocity.x, velocity.y)
-  }
-
-  //TANK SHELLS HELPER FUNCTIONS
-  shellHitWall(shell, worldLayer) {
-    /*
-    function to check each worldLayer tile the tank shell overlaps with for
-    its collides property. destroys the shell if it encounters a tile with
-    collides = true (i.e. the shell hit a wall tile)
-    */
-    if (worldLayer.collides) {
-      console.log('[shellHitWall]');
-      shell.disableBody(true, true);
-      this.bomb.play();
-    }
-  }
-
-  shellHitPlayer(shell, player) {
-    /*
-    function to handle overlap between player and tank shell
-    (i.e. tank shell hit player)
-    */
-    console.log('[shellHitPlayer]');
-    this.bomb.play();
-
-    //disable shell
-    shell.disableBody(true, true);
-
-    //update player stats
-    this.player.updateHealth(50);
-  }
-
 }

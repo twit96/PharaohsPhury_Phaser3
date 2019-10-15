@@ -12,6 +12,7 @@ export default class BootScene extends Phaser.Scene {
     //tile maps
     this.load.image("incaBackTiles", "../assets/tilesets/inca_back.png");
     this.load.image("incaFrontTiles", "../assets/tilesets/inca_front.png");
+    this.load.image("incaBack2Tiles", "../assets/tilesets/inca_back2.png");
 
     this.load.tilemapTiledJSON("level1map", "../assets/tilemaps/level1map.json");
     this.load.tilemapTiledJSON("level2map", "../assets/tilemaps/level2map.json");
@@ -46,9 +47,25 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
+    this.load.spritesheet("mummyCaneIdle", "../assets/spriteSheets/Sprite_MummyCane_Idle.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("mummyCaneWalk", "../assets/spriteSheets/Sprite_MummyCane_Walk.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
       frameWidth: 44,
       frameHeight: 48
+    });
+    this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCaneAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("mummyRangeCane", "../assets/spriteSheets/Sprite_MummyCane_RangeAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
     });
 
     //enemies
@@ -120,6 +137,32 @@ export default class BootScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("mummyWalk"),
       frameRate: 10,
       repeat: -1
+    });
+    //With cane
+    this.anims.create({
+      key: "mummyCaneIdleAnim",
+      frames: this.anims.generateFrameNumbers("mummyCaneIdle"),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "mummyCaneWalkAnim",
+      frames: this.anims.generateFrameNumbers("mummyCaneWalk"),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "mummyCaneAnim",
+      frames: this.anims.generateFrameNumbers("mummyCane"),
+      frameRate: 10,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "mummyRangeCaneAnim",
+      frames: this.anims.generateFrameNumbers("mummyRangeCane", {start: 0, end: 6}),
+      frameRate: 10,
+      repeat: 0
     });
     this.anims.create({
       key: "mummyBeamAnim",
