@@ -120,7 +120,10 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     if (this.scene.cursors.space.isDown && this.canAttack) {
       this.anims.play("mummyRangeCaneAnim", true);
+      if (this.anims.currentFrame.index === 3) {
         this.shoot();
+      }
+        //this.shoot();
 
 
       // this.scene.time.addEvent({
