@@ -18,7 +18,8 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
 
     //soldier bullets
     this.bullets = config.scene.physics.add.group({
-      defaultKey: "bullet"
+      defaultKey: "bullet",
+      allowGravity: false
     });
   }
 
