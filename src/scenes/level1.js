@@ -25,6 +25,7 @@ export default class level1 extends Phaser.Scene {
     this.backgroundMusic = this.sound.add("creepy");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
@@ -98,15 +99,15 @@ export default class level1 extends Phaser.Scene {
     this.enemy1 = new EnemyArch({
       scene: this,
       key: "archeologist",
-      x: 500,
-      y: 500
+      x: 700,
+      y: 300
     });
 
     this.enemy2 = new EnemySoldier({
       scene: this,
       key: "soldier",
-      x: 600,
-      y: 600,
+      x: 2100,
+      y: 300,
       //worldLayer: worldLayer
     });
 
@@ -187,12 +188,15 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives);
+    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health);
+    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration);
+    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score);
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
-
+    this.LifeDisplay.setScrollFactor(1);
+    this.HealthDisplay.setScrollFactor(1);
+    this.timerDisplay.setScrollFactor(1);
+    this.ScoreDisplay.setScrollFactor(1);
     console.log("completed configurating display")
   }
 
@@ -294,6 +298,21 @@ export default class level1 extends Phaser.Scene {
     this.levelCompleted = true;
   }
 
+  shellHitPlayer(shell, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[shellHitPlayer]');
+
+
+    //disable shell
+    shell.disableBody(true, true);
+
+    //update player stats
+    player.updateHealth(20);
+  }
+
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
@@ -304,13 +323,15 @@ export default class level1 extends Phaser.Scene {
   enemyHit﻿(enemy, beam){
 
     //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(5));
+    var randAmount = Math.floor(Math.random() * Math.floor(10));
+    var x;
     for (x = 0; x < randAmount; x++) {
-      randomShiftX = Math.floor(Math.random() * Math.floor(25));
-      randomShiftY = Math.floor(Math.random() * Math.floor(25));
+      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
 
       var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y + randomShiftY;
+      var diamondY = enemy.y - randomShiftY;
       this.spawnDiamond(diamondX, diamondY);
     }
 
@@ -319,6 +340,9 @@ export default class level1 extends Phaser.Scene {
     this.cry.play();
     this.player.enemyKilled++;
     console.log("Now killed count is:" + this.player.enemyKilled);
+
+    this.spawnDiamond(enemy.x, enemy.y);
+
   }
 
   playerRanIntoEnemy(player, enemy) {

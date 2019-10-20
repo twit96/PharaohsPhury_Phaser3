@@ -36,7 +36,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to restore sprite defaults after a change in tint,
     canAttack, or being disabled after taking damage.
     */
-    this.anims.play("mummyIdleAnim", true);
+    this.anims.play("mummyCaneIdleAnim", true);
     console.log('[resetPlayer]');
 
     this.body.setSize(40, 64, 50, 50);
@@ -89,21 +89,21 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     if (this.scene.cursors.left.isDown) {
       this.flipX = true;
       this.body.setVelocityX(-160);
-      this.anims.play("mummyWalkAnim", true);
+      this.anims.play("mummyCaneWalkAnim", true);
 
       this.beamAngle = Phaser.ANGLE_LEFT;
       this.beamSpeed = -1000;
     } else if (this.scene.cursors.right.isDown) {
       this.flipX = false;
       this.body.setVelocityX(160);
-      this.anims.play("mummyWalkAnim", true);
+      this.anims.play("mummyCaneWalkAnim", true);
 
       this.beamAngle = Phaser.ANGLE_RIGHT;
       this.beamSpeed = 1000;
     //idle
   } else if (this.canAttack) {
       this.body.setVelocityX(0);
-      this.anims.play("mummyIdleAnim", true);
+      this.anims.play("mummyCaneIdleAnim", true);
     }
 
     //jumping
@@ -119,7 +119,17 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //long range attacks
     if (this.scene.cursors.space.isDown && this.canAttack) {
-      this.shoot();
+      this.anims.play("mummyRangeCaneAnim", true);
+        this.shoot();
+
+
+      // this.scene.time.addEvent({
+      //   delay: 10000000,
+      //   callback: this.shoot(),
+      //   callbackScope: this,
+      //   loop: false
+      // });
+
     }
 
   }
@@ -129,6 +139,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to define behavior of player using melee (short-range) attacks
     */
     console.log('[mummy.shortRangeAttack]');
+    this.scene.meleeSound.play({volume: 2,rate:1.1});
 
     //temporarily disable more attacks
     this.canAttack = false;
@@ -156,6 +167,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to define behavior of player shooting long range attacks
     */
     console.log('[mummy.shoot]');
+
 
     //temporarily disable more attacks
     this.canAttack = false;
@@ -236,6 +248,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //update player stats
     enemy.destro();
+    this.spawnDiamond(enemy.x,enemy.y)
   }
 
 }

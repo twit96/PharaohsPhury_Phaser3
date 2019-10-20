@@ -11,6 +11,8 @@ export default class menu extends Phaser.Scene {
   preload () {
     console.log('\n[MENU]')
     console.log('[preload]');
+    this.load.image('menu', './assets/images/menu.jpg');
+    this.load.image('title', './assets/images/gametitle.png');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -19,6 +21,10 @@ export default class menu extends Phaser.Scene {
 
   create (data) {
     console.log('[create]');
+    // Background and title images
+    var menuBG = this.add.image(400,300,'menu').setScale(.5,.5);
+    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
+
 
     // Audio
     this.backgroundMusic = this.sound.add("short");
@@ -37,21 +43,15 @@ export default class menu extends Phaser.Scene {
       duration: 1.5
     });
 
-    //create text
-    this.titleText = this.add.text(
-      this.centerX-320,
-      this.centerY-250,
-      "Pharaoh's Phury", {
-        fontSize: "70px"
-      }
-    );
     var newGameText = this.add.text(
-      this.centerX - 125,
-      this.centerY-100,
+      this.centerX - 100,
+      this.centerY-80,
       "New Game", {
         fontFamily: 'Arial',
-        fontSize: 52,
-        color: '#fcba03'
+        fontSize: 64,
+        color: '#fcba03',
+        stroke: '#000000',
+        strokeThickness: 7
       }
     );
     newGameText.setInteractive();
@@ -59,14 +59,10 @@ export default class menu extends Phaser.Scene {
     //handle player interaction
     newGameText.on("pointerover", function() {
       sound.play('low');
-      this.setScale(1.5);
-      this.x -= 70;
-      this.setTintFill(0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff);
+      this.x += 50;
     });
     newGameText.on("pointerout", function () {
-      this.setTintFill(0xfcba03, 0xfcba03, 0xfcba03, 0xfcba03);
-      this.x += 70;
-      this.setScale(1);
+      this.x -= 50;
     });
     newGameText.on("pointerup", function () {
       sound.play('high');
