@@ -188,15 +188,18 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives);
-    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health);
-    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score);
+    this.LifeDisplay = this.add.text(600,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(600,40, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(600,60, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(600,80, "Score: "+ this.score).setScrollFactor(0,0);
+    // display heart for life
+    var h;
+    this.hearts = this.add.group();
+    for (h = 0; h < this.player.lives; h++) {
+      var xLocation = 740 + h*20 ;
+      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+    }
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
-    this.LifeDisplay.setScrollFactor(1);
-    this.HealthDisplay.setScrollFactor(1);
-    this.timerDisplay.setScrollFactor(1);
-    this.ScoreDisplay.setScrollFactor(1);
     console.log("completed configurating display")
   }
 
@@ -213,8 +216,13 @@ export default class level1 extends Phaser.Scene {
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
     //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
+    // player heart update - if hearts isn't equal to the player lifes, delete one heart
+    if (this.player.lives != this.hearts.countActive()) {
+      this.hearts.killAndHide(this.hearts.getFirstAlive());
+    }
+
     //check for and handle gameOver or levelCompleted
-    if (this.gameOver || this.levelCompleted) {
+    if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL1 ENDING]');
 
@@ -372,7 +380,7 @@ export default class level1 extends Phaser.Scene {
     //destroy enemy, update player stats
     enemy.destro();
     this.cry.play();
-    this.enemyKilled++;
+    this.player.enemyKilled++;
   }
 
   spawnDiamond(diamondX, diamondY){

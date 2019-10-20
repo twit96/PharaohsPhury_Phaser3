@@ -29,6 +29,11 @@ export default class BootScene extends Phaser.Scene {
 
     this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
+
+    this.load.image("healthBarFrame","../assets/images/healthBarFrame.png");
+    this.load.image("healthBar","../assets/images/healthBarFill.png");
+    this.load.image("heart","../assets/images/lifeHeart.png");
+
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
@@ -124,7 +129,6 @@ export default class BootScene extends Phaser.Scene {
       fontFamily: 'Arial',
       fontSize: 52,
       color: '#FFFFFF'});
-
     //CREATE SPRITE ANIMATIONS
     //player (mummy)
     this.anims.create({

@@ -22,6 +22,7 @@ export default class finalBossLevel extends Phaser.Scene {
     //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
+
     this.bomb = this.sound.add("bomb");
     this.meleeSound = this.sound.add("meleeAttack");
     this.shootBeam = this.sound.add("beam");
@@ -106,16 +107,6 @@ export default class finalBossLevel extends Phaser.Scene {
 
     console.log('configured sprites and physics');
     console.log('completed create function');
-    // Create display bar
-    //var graphics = this.add.graphics();
-    //graphics.fillStyle(0x000000,1);
-    //graphics.beginPath();
-    //graphics.lineTo(config.width,0);
-    //graphics.lineTo(config.width,20);
-    //graphics.lineTo(0,20);
-    //graphics.lineTo(0,0);
-    //graphics.closePath();
-    //graphics.fillPath();
 
     // Create timer
     this.startTime = new Date();
@@ -126,11 +117,14 @@ export default class finalBossLevel extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives).setScrollFactor(1);
-    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health).setScrollFactor(1);
-    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration).setScrollFactor(1);
-    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score).setScrollFactor(1);
-    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health).setScrollFactor(1);
+    this.LifeDisplay = this.add.text(10,50, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,70, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,90, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,110, "Score: "+ this.score).setScrollFactor(0,0);
+    this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health).setScrollFactor(0,0);
+    // Health Bar
+    this.healthBar = this.add.image(120,37,"healthBarFrame").setOrigin(0,0).setScale(0.1);
+    this.healthBarFill = this.add.image(120,37,"healthBar").setOrigin(0,0).setScale(0.1);
 
     console.log("completed configurating display")
   }
@@ -229,7 +223,6 @@ export default class finalBossLevel extends Phaser.Scene {
 
   }
 
-
   playerRanIntoTank(player, tank) {
     /*
     function to handle special case of player taking damage: running into tank.
@@ -280,4 +273,26 @@ export default class finalBossLevel extends Phaser.Scene {
       loop: false
     });
   }
+
+/*  createHealthBar(){
+    //Create display bar
+    var graphics = this.add.graphics();
+    graphics.fillStyle(0x00FF00,1);
+    graphics.beginPath();
+    graphics.lineTo(300,70);
+    graphics.lineTo(300,85);
+    graphics.lineTo(130,85);
+    graphics.lineTo(130,70);
+    graphics.closePath();
+    graphics.fillPath();
+  }*/
+
+  calculateHealthPercent(){
+    return this.player.health / 100;
+  }
+
+  updateHealthBar(){
+    this.healthBar.width = 170*this.calculateHealthPercent();
+  }
+
 }
