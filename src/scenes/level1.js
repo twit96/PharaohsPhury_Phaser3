@@ -229,6 +229,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    this.updateHealthBar();
     //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
