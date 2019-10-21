@@ -64,6 +64,16 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
+    //Pharaoh mask load
+    this.load.spritesheet("pharoahCaneIdle", "../assets/spriteSheets/Sprite_PharoahCane_Idle.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("pharoahCaneWalk", "../assets/spriteSheets/Sprite_PharoahCane_Walk.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
       frameWidth: 44,
       frameHeight: 48
@@ -72,7 +82,15 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
+    this.load.spritesheet("pharoahCane", "../assets/spriteSheets/Sprite_PharoahCane_Attack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
     this.load.spritesheet("mummyRangeCane", "../assets/spriteSheets/Sprite_MummyCane_RangeAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("pharoahRangeCane", "../assets/spriteSheets/Sprite_PharoahCane_RangeAttack.png", {
       frameWidth: 64,
       frameHeight: 64
     });
@@ -82,9 +100,9 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldier", "../assets/spriteSheets/britishSoldier.png", {
-      frameWidth: 40.66666667,
-      frameHeight: 80
+    this.load.spritesheet("soldier", "../assets/spriteSheets/britishSoldierWalk.png", {
+      frameWidth: 64,
+      frameHeight: 64
     });
     this.load.spritesheet("soldierShot", "../assets/spriteSheets/Sprite_British_Soldier_Shot.png", {
       frameWidth: 96,
@@ -163,6 +181,19 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+    //With pharaoh mask
+    this.anims.create({
+      key: "pharoahCaneIdleAnim",
+      frames: this.anims.generateFrameNumbers("pharoahCaneIdle"),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "pharoahCaneWalkAnim",
+      frames: this.anims.generateFrameNumbers("pharoahCaneWalk"),
+      frameRate: 10,
+      repeat: -1
+    });
 
     this.anims.create({
       key: "mummyCaneAnim",
@@ -171,8 +202,20 @@ export default class BootScene extends Phaser.Scene {
       repeat: 0
     });
     this.anims.create({
+      key: "pharoahCaneAnim",
+      frames: this.anims.generateFrameNumbers("pharoahCane"),
+      frameRate: 10,
+      repeat: 0
+    });
+    this.anims.create({
       key: "mummyRangeCaneAnim",
       frames: this.anims.generateFrameNumbers("mummyRangeCane", {start: 0, end: 6}),
+      frameRate: 10,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "pharoahRangeCaneAnim",
+      frames: this.anims.generateFrameNumbers("pharoahRangeCane", {start: 0, end: 6}),
       frameRate: 10,
       repeat: 0
     });

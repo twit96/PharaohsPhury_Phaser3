@@ -79,7 +79,7 @@ export default class levelPicker extends Phaser.Scene {
     });
     b2.on("pointerup", function () {
       sound.play('high');
-      //this.scene.start('level2');
+      this.scene.start('level2');
     }, this
     );
 
@@ -93,7 +93,7 @@ export default class levelPicker extends Phaser.Scene {
     });
     b3.on("pointerup", function () {
       sound.play('high');
-      //this.scene.start('level3');
+      this.scene.start('level3');
     }, this   // scope so above line works
     );
 
