@@ -40,7 +40,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('title', './assets/images/gametitle.png');
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
-    
+
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
