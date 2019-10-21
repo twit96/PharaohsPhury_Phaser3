@@ -124,7 +124,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
    this.scene.events.off("shutdown", this.destroy, this);
    this.scene.events.off("destroy", this.destroy, this);
 
-   this.kill();
+   this.destroy();
  }
 
 }
