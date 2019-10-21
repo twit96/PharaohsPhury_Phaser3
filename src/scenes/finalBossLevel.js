@@ -19,6 +19,9 @@ export default class finalBossLevel extends Phaser.Scene {
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
+    // background image
+    this.add.image(2560, 384, 'bossbackground');
+
     //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
     this.backgroundMusic.play({loop:true});
@@ -117,11 +120,11 @@ export default class finalBossLevel extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.LifeDisplay = this.add.text(10,10, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,30, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,10, "Life Left: " + this.player.lives, { color: '#00000' }).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,30, "Health: " + this.player.health, { color: '#000000' }).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration, {color: '#000000' }).setScrollFactor(0,0);
     //this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score).setScrollFactor(0,0);
-    this.EnemyHealthDisplay = this.add.text(650,10,"Tank Health: "+this.tank.health).setScrollFactor(0,0);
+    this.EnemyHealthDisplay = this.add.text(650,10,"Tank Health: "+this.tank.health, { color: '#00000' }).setScrollFactor(0,0);
     // create Health Bar
     this.healthBar = this.add.image(130,30,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarFill = this.add.image(130,30,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);

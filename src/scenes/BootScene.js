@@ -34,6 +34,10 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
+    this.load.image('title', './assets/images/gametitle.png');
+    this.load.image('bossbackground', './assets/images/bossbackground.jpg');
+    this.load.image('background1', './assets/images/egyptianbackground.jpg');
+    
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
@@ -125,6 +129,9 @@ export default class BootScene extends Phaser.Scene {
 
   create (data) {
     console.log('[create]');
+
+    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
+
     this.loadingTxt = this.add.text(380, 400, "Loading game...",{
       fontFamily: 'Arial',
       fontSize: 52,

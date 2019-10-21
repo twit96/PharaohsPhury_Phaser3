@@ -17,6 +17,8 @@ export default class level1 extends Phaser.Scene {
 
   create() {
     console.log('[create]');
+    // background images
+    this.add.image(2240,384,'background1');
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
