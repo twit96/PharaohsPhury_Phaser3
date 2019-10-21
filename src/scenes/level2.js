@@ -197,11 +197,23 @@ export default class level2 extends Phaser.Scene {
     // create score
     this.score = 0;
 
-    // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    // Generate  text
+    this.LifeDisplay = this.add.text(600,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(600,40, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(600,60, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(600,80, "Score: "+ this.score).setScrollFactor(0,0);
+    // display heart for life
+    var h;
+    this.hearts = this.add.group();
+    for (h = 0; h < this.player.lives; h++) {
+      var xLocation = 740 + h*20 ;
+      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+    }
+    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarOrgWidth = this.healthBarFill.width;
+    this.healthBarOrgHeight = this.healthBarFill.width;
+
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
     console.log("completed configurating display")
@@ -218,6 +230,7 @@ export default class level2 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    this.updateHealthBar();
     //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
     //check for and handle gameOver or levelCompleted
@@ -437,5 +450,8 @@ export default class level2 extends Phaser.Scene {
       });
     }
   }
-
+  updateHealthBar(){
+    this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+    console.log("Update player health bar fill");
+  }
 }
