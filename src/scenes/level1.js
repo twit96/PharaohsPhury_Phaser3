@@ -308,7 +308,7 @@ export default class level1 extends Phaser.Scene {
   }
 
   hitExit() {
-    console.log("hitExitFunction being called");
+    console.log("[hitExit]");
     this.player.levelCompleted = true;
   }
 
@@ -333,33 +333,6 @@ export default class level1 extends Phaser.Scene {
     console.log("Now Diamonds count is:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
-
-  /*
-  enemyHit﻿(enemy, beam){
-
-    //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
-
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-      var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
-    }
-
-    //destroy enemy, update player stats
-    enemy.destro();
-    this.cry.play();
-    this.player.enemyKilled++;
-    console.log("Now killed count is:" + this.player.enemyKilled);
-
-    this.spawnDiamond(enemy.x, enemy.y);
-
-  }
-  */
 
   playerRanIntoEnemy(player, enemy) {
     /*
