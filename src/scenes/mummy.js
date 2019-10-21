@@ -63,6 +63,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //update player lives if needed
     if (this.health <= 0) {
+      this.tint = 0x000000;
       this.lives -= 1;
       console.log('player lives: ' + this.lives);
       this.health = 100;

@@ -30,8 +30,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
 
-    this.load.image("healthBarFrame","../assets/images/healthBarFrame.png");
-    this.load.image("healthBar","../assets/images/healthBarFill.png");
+    this.load.image("healthBarFrame","../assets/images/healthbarframe.png");
+    this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
     console.log('loaded level assets');

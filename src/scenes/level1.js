@@ -187,7 +187,7 @@ export default class level1 extends Phaser.Scene {
     // create score
     this.score = 0;
 
-    // Generate Display text
+    // Generate  text
     this.LifeDisplay = this.add.text(600,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
     this.HealthDisplay = this.add.text(600,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(600,60, "Timer: "+ this.duration).setScrollFactor(0,0);
@@ -199,6 +199,11 @@ export default class level1 extends Phaser.Scene {
       var xLocation = 740 + h*20 ;
       this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
     }
+    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarOrgWidth = this.healthBarFill.width;
+    this.healthBarOrgHeight = this.healthBarFill.width;
+
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
     console.log("completed configurating display")
   }
@@ -303,7 +308,8 @@ export default class level1 extends Phaser.Scene {
   }
 
   hitExit() {
-    this.levelCompleted = true;
+    console.log("hitExitFunction being called");
+    this.player.levelCompleted = true;
   }
 
   shellHitPlayer(shell, player) {
@@ -406,6 +412,11 @@ export default class level1 extends Phaser.Scene {
         loop: false
       });
     }
+  }
+
+  updateHealthBar(){
+    this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+    console.log("Update player health bar fill");
   }
 
 }
