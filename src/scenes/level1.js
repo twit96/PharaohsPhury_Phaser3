@@ -427,7 +427,7 @@ export default class level1 extends Phaser.Scene {
       //destroy enemy sprite, update player stats
       enemy.destro();
       this.cry.play();
-      player.enemyKilled++;
+      player.enemiesKilled++;
     }
   }
 
