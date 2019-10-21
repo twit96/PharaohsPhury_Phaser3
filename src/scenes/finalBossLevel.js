@@ -11,6 +11,7 @@ export default class finalBossLevel extends Phaser.Scene {
   preload() {
     console.log('\n[FINALBOSSLEVEL]');
     console.log('[preload]')
+    this.load.image('bossbackground', './assets/images/bossbackground.jpg');
   }
 
   create() {
@@ -68,7 +69,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     //player physics/input
     this.player.body.setCollideWorldBounds(true);
-    
+
     //tank physics
     this.tank.play("tankMove");
     this.tank.body.setCollideWorldBounds(true);

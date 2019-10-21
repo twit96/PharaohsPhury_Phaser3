@@ -7,6 +7,9 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
+    this.load.image('title', './assets/images/gametitle.png');
+
+
 
     //LOAD LEVEL ASSETS
     //tile maps

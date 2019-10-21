@@ -13,12 +13,27 @@ export default class level1 extends Phaser.Scene {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
+    this.load.image('background1', './assets/images/egyptianbackground.jpg');
+    this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('spacebtn', './assets/images/spacebutton.png');
+    this.load.image('mbtn', './assets/images/mbutton.png');
+    this.load.image('awdbtn', './assets/images/awdbuttons.png');
   }
 
   create() {
     console.log('[create]');
-    // background images
+    // background image
     this.add.image(2240,384,'background1');
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(900,400, 'bubble').setScale(.4,.4);
+    this.add.image(550,440, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
+    this.add.image(900,420, 'mbtn').setScale(.3,.3);
+    this.add.image(550,460, 'spacebtn').setScale(.3,.3);
+    this.add.text(125,570, "Left   Right");
+    this.add.text(162, 475, "Jump");
+    this.add.text(525, 480, "Melee");
+    this.add.text(875, 440, "Shoot");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
