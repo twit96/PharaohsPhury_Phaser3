@@ -22,7 +22,14 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.gameOver = false;
     this.levelCompleted = false;
 
-    this.cursors = this.scene.input.keyboard.createCursorKeys();
+    //this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.cursors = this.scene.input.keyboard.addKeys({
+      up:Phaser.Input.Keyboard.KeyCodes.W,
+      left:Phaser.Input.Keyboard.KeyCodes.A,
+      right:Phaser.Input.Keyboard.KeyCodes.D,
+      space:Phaser.Input.Keyboard.KeyCodes.SPACE,
+      m:Phaser.Input.Keyboard.KeyCodes.M
+    });
 
     //long range attacks
     this.beams = this.scene.physics.add.group({
@@ -44,7 +51,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.canAttack = true;
     this.isAttacking = false;
     var x = this.x;
-    var y = this.y
+    var y = this.y;
   }
 
   updateHealth(damage) {
@@ -64,6 +71,10 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //update player lives if needed
     if (this.health <= 0) {
       this.tint = 0x000000;
+
+      this.x = this.scene.spawnX;
+      this.y = this.scene.spawnY;
+
       this.lives -= 1;
       console.log('player lives: ' + this.lives);
       this.health = 100;
@@ -87,96 +98,77 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
   move() {
     //movement
-    if (this.scene.cursors.left.isDown) {
+    if (this.cursors.left.isDown) {
       this.flipX = true;
       this.body.setVelocityX(-160);
-      if (this.scene.scene.key == "level1"){
-        this.anims.play("mummyWalkAnim", true);
-      } else if (this.scene.scene.key == "level2"){
-        this.anims.play("mummyCaneWalkAnim", true);
-      } else if (this.scene.scene.key == "level3"){
-        this.anims.play("pharoahCaneWalkAnim", true);
+      if (this.canAttack) {
+        //animations only play while player is not attacking
+        //animation dependent on level
+        if (this.scene.scene.key == "level1"){
+          this.anims.play("mummyWalkAnim", true);
+        } else if (this.scene.scene.key == "level2"){
+          this.anims.play("mummyCaneWalkAnim", true);
+        } else {
+          this.anims.play("pharoahCaneWalkAnim", true);
+        }
       }
       this.beamAngle = Phaser.ANGLE_LEFT;
       this.beamSpeed = -1000;
 
-    } else if (this.scene.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown) {
       this.flipX = false;
       this.body.setVelocityX(160);
-      if (this.scene.scene.key == "level1"){
-        this.anims.play("mummyWalkAnim", true);
-      } else if (this.scene.scene.key == "level2"){
-        this.anims.play("mummyCaneWalkAnim", true);
-      } else if (this.scene.scene.key == "level3"){
-        this.anims.play("pharoahCaneWalkAnim", true);
-      }
 
+      if (this.canAttack) {
+        //animations only play while player is not attacking
+        //animations dependent on level
+        if (this.scene.scene.key == "level1"){
+          this.anims.play("mummyWalkAnim", true);
+        } else if (this.scene.scene.key == "level2"){
+          this.anims.play("mummyCaneWalkAnim", true);
+        } else if (this.scene.scene.key == "level3"){
+          this.anims.play("pharoahCaneWalkAnim", true);
+        }
+      }
       this.beamAngle = Phaser.ANGLE_RIGHT;
       this.beamSpeed = 1000;
+
     //idle
   } else if (this.canAttack) {
       this.body.setVelocityX(0);
-      if (this.scene.scene.key == "level1"){
-        this.anims.play("mummyIdleAnim", true);
-      } else if (this.scene.scene.key == "level2"){
-        this.anims.play("mummyCaneIdleAnim", true);
-      } else if (this.scene.scene.key == "level3"){
-        this.anims.play("pharoahCaneIdleAnim", true);
+      if (this.canAttack) {
+        //animations only play while player is not attacking
+        if (this.scene.scene.key == "level1"){
+          this.anims.play("mummyIdleAnim", true);
+        } else if (this.scene.scene.key == "level2"){
+          this.anims.play("mummyCaneIdleAnim", true);
+        } else {
+          this.anims.play("pharoahCaneIdleAnim", true);
+        }
       }
     }
 
     //jumping
-    if (this.scene.cursors.up.isDown && this.body.onFloor())  {
+    if (this.cursors.up.isDown && this.body.onFloor())  {
       //only jumps if sprite body is on ground
       this.body.setVelocityY(-330);
     }
 
     //short range attacks
-    if (this.scene.cursors.shift.isDown) {
+    if (this.cursors.space.isDown) {
       this.shortRangeAttack();
     }
 
     //long range attacks
-    if (this.scene.cursors.space.isDown && this.canAttack && this.scene.scene.key == "level3") {
-      console.log("shotA")
+    if (this.cursors.m.isDown && this.canAttack && this.scene.scene.key == "level3") {
+      //this.anims.play("mummyRangeCaneAnim", true);
       this.anims.play("pharoahRangeCaneAnim");
-      console.log("shotB")
       this.shoot();
-
-
-      }
-
-
-
-      // this.scene.time.addEvent({
-      //   delay: 10000000,
-      //   callback: this.shoot(),
-      //   callbackScope: this,
-      //   loop: false
-      // });
-
-
-
+    }
   }
 
   shortRangeAttack() {
-<<<<<<< HEAD
-    /*
-    function to define behavior of player using melee (short-range) attacks
-    */
-    console.log('[mummy.shortRangeAttack]');
-    this.scene.meleeSound.play({volume: 2,rate:1.1});
-
-    //temporarily disable more attacks
-    this.canAttack = false;
-    this.isAttacking = true;
-
-    //generate a cane attack (or replace mummy sprite with attack sprite)
-    this.caneAttack = this.scene.physics.add.sprite('mummyCane');
-    this.body.setSize(64, 64, 50, 50);
-=======
-    if (this.scene.scene.key == "level2" || this.scene.scene.key == "level3")
-    {
+    if (this.scene.scene.key == "level2" || this.scene.scene.key == "level3") {
       /*
       function to define behavior of player using melee (short-range) attacks
       */
@@ -195,7 +187,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       } else if (this.scene.scene.key == "level3"){
         this.anims.play("pharoahCaneAnim", true);
       }
->>>>>>> Grey's_Testing
 
       //attack audio
 

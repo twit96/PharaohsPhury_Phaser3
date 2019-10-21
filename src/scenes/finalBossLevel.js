@@ -68,8 +68,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
     //player physics/input
     this.player.body.setCollideWorldBounds(true);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
+    
     //tank physics
     this.tank.play("tankMove");
     this.tank.body.setCollideWorldBounds(true);
