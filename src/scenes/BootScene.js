@@ -10,7 +10,6 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('title', './assets/images/gametitle.png');
 
 
-
     //LOAD LEVEL ASSETS
     //tile maps
     this.load.image("incaBackTiles", "../assets/tilesets/inca_back.png");

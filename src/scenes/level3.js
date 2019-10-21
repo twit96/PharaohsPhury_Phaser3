@@ -327,59 +327,90 @@ export default class level3 extends Phaser.Scene {
     this.pickupSound.play();
   }
 
-  enemyHit﻿(enemy, beam){
-
-    //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
-
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-      var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
-    }
-
-    //destroy enemy, update player stats
-    enemy.destro();
-    this.cry.play();
-    this.player.enemyKilled++;
-    console.log("Now killed count is:" + this.player.enemyKilled);
-
-    this.spawnDiamond(enemy.x, enemy.y);
-
-  }
-
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy.
     Player loses a life if not attacking, and enemy is always destroyed.
     */
+    console.log('[playerRanIntoEnemy]');
 
-    //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+    var enemyDied = false;
 
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-      var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
-    }
-
-    //player takes damage if not attacking when collision occurs
+    //HANDLE COLLISION IF PLAYER IS NOT ATTACKING
     if (player.isAttacking == false) {
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN FOR NOW
+      console.log('player was not attacking');
+
+      //enemy briefly disabled
+      enemy.stun();
+
+      //variables to adjust player x away from enemy
+      var enemyHalfWidth = enemy.width / 2;
+      var enemyRightX = enemy.x + enemyHalfWidth;
+      var enemyLeftX = enemy.x - enemyHalfWidth;
+
+      //variables to adjust player y away from enemy
+      var playerHalfHeight = this.player.height / 2;
+      var enemyHalfHeight = enemy.height / 2;
+      var enemyBottomY = enemy.y + enemyHalfHeight;
+
+      if (this.player.body.touching.down) {
+        //collision on top or bottom of enemy
+        enemyDied = true;
+
+        this.player.body.setVelocityY(-330);
+
+      } else if (this.player.body.touching.right) {
+        //collision on left side of enemy
+        this.player.x = enemyLeftX - this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+
+      } else if (this.player.body.touching.left) {
+        //collision on right side of enemy
+        this.player.x = enemyRightX + this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+      }
+
+      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
+
+    //HANDLE COLLISION IF PLAYER IS ATTACKING
+    } else {
+      console.log('player was attacking');
+
+      //enemy dies
+      enemyDied = true;
     }
 
-    //destroy enemy, update player stats
-    enemy.destro();
-    this.cry.play();
-    this.enemyKilled++;
+    //HANDLE ENEMY DEATH
+    if (enemyDied == true) {
+      console.log('enemy died');
+
+      //generate random number of diamonds to burst from dead enemy
+      var randAmount = Math.floor(Math.random() * Math.floor(10));
+      var x;
+      for (x = 0; x < randAmount; x++) {
+        //within 75 pixels left or right from the enemy
+        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+        //up to 75 pixels above the enemy
+        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+        //spawn diamond
+        var diamondX = enemy.x + randomShiftX;
+        var diamondY = enemy.y - randomShiftY;
+        this.spawnDiamond(diamondX, diamondY);
+      }
+
+      //destroy enemy sprite, update player stats
+      enemy.destro();
+      this.cry.play();
+      player.enemiesKilled++;
+    }
   }
 
   spawnDiamond(diamondX, diamondY){
