@@ -161,12 +161,12 @@ export default class finalBossLevel extends Phaser.Scene {
       this.hearts.killAndHide(this.hearts.getFirstAlive());
       this.scene.resume();
       // not working delay below
-      this.time.addEvent({
-          delay: 1,
-          callback: ()=>{
-            this.scene.resume();
-          }
-      })
+      /*this.time.addEvent({
+        delay: 50,
+        callback: this.scene.resume,
+        callbackScope: this,
+        loop: false
+      });*/
     }
 
     //detect if tank died
@@ -300,7 +300,6 @@ export default class finalBossLevel extends Phaser.Scene {
       loop: false
     });
   }
-
 
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);

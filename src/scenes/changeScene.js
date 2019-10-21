@@ -6,6 +6,8 @@ function addSceneEventListeners (that) {
         function () {
           console.log('\n[CHANGESCENE CALLED]');
           that.backgroundMusic.stop();
+          //that.scene.sleep('level1');
+          //that.scene.switch('levelPicker');
           that.scene.start('levelPicker');
         }
     );
