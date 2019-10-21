@@ -8,6 +8,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
     this.body.setSize(40, 64, 50, 50);
 
     //variables
+    this.isActive = true;
     this.moveCounter = 0;
     this.speed = 1.0;
     this.destroyed = false;
@@ -25,7 +26,28 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
 
   update() {
     if (this.destroyed) return;
-    this.move();
+    if (this.isActive) {
+      this.move();
+    } else {
+      this.body.setVelocityX(0);
+    }
+
+  }
+
+  stun() {
+    console.log('[soldier.stun]');
+    this.isActive = false;
+
+    this.scene.time.addEvent({
+      delay: 1000,
+      callback: this.reset,
+      callbackScope: this,
+      loop: false
+    });
+  }
+  reset() {
+    console.log('[soldier.reset]');
+    this.isActive = true;
   }
 
   move() {
