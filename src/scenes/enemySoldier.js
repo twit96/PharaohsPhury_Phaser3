@@ -64,7 +64,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
       this.setFlipX(false);
       this.anims.play("soldierAnim", true);
 
-    } else if (this.moveCounter > 100 && this.moveCounter <= 170 ) {  
+    } else if (this.moveCounter > 100 && this.moveCounter <= 170 ) {
         this.anims.play("soldierShotAnim", true);
         this.body.setVelocityX(0);
         this.shoot();
@@ -124,7 +124,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
    this.scene.events.off("shutdown", this.destroy, this);
    this.scene.events.off("destroy", this.destroy, this);
 
-   this.destroy();
+   this.kill();
  }
 
 }

@@ -30,6 +30,9 @@ export default class level1 extends Phaser.Scene {
     this.add.text(125,570, "Left   Right");
     this.add.text(162, 475, "Jump");
 
+    this.add.image(685, 510, 'bubble').setScale(.4, .4);
+    this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
+
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
