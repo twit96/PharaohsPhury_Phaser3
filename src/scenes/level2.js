@@ -13,7 +13,9 @@ export default class level2 extends Phaser.Scene {
     console.log('\n[LEVEL2]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
-    this.load.image('background1', './assets/images/egyptianbackground.jpg');
+
+    this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('spacebtn', './assets/images/spacebutton.png');
   }
 
   create() {
@@ -22,8 +24,13 @@ export default class level2 extends Phaser.Scene {
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
-    // background image
+    // background
     this.add.image(2240,384,'background1');
+
+    //tutorial
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'spacebtn').setScale(.3,.3);
+    this.add.text(155, 480, "Melee");
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
