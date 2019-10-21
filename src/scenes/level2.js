@@ -7,30 +7,16 @@ export default class level1 extends Phaser.Scene {
   }
 
   preload() {
-    console.log('\n[LEVEL1]');
+    console.log('\n[LEVEL22222222]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
-    this.load.image('bubble', './assets/images/opaquebubble.png');
-    this.load.image('spacebtn', './assets/images/spacebutton.png');
-    this.load.image('mbtn', './assets/images/mbutton.png');
-    this.load.image('awdbtn', './assets/images/awdbuttons.png');
   }
 
   create() {
     console.log('[create]');
     // background image
     this.add.image(2240,384,'background1');
-    this.add.image(180,530, 'bubble').setScale(.4,.4);
-    this.add.image(900,400, 'bubble').setScale(.4,.4);
-    this.add.image(550,440, 'bubble').setScale(.4,.4);
-    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
-    this.add.image(900,420, 'mbtn').setScale(.3,.3);
-    this.add.image(550,460, 'spacebtn').setScale(.3,.3);
-    this.add.text(125,570, "Left   Right");
-    this.add.text(162, 475, "Jump");
-    this.add.text(525, 480, "Melee");
-    this.add.text(875, 440, "Shoot");
     // Audio
     this.backgroundMusic = this.sound.add("creepy");
     this.backgroundMusic.play({loop:true});
@@ -101,7 +87,7 @@ export default class level1 extends Phaser.Scene {
       this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'archeologist'));
     }
     for (s = 0; s < this.enemySCount; s++) {
-      this.enemies.add(this.physics.ad8d.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier'));
+      this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.weight),Phaser.Math.Between(0, this.height),'soldier'));
     }
 
     // player
