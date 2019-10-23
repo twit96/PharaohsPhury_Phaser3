@@ -1,5 +1,5 @@
 /*global Phaser*/
-export default class EnemySoldier1 extends Phaser.GameObjects.Sprite {
+export default class EnemySoldier extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
@@ -28,7 +28,7 @@ export default class EnemySoldier1 extends Phaser.GameObjects.Sprite {
     * function to delay this enemy's movement function when the player runs
     * into it, allowing the player time to run away.
     */
-    console.log('[soldier.stun]');
+    console.log('[enemySoldier.stun]');
 
     this.isActive = false;
     this.scene.time.addEvent({
@@ -42,13 +42,13 @@ export default class EnemySoldier1 extends Phaser.GameObjects.Sprite {
     /**
     * function to start this enemy's movement function again after a delay
     */
-    console.log('[soldier.reset]');
+    console.log('[enemySoldier.reset]');
     this.isActive = true;
   }
 
   updateHealth(damage) {
     /** To subtract damage from this enemy's health when player attacks it. */
-    console.log('[soldier.updateHealth]');
+    console.log('[enemySoldier.updateHealth]');
 
     this.health = this.health - damage;
 
@@ -130,7 +130,7 @@ export default class EnemySoldier1 extends Phaser.GameObjects.Sprite {
     collides = true (i.e. the bullet hit a wall tile)
     */
     if (worldLayer.collides) {
-      console.log('[bulletHitWall]');
+      console.log('[enemySoldier.bulletHitWall]');
       bullet.disableBody(true, true);
     }
   }

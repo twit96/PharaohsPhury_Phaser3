@@ -27,13 +27,13 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
   }
 
   reset() {
-    console.log('[archeologist.reset]');
+    console.log('[enemyArch.reset]');
     this.isActive = true;
   }
 
   updateHealth(damage) {
     /** To subtract damage from this enemy's health when player attacks it. */
-    console.log('[soldier.updateHealth]');
+    console.log('[enemyArch.updateHealth]');
 
     this.health = this.health - damage;
 

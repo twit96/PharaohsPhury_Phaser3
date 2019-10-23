@@ -69,6 +69,8 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     /*
     function to define behavior of tank shooting at the player
     */
+    console.log('[tank.shoot]');
+
     var betweenPoints = Phaser.Math.Angle.BetweenPoints;
     var angle = betweenPoints(this, this.scene.player);
     var velocityFromRotation = this.scene.physics.velocityFromRotation;
@@ -94,7 +96,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     collides = true (i.e. the shell hit a wall tile)
     */
     if (worldLayer.collides) {
-      console.log('[shellHitWall]');
+      console.log('[tank.shellHitWall]');
       shell.disableBody(true, true);
       this.bomb.play();
     }
