@@ -51,8 +51,6 @@ export default class level2 extends Phaser.Scene {
     this.levelSettingInfo = this.cache.json.get('levelSetting');
     this.enemyACount = this.levelSettingInfo.enemyA[this.levelName-1];
     this.enemySCount = this.levelSettingInfo.enemyS[this.levelName-1];
-    console.log("populating " + this.enemyALocation + " enemyA");
-    console.log("populating " + this.enemySLocation + " enemyS");
     this.enemyALocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyA;
     this.enemySLocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyS;
 
@@ -187,7 +185,6 @@ export default class level2 extends Phaser.Scene {
     );
 
     console.log('configured sprites and physics');
-    console.log('completed create function');
 
     // Create timer
     this.startTime = new Date();
@@ -216,7 +213,8 @@ export default class level2 extends Phaser.Scene {
 
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
-    console.log("completed configurating display")
+    console.log("configured on-screen display");
+    console.log('completed create function');
   }
 
   update() {
@@ -236,7 +234,7 @@ export default class level2 extends Phaser.Scene {
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
-      console.log('[LEVEL1 ENDING]');
+      console.log('[LEVEL ENDING]');
 
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
@@ -287,6 +285,10 @@ export default class level2 extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
+    //enemy movement
+    this.enemy1.move();
+    this.enemy2.move();
+
     //configure overlaps for active enemy bullets
     this.enemy2.bullets.children.each(
       function (b) {
@@ -315,7 +317,11 @@ export default class level2 extends Phaser.Scene {
   }
 
   hitExit() {
-    this.levelCompleted = true;
+    /**
+    function to update levelCompleted to true when player reaches the exit
+    */
+    console.log("[level.hitExit]");
+    this.player.levelCompleted = true;
   }
 
   shellHitPlayer(shell, player) {
@@ -323,7 +329,7 @@ export default class level2 extends Phaser.Scene {
     function to handle overlap between player and tank shell
     (i.e. tank shell hit player)
     */
-    console.log('[shellHitPlayer]');
+    console.log('[level.shellHitPlayer]');
 
 
     //disable shell
@@ -336,7 +342,7 @@ export default class level2 extends Phaser.Scene {
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
-    console.log("Now Diamonds count is:" + this.player.diamondsCollected);
+    console.log("diamonds collected:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
 
@@ -345,7 +351,7 @@ export default class level2 extends Phaser.Scene {
     function to handle the case of player colliding with an enemy.
     Player loses a life if not attacking, and enemy is always destroyed.
     */
-    console.log('[playerRanIntoEnemy]');
+    console.log('[level.playerRanIntoEnemy]');
 
     var enemyDied = false;
 
@@ -420,7 +426,7 @@ export default class level2 extends Phaser.Scene {
       }
 
       //destroy enemy sprite, update player stats
-      enemy.destro();
+      enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
       this.cry.play();
       player.enemiesKilled++;
     }

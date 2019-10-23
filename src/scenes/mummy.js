@@ -43,9 +43,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to restore sprite defaults after a change in tint,
     canAttack, or being disabled after taking damage.
     */
-    this.anims.play("mummyCaneIdleAnim", true);
-    console.log('[resetPlayer]');
+    console.log('[mummy.reset]');
 
+    this.anims.play("mummyCaneIdleAnim", true);
     this.body.setSize(40, 64, 50, 50);
     this.setTint();
     this.canAttack = true;
@@ -254,7 +254,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //test each worldLayer tile outside of player for collides = true
     if (worldLayer.collides && !beamHittingPlayer) {
-      console.log('[beamHitWall]');
+      console.log('[mummy.beamHitWall]');
       beam.disableBody(true, true);
       this.shootBeam.play();
     }
@@ -287,8 +287,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     beam.disableBody(true, true);
 
     //update player stats
-    enemy.destro();
-    this.spawnDiamond(enemy.x,enemy.y)
+    enemy.updateHealth(20);
   }
 
 }

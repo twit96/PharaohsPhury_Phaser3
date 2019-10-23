@@ -51,11 +51,8 @@ export default class level3 extends Phaser.Scene {
     this.levelSettingInfo = this.cache.json.get('levelSetting');
     this.enemyACount = this.levelSettingInfo.enemyA[this.levelName-1];
     this.enemySCount = this.levelSettingInfo.enemyS[this.levelName-1];
-    console.log("populating " + this.enemyALocation + " enemyA");
-    console.log("populating " + this.enemySLocation + " enemyS");
     this.enemyALocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyA;
     this.enemySLocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyS;
-
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
@@ -118,10 +115,7 @@ export default class level3 extends Phaser.Scene {
       key: "soldier",
       x: 600,
       y: 600,
-      //worldLayer: worldLayer
     });
-
-    //const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -149,6 +143,7 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemy1, worldLayer);
     this.physics.add.collider(this.enemy2, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
+
 
     this.physics.add.overlap(
       this.player,
@@ -187,7 +182,6 @@ export default class level3 extends Phaser.Scene {
     );
 
     console.log('configured sprites and physics');
-    console.log('completed create function');
 
     // Create timer
     this.startTime = new Date();
@@ -202,6 +196,7 @@ export default class level3 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(600,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(600,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(600,80, "Score: "+ this.score).setScrollFactor(0,0);
+
     // display heart for life
     var h;
     this.hearts = this.add.group();
@@ -215,7 +210,8 @@ export default class level3 extends Phaser.Scene {
     this.healthBarOrgHeight = this.healthBarFill.width;
     //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
-    console.log("completed configurating display")
+    console.log("configured on-screen display");
+    console.log('completed create function');
   }
 
   update() {
@@ -236,7 +232,7 @@ export default class level3 extends Phaser.Scene {
     //check for and handle gameOver or levelCompleted
     if (this.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
-      console.log('[LEVEL1 ENDING]');
+      console.log('[LEVEL ENDING]');
 
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
@@ -287,6 +283,10 @@ export default class level3 extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
+    //enemy movement
+    this.enemy1.move();
+    this.enemy2.move();
+
     //configure overlaps for active enemy bullets
     this.enemy2.bullets.children.each(
       function (b) {
@@ -315,7 +315,11 @@ export default class level3 extends Phaser.Scene {
   }
 
   hitExit() {
-    this.levelCompleted = true;
+    /**
+    function to update levelCompleted to true when player reaches the exit
+    */
+    console.log("[level.hitExit]");
+    this.player.levelCompleted = true;
   }
 
   shellHitPlayer(shell, player) {
@@ -323,7 +327,7 @@ export default class level3 extends Phaser.Scene {
     function to handle overlap between player and tank shell
     (i.e. tank shell hit player)
     */
-    console.log('[shellHitPlayer]');
+    console.log('[level.shellHitPlayer]');
 
 
     //disable shell
@@ -336,7 +340,7 @@ export default class level3 extends Phaser.Scene {
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
-    console.log("Now Diamonds count is:" + this.player.diamondsCollected);
+    console.log("diamonds collected:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
 
@@ -345,7 +349,7 @@ export default class level3 extends Phaser.Scene {
     function to handle the case of player colliding with an enemy.
     Player loses a life if not attacking, and enemy is always destroyed.
     */
-    console.log('[playerRanIntoEnemy]');
+    console.log('[level.playerRanIntoEnemy]');
 
     var enemyDied = false;
 
@@ -353,8 +357,11 @@ export default class level3 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
-      //enemy briefly disabled
-      enemy.stun();
+      //disable enemy, update player health
+      enemy.isActive = false;
+      player.updateHealth(50);  //75 ARBITRARILY CHOSEN
+      this.player.setTint(0xff0000);
+      this.player.setVelocity = 0;
 
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
@@ -384,22 +391,25 @@ export default class level3 extends Phaser.Scene {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
-
-        //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
+      //disabled enemy set to respawn with a longer delay than player sprite
+      this.time.addEvent({
+        delay: 2500,
+        callback: enemy.reset,
+        callbackScope: enemy,
+        loop: false
+      });
+
     //HANDLE COLLISION IF PLAYER IS ATTACKING
     } else {
       console.log('player was attacking');
-
-      //enemy dies
       enemyDied = true;
     }
 
-    //HANDLE ENEMY DEATH
+    //HANDLE ENEMY DEATH IF NEEDED
     if (enemyDied == true) {
       console.log('enemy died');
 
@@ -419,8 +429,8 @@ export default class level3 extends Phaser.Scene {
         this.spawnDiamond(diamondX, diamondY);
       }
 
-      //destroy enemy sprite, update player stats
-      enemy.destro();
+      //"kill" enemy, update player stats
+      enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
       this.cry.play();
       player.enemiesKilled++;
     }
