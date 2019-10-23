@@ -221,7 +221,7 @@ export default class level2 extends Phaser.Scene {
     //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
     //check for and handle gameOver or levelCompleted
-    if (this.gameOver || this.levelCompleted) {
+    if (this.player.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
 
