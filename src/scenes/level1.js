@@ -52,13 +52,14 @@ export default class level1 extends Phaser.Scene {
     this.levelName = 1;
 
     //CREATE LEVEL
-    // level Data parse from json
+    // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACount = this.levelSettingInfo.enemyA[this.levelName-1];
-    this.enemySCount = this.levelSettingInfo.enemyS[this.levelName-1];
-    this.enemyALocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyA;
-    this.enemySLocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyS;
-
+    this.enemyACor = this.levelSettingInfo.level1.enemyA;
+    this.enemySCor = this.levelSettingInfo.level1.enemyS;
+    this.gemCor = this.levelSettingInfo.level1.gem;
+    //console.log("populating enemyA at " + this.enemyACor);
+    //console.log("populating enemyS at " + this.enemySCor);
+    //console.log("populating gem at " + this.gemCor);
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
@@ -468,7 +469,6 @@ export default class level1 extends Phaser.Scene {
 
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
-    console.log("[level.updateHealthBar]");
   }
 
 }
