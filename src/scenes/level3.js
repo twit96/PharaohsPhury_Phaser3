@@ -118,10 +118,7 @@ export default class level3 extends Phaser.Scene {
       key: "soldier",
       x: 600,
       y: 600,
-      //worldLayer: worldLayer
     });
-
-    //const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -149,6 +146,7 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemy1, worldLayer);
     this.physics.add.collider(this.enemy2, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
+
 
     this.physics.add.overlap(
       this.player,
@@ -202,7 +200,6 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
     this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
     this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
-    //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
     console.log("completed configurating display")
   }
@@ -274,6 +271,10 @@ export default class level3 extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
+    //enemy movement
+    this.enemy1.move();
+    this.enemy2.move();
+
     //configure overlaps for active enemy bullets
     this.enemy2.bullets.children.each(
       function (b) {
@@ -332,85 +333,29 @@ export default class level3 extends Phaser.Scene {
     function to handle the case of player colliding with an enemy.
     Player loses a life if not attacking, and enemy is always destroyed.
     */
-    console.log('[playerRanIntoEnemy]');
 
-    var enemyDied = false;
+    //generate random number of diamonds to burst from dead enemy
+    var randAmount = Math.floor(Math.random() * Math.floor(10));
+    var x;
+    for (x = 0; x < randAmount; x++) {
+      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
 
-    //HANDLE COLLISION IF PLAYER IS NOT ATTACKING
+      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+      var diamondX = enemy.x + randomShiftX;
+      var diamondY = enemy.y - randomShiftY;
+      this.spawnDiamond(diamondX, diamondY);
+    }
+
+    //player takes damage if not attacking when collision occurs
     if (player.isAttacking == false) {
-      console.log('player was not attacking');
-
-      //enemy briefly disabled
-      enemy.stun();
-
-      //variables to adjust player x away from enemy
-      var enemyHalfWidth = enemy.width / 2;
-      var enemyRightX = enemy.x + enemyHalfWidth;
-      var enemyLeftX = enemy.x - enemyHalfWidth;
-
-      //variables to adjust player y away from enemy
-      var playerHalfHeight = this.player.height / 2;
-      var enemyHalfHeight = enemy.height / 2;
-      var enemyBottomY = enemy.y + enemyHalfHeight;
-
-      if (this.player.body.touching.down) {
-        //collision on top or bottom of enemy
-        enemyDied = true;
-
-        this.player.body.setVelocityY(-330);
-
-      } else if (this.player.body.touching.right) {
-        //collision on left side of enemy
-        this.player.x = enemyLeftX - this.player.width;
-        this.player.y = enemyBottomY - playerHalfHeight;
-
-        //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
-
-      } else if (this.player.body.touching.left) {
-        //collision on right side of enemy
-        this.player.x = enemyRightX + this.player.width;
-        this.player.y = enemyBottomY - playerHalfHeight;
-
-        //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
-      }
-
-      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
-
-    //HANDLE COLLISION IF PLAYER IS ATTACKING
-    } else {
-      console.log('player was attacking');
-
-      //enemy dies
-      enemyDied = true;
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN FOR NOW
     }
 
-    //HANDLE ENEMY DEATH
-    if (enemyDied == true) {
-      console.log('enemy died');
-
-      //generate random number of diamonds to burst from dead enemy
-      var randAmount = Math.floor(Math.random() * Math.floor(10));
-      var x;
-      for (x = 0; x < randAmount; x++) {
-        //within 75 pixels left or right from the enemy
-        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
-
-        //up to 75 pixels above the enemy
-        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-        //spawn diamond
-        var diamondX = enemy.x + randomShiftX;
-        var diamondY = enemy.y - randomShiftY;
-        this.spawnDiamond(diamondX, diamondY);
-      }
-
-      //destroy enemy sprite, update player stats
-      enemy.destro();
-      this.cry.play();
-      player.enemiesKilled++;
-    }
+    //destroy enemy, update player stats
+    enemy.stun();
+    this.cry.play();
+    this.enemyKilled++;
   }
 
   spawnDiamond(diamondX, diamondY){

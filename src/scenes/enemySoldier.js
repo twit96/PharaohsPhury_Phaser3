@@ -1,43 +1,36 @@
-export default class EnemySoldier extends Phaser.GameObjects.Sprite{
+/*global Phaser*/
+export default class EnemySoldier1 extends Phaser.GameObjects.Sprite {
   constructor(config) {
-    super(config.scene, config.x, config.y, config.key, config.worldLayer);
+    super(config.scene, config.x, config.y, config.key);
 
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
-    this.body.setSize(40, 64, 50, 50);
-
     //variables
-    this.isActive = true;
-    this.moveCounter = 0;
-    this.speed = 1.0;
-    this.destroyed = false;
+    this.moveCounter = 0
+    this.health = 25;
 
-    config.scene.events.on("update", this.update, this);
-    config.scene.events.once("shutdown", this.destroy, this);
-    config.scene.events.once("destroy", this.destroy, this);
+    this.speed = 100;
+    this.bulletSpeed = 2000;
+    this.isActive = true;
 
     //soldier bullets
-    this.bullets = config.scene.physics.add.group({
+    this.bullets = this.scene.physics.add.group({
       defaultKey: "bullet",
       allowGravity: false
     });
-  }
-
-  update() {
-    if (this.destroyed) return;
-    if (this.isActive) {
-      this.move();
-    } else {
-      this.body.setVelocityX(0);
-    }
 
   }
 
+  //SOLDIER HELPER FUNCTIONS
   stun() {
+    /**
+    * function to delay this enemy's movement function when the player runs
+    * into it, allowing the player time to run away.
+    */
     console.log('[soldier.stun]');
-    this.isActive = false;
 
+    this.isActive = false;
     this.scene.time.addEvent({
       delay: 1000,
       callback: this.reset,
@@ -46,46 +39,88 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
     });
   }
   reset() {
+    /**
+    * function to start this enemy's movement function again after a delay
+    */
     console.log('[soldier.reset]');
     this.isActive = true;
   }
 
-  move() {
+  updateHealth(damage) {
+    /** To subtract damage from this enemy's health when player attacks it. */
+    console.log('[soldier.updateHealth]');
 
-    this.moveCounter ++;
-    if (this.moveCounter >= 300) {
-      this.moveCounter = 0;
+    this.health = this.health - damage;
+
+    //handle "death" if necessary
+    if (this.health <= 0) {
+      this.isActive = false;
+      this.scene.physics.world.disable(this);
+      this.visible = false;
     }
-
-    //Soldier Movement and Animations
-    if (this.moveCounter <= 100) {
-      this.body.setSize(40, 64, 50, 50);
-      this.body.setVelocityX(this.speed+100);
-      this.setFlipX(false);
-      this.anims.play("soldierAnim", true);
-
-    } else if (this.moveCounter > 100 && this.moveCounter <= 170 ) {
-        this.anims.play("soldierShotAnim", true);
-        this.body.setVelocityX(0);
-        this.shoot();
-        this.body.setSize(40, 64, 100, 100);
-
-    } else if (this.moveCounter >= 170) {
-      this.body.setSize(40, 64, 50, 50);
-      this.body.setVelocityX(-this.speed-100);
-      this.setFlipX(true);
-      this.anims.play("soldierAnim", true);
-    }
-
   }
 
-  shoot () {
+  move() {
+    /** Creates this enemy's behavior loop. Only runs if this.isActive = true */
+
+    if (this.isActive) {
+
+      //UPDATE OR RESET COUNTER
+      this.moveCounter ++;
+      if (this.moveCounter > 300) {
+        this.moveCounter = 0;
+      }
+
+      //HANDLE ANIMATIONS
+      if (this.moveCounter == 0) {
+        //walking animation to the right
+        this.setFlipX(false);
+        this.anims.play("soldierAnim", true);
+
+      } else if (this.moveCounter == 100) {
+        //shooting animation
+        this.anims.play("soldierShotAnim", true);
+
+      } else if (this.moveCounter == 130) {
+        //shoot bullet at exactly 130
+        this.shoot();
+
+      } else if (this.moveCounter == 170) {
+        //change to walking animation in opposite direction
+        this.setFlipX(true);
+        this.anims.play("soldierAnim", true);
+      }
+
+      //HANDLE MOVEMENT
+      if (this.moveCounter <= 100) {
+        //walk to the right
+        this.body.setSize(40, 64, 50, 50);
+        this.body.setVelocityX(this.speed);
+
+      } else if (this.moveCounter > 100 && this.moveCounter < 170 ) {
+        //pause to allow shoot animation
+        this.body.setSize(40, 64, 100, 100);
+        this.body.setVelocityX(0);
+
+      } else if (this.moveCounter >= 170) {
+        //walk to the left
+        this.body.setSize(40, 64, 50, 50);
+        this.body.setVelocityX(-this.speed);
+      }
+    }
+  }
+
+  shoot(player) {
+    /*
+    function to define behavior of enemy shooting at the player
+    */
     var bullet = this.bullets.get();
     bullet.setAngle(180);
     bullet
       .enableBody(true, this.x, this.y, true, true)
       .setVelocity(2000,0)
   }
+
 
   //SOLDIER BULLETS HELPER FUNCTIONS
   bulletHitWall(bullet, worldLayer) {
@@ -114,17 +149,5 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
     //update player stats
     this.player.updateHealth(50);
   }
-
-
- destro() {
-   this.destroyed = true;
-
-   // Event listeners
-   this.scene.events.off("update", this.update, this);
-   this.scene.events.off("shutdown", this.destroy, this);
-   this.scene.events.off("destroy", this.destroy, this);
-
-   this.kill();
- }
 
 }
