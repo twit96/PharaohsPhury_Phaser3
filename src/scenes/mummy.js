@@ -44,13 +44,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     canAttack, or being disabled after taking damage.
     */
     this.anims.play("mummyCaneIdleAnim", true);
-<<<<<<< Updated upstream
     console.log('[resetPlayer]');
 
     this.body.setSize(40, 64, 50, 50);
-=======
-    this.body.setSize(20, 55, 50, 80);
->>>>>>> Stashed changes
     this.setTint();
     this.canAttack = true;
     this.isAttacking = false;
