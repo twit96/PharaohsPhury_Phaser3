@@ -5,15 +5,12 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite{
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
-<<<<<<< Updated upstream
-    this.body.setSize(40, 64, 50, 50);
-=======
     this.body.setSize(20, 55, 50, 80);
 
     //variables
     this.moveCounter = 0
     this.health = 25;
->>>>>>> Stashed changes
+
 
     //variables
     this.isActive = true;
