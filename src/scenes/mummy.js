@@ -163,7 +163,17 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     if (this.cursors.m.isDown && this.canAttack && this.scene.scene.key == "level3") {
       //this.anims.play("mummyRangeCaneAnim", true);
       this.anims.play("pharoahRangeCaneAnim");
-      this.shoot();
+       this.shootCount = 0
+       while (this.shootCount <= 5)  {
+         if (this.shootCount == 4){
+           this.shoot();
+           console.log("shot");
+         }
+         this.shootCount ++
+         console.log(this.shootCount);
+       }
+
+
     }
   }
 
