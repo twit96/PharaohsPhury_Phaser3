@@ -45,7 +45,13 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     */
     console.log('[mummy.reset]');
 
-    this.anims.play("mummyCaneIdleAnim", true);
+    if (this.scene.scene.key == "level1"){
+      this.anims.play("mummyIdleAnim", true);
+    } else if (this.scene.scene.key == "level2"){
+      this.anims.play("mummyCaneIdleAnim", true);
+    } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
+      this.anims.play("pharoahCaneIdleAnim", true);
+    }
     this.body.setSize(40, 64, 50, 50);
     this.setTint();
     this.canAttack = true;
@@ -108,7 +114,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
           this.anims.play("mummyWalkAnim", true);
         } else if (this.scene.scene.key == "level2"){
           this.anims.play("mummyCaneWalkAnim", true);
-        } else {
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
           this.anims.play("pharoahCaneWalkAnim", true);
         }
       }
@@ -126,7 +132,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
           this.anims.play("mummyWalkAnim", true);
         } else if (this.scene.scene.key == "level2"){
           this.anims.play("mummyCaneWalkAnim", true);
-        } else if (this.scene.scene.key == "level3"){
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel"){
           this.anims.play("pharoahCaneWalkAnim", true);
         }
       }
@@ -142,7 +148,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
           this.anims.play("mummyIdleAnim", true);
         } else if (this.scene.scene.key == "level2"){
           this.anims.play("mummyCaneIdleAnim", true);
-        } else {
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
           this.anims.play("pharoahCaneIdleAnim", true);
         }
       }
@@ -160,12 +166,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     }
 
     //long range attacks
-    if (this.cursors.m.isDown && this.canAttack && this.scene.scene.key == "level3") {
+    if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel")) {
       //this.anims.play("mummyRangeCaneAnim", true);
       this.anims.play("pharoahRangeCaneAnim");
        this.shootCount = 0
-       while (this.shootCount <= 5)  {
-         if (this.shootCount == 4){
+       while (this.shootCount <= 500)  {
+         if (this.shootCount == 499){
            this.shoot();
            console.log("shot");
          }
@@ -194,7 +200,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
        if (this.scene.scene.key == "level2"){
         this.anims.play("mummyCaneAnim", true);
-      } else if (this.scene.scene.key == "level3"){
+      } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel"){
         this.anims.play("pharoahCaneAnim", true);
       }
 
@@ -228,7 +234,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     beam
       .enableBody(true, this.x, this.y, true, true)
       .setVelocity(this.beamSpeed, 0)
-      .setScale(2.5);
+      .setScale(2.5)
+      .body.setSize(25, 8, 0, 0)
+      .setOffset(12,20);
 
     // AUDIO
     this.scene.shootBeam.play({volume: 1});
