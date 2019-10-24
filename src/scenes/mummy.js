@@ -6,7 +6,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
-    this.body.setSize(40, 64, 50, 50);
+    this.body.setSize(20, 55, 50, 80);
     this.body.setBounce(0.2);
 
     //variables
@@ -46,7 +46,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     console.log('[mummy.reset]');
 
     this.anims.play("mummyCaneIdleAnim", true);
-    this.body.setSize(40, 64, 50, 50);
+    this.body.setSize(20, 55, 50, 80);
     this.setTint();
     this.canAttack = true;
     this.isAttacking = false;

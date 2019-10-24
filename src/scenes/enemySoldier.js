@@ -6,6 +6,8 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
+    this.body.setSize(20,55,50,80);
+
     //variables
     this.moveCounter = 0
     this.health = 25;
