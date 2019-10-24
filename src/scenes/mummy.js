@@ -46,7 +46,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.anims.play("mummyCaneIdleAnim", true);
     console.log('[resetPlayer]');
 
-    this.body.setSize(40, 64, 50, 50);
+    this.body.setSize(20, 55, 50, 80);
     this.setTint();
     this.canAttack = true;
     this.isAttacking = false;
