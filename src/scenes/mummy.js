@@ -169,15 +169,18 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel")) {
       //this.anims.play("mummyRangeCaneAnim", true);
-      this.anims.play("pharoahRangeCaneAnim")
-      this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
-                     console.log('Piece clicked');
-                     }, this);
+      console.log('shoot');
+      this.canAttack = false;
+      this.anims.play("pharoahRangeCaneAnim");
+
+      //this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
+      //               console.log('Piece clicked');
+      //               }, this);
       // console.log(this.anims.currentAnim);
       // if (this.anims.currentAnim.frames.index == 4);
       // {
       //   console.log(this.anims.currentAnim.frames.index + " is this frame")
-      //   this.shoot();
+      this.shoot();
       // }
 
     }
