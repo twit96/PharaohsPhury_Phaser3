@@ -233,6 +233,7 @@ export default class level3 extends Phaser.Scene {
 
     //player motion
     this.player.move();
+    
 
     //check if player on map
     this.playerFellOffMap(this.player);

@@ -14,7 +14,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.health = 100;
     this.canAttack = true;
     this.isAttacking = false;
-    this.beamSpeed = 1000;
+    this.beamSpeed = 750;
     this.beamAngle;
 
     this.diamondsCollected = 0;
@@ -119,7 +119,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
         }
       }
       this.beamAngle = Phaser.ANGLE_LEFT;
-      this.beamSpeed = -1000;
+      //this.beam.flipX;
+      this.beamSpeed = -750;
 
     } else if (this.cursors.right.isDown) {
       this.flipX = false;
@@ -137,7 +138,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
         }
       }
       this.beamAngle = Phaser.ANGLE_RIGHT;
-      this.beamSpeed = 1000;
+      this.beamSpeed = 750;
 
     //idle
   } else if (this.canAttack) {
@@ -168,17 +169,16 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel")) {
       //this.anims.play("mummyRangeCaneAnim", true);
-      this.anims.play("pharoahRangeCaneAnim");
-       this.shootCount = 0
-       while (this.shootCount <= 500)  {
-         if (this.shootCount == 499){
-           this.shoot();
-           console.log("shot");
-         }
-         this.shootCount ++
-         console.log(this.shootCount);
-       }
-
+      this.anims.play("pharoahRangeCaneAnim")
+      this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
+                     console.log('Piece clicked');
+                     }, this);
+      // console.log(this.anims.currentAnim);
+      // if (this.anims.currentAnim.frames.index == 4);
+      // {
+      //   console.log(this.anims.currentAnim.frames.index + " is this frame")
+      //   this.shoot();
+      // }
 
     }
   }
