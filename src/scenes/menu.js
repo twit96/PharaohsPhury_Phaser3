@@ -59,10 +59,12 @@ export default class menu extends Phaser.Scene {
     //handle player interaction
     newGameText.on("pointerover", function() {
       sound.play('low');
-      this.x += 50;
+      this.setScale(1.2);
+      this.x -= 25;
     });
     newGameText.on("pointerout", function () {
-      this.x -= 50;
+      this.setScale(1.0);
+      this.x += 25;
     });
     newGameText.on("pointerup", function () {
       sound.play('high');

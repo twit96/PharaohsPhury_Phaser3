@@ -9,7 +9,7 @@ function addSceneEventListeners (that) {
           //that.scene.sleep('level1');
           //that.scene.switch('levelPicker');
           that.scene.stop();
-          that.scene.start('levelPicker');
+          that.scene.switch('levelPicker');
         }
     );
 }

@@ -13,6 +13,9 @@ export default class level3 extends Phaser.Scene {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
+
+    this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('mbtn', './assets/images/mbutton.png');
   }
 
   create() {
@@ -20,6 +23,14 @@ export default class level3 extends Phaser.Scene {
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
+
+    //background image
+    this.add.image(2240,384,'background1');
+
+    //tutorial
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'mbtn').setScale(.3,.3);
+    this.add.text(155, 480, "Shoot");
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
@@ -36,15 +47,14 @@ export default class level3 extends Phaser.Scene {
     this.levelName = 1;
 
     //CREATE LEVEL
-    // level Data parse from json
+    // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACount = this.levelSettingInfo.enemyA[this.levelName-1];
-    this.enemySCount = this.levelSettingInfo.enemyS[this.levelName-1];
-    console.log("populating " + this.enemyALocation + " enemyA");
-    console.log("populating " + this.enemySLocation + " enemyS");
-    this.enemyALocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyA;
-    this.enemySLocation = this.levelSettingInfo.coordinates[this.levelName-1].enemyS;
-
+    this.enemyACor = this.levelSettingInfo.level1.enemyA;
+    this.enemySCor = this.levelSettingInfo.level1.enemyS;
+    this.gemCor = this.levelSettingInfo.level1.gem;
+    //console.log("populating enemyA at " + this.enemyACor);
+    //console.log("populating enemyS at " + this.enemySCor);
+    //console.log("populating gem at " + this.gemCor);
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
@@ -107,10 +117,7 @@ export default class level3 extends Phaser.Scene {
       key: "soldier",
       x: 600,
       y: 600,
-      //worldLayer: worldLayer
     });
-
-    //const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -138,6 +145,7 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemy1, worldLayer);
     this.physics.add.collider(this.enemy2, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
+
 
     this.physics.add.overlap(
       this.player,
@@ -176,7 +184,6 @@ export default class level3 extends Phaser.Scene {
     );
 
     console.log('configured sprites and physics');
-    console.log('completed create function');
 
     // Create timer
     this.startTime = new Date();
@@ -191,9 +198,9 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
     this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
     this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
-    //this.EnemyHealthDisplay = this.add.text(650,50,"Tank Health: "+this.tank.health);
 
-    console.log("completed configurating display")
+    console.log("configured on-screen display");
+    console.log('completed create function');
   }
 
   update() {
@@ -210,9 +217,9 @@ export default class level3 extends Phaser.Scene {
     //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
 
     //check for and handle gameOver or levelCompleted
-    if (this.gameOver || this.levelCompleted) {
+    if (this.player.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
-      console.log('[LEVEL1 ENDING]');
+      console.log('[LEVEL ENDING]');
 
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
@@ -263,6 +270,10 @@ export default class level3 extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
+    //enemy movement
+    this.enemy1.move();
+    this.enemy2.move();
+
     //configure overlaps for active enemy bullets
     this.enemy2.bullets.children.each(
       function (b) {
@@ -291,7 +302,11 @@ export default class level3 extends Phaser.Scene {
   }
 
   hitExit() {
-    this.levelCompleted = true;
+    /**
+    function to update levelCompleted to true when player reaches the exit
+    */
+    console.log("[level.hitExit]");
+    this.player.levelCompleted = true;
   }
 
   shellHitPlayer(shell, player) {
@@ -299,7 +314,7 @@ export default class level3 extends Phaser.Scene {
     function to handle overlap between player and tank shell
     (i.e. tank shell hit player)
     */
-    console.log('[shellHitPlayer]');
+    console.log('[level.shellHitPlayer]');
 
 
     //disable shell
@@ -312,33 +327,8 @@ export default class level3 extends Phaser.Scene {
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
-    console.log("Now Diamonds count is:" + this.player.diamondsCollected);
+    console.log("diamonds collected:" + this.player.diamondsCollected);
     this.pickupSound.play();
-  }
-
-  enemyHit﻿(enemy, beam){
-
-    //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
-
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-      var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
-    }
-
-    //destroy enemy, update player stats
-    enemy.destro();
-    this.cry.play();
-    this.player.enemyKilled++;
-    console.log("Now killed count is:" + this.player.enemyKilled);
-
-    this.spawnDiamond(enemy.x, enemy.y);
-
   }
 
   playerRanIntoEnemy(player, enemy) {
@@ -346,29 +336,91 @@ export default class level3 extends Phaser.Scene {
     function to handle the case of player colliding with an enemy.
     Player loses a life if not attacking, and enemy is always destroyed.
     */
+    console.log('[level.playerRanIntoEnemy]');
 
-    //generate random number of diamonds to burst from dead enemy
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+    var enemyDied = false;
 
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-      var diamondX = enemy.x + randomShiftX;
-      var diamondY = enemy.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
-    }
-
-    //player takes damage if not attacking when collision occurs
+    //HANDLE COLLISION IF PLAYER IS NOT ATTACKING
     if (player.isAttacking == false) {
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN FOR NOW
+      console.log('player was not attacking');
+
+      //disable enemy, update player health
+      enemy.isActive = false;
+      player.updateHealth(50);  //75 ARBITRARILY CHOSEN
+      this.player.setTint(0xff0000);
+      this.player.setVelocity = 0;
+
+      //variables to adjust player x away from enemy
+      var enemyHalfWidth = enemy.width / 2;
+      var enemyRightX = enemy.x + enemyHalfWidth;
+      var enemyLeftX = enemy.x - enemyHalfWidth;
+
+      //variables to adjust player y away from enemy
+      var playerHalfHeight = this.player.height / 2;
+      var enemyHalfHeight = enemy.height / 2;
+      var enemyBottomY = enemy.y + enemyHalfHeight;
+
+      if (this.player.body.touching.down) {
+        //collision on top or bottom of enemy
+        enemyDied = true;
+
+        this.player.body.setVelocityY(-330);
+
+      } else if (this.player.body.touching.right) {
+        //collision on left side of enemy
+        this.player.x = enemyLeftX - this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+
+      } else if (this.player.body.touching.left) {
+        //collision on right side of enemy
+        this.player.x = enemyRightX + this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+      }
+
+      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
+
+      //disabled enemy set to respawn with a longer delay than player sprite
+      this.time.addEvent({
+        delay: 2500,
+        callback: enemy.reset,
+        callbackScope: enemy,
+        loop: false
+      });
+
+    //HANDLE COLLISION IF PLAYER IS ATTACKING
+    } else {
+      console.log('player was attacking');
+      enemyDied = true;
     }
 
-    //destroy enemy, update player stats
-    enemy.destro();
-    this.cry.play();
-    this.enemyKilled++;
+    //HANDLE ENEMY DEATH IF NEEDED
+    if (enemyDied == true) {
+      console.log('enemy died');
+
+      //generate random number of diamonds to burst from dead enemy
+      var randAmount = Math.floor(Math.random() * Math.floor(10));
+      var x;
+      for (x = 0; x < randAmount; x++) {
+        //within 75 pixels left or right from the enemy
+        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+        //up to 75 pixels above the enemy
+        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+        //spawn diamond
+        var diamondX = enemy.x + randomShiftX;
+        var diamondY = enemy.y - randomShiftY;
+        this.spawnDiamond(diamondX, diamondY);
+      }
+
+      //"kill" enemy, update player stats
+      enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
+      this.cry.play();
+      player.enemiesKilled++;
+    }
   }
 
   spawnDiamond(diamondX, diamondY){
