@@ -111,8 +111,8 @@ export default class level3 extends Phaser.Scene {
       var enemy = new EnemySoldier({
         scene: this,
         key: "soldier",
-        x: 2100,
-        y: 300,
+        x: x,
+        y: y,
       });
       enemy.play("soldierAnim");
       enemy.body.setCollideWorldBounds(true);
