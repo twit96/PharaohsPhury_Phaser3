@@ -13,6 +13,7 @@ export default class level3 extends Phaser.Scene {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
+    this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
     this.load.image('bubble', './assets/images/opaquebubble.png');
     this.load.image('mbtn', './assets/images/mbutton.png');
@@ -44,30 +45,20 @@ export default class level3 extends Phaser.Scene {
     //player
     this.spawnX = 50;
     this.spawnY = 500;
-    this.levelName = 1;
-
-    //CREATE LEVEL
-    // level Data parse from json, read cordination into array of [x,y];
-    this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level1.enemyA;
-    this.enemySCor = this.levelSettingInfo.level1.enemyS;
-    this.gemCor = this.levelSettingInfo.level1.gem;
-    //console.log("populating enemyA at " + this.enemyACor);
-    //console.log("populating enemyS at " + this.enemySCor);
-    //console.log("populating gem at " + this.gemCor);
+    this.levelName = 3;
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
-    const map1 = this.make.tilemap({ key: "level1map" });
-    const below2Tileset =map1.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map1.addTilesetImage("inca_back", "incaBackTiles");
-    const worldTileset = map1.addTilesetImage("inca_front", "incaFrontTiles");
+    const map = this.make.tilemap({ key: "level3map" });
+    const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
+    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
+    const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
-    const bgLayer = map1.createStaticLayer("Below Player", below2Tileset, 0, 0);
-    //const belowLayer = map1.createStaticLayer("Below Player", belowTileset, 0, 0);
-    const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
+    //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
+    const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
 
@@ -82,19 +73,59 @@ export default class level3 extends Phaser.Scene {
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
 
-    //enemies
-    // this.enemies = this.add.group();
-    // this.enemies.enableBody = true;
-    // var a,s;
+    //create enemies group
+    this.enemiesA = this.add.group();
+    this.enemiesA.enableBody = true;
+    this.enemiesS = this.add.group();
+    this.enemiesS.enableBody = true;
 
-    //this.width = map1.widthInPixels;
-    //this.height = map1.heightInPixels;
-    // for (a = 0; a < this.enemyACount; a++) {
-    //   this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.width),Phaser.Math.Between(0, this.height),'archeologist'));
-    // }
-    // for (s = 0; s < this.enemySCount; s++) {
-    //   this.enemies.add(this.physics.add.sprite(Phaser.Math.Between(0, this.width),Phaser.Math.Between(0, this.height),'soldier'));
-    // }
+    //CREATE LEVEL
+    // level Data parse from json, read cordination into array of [x,y];
+    this.levelSettingInfo = this.cache.json.get('levelSetting');
+    this.enemyACor = this.levelSettingInfo.level1.enemyA;
+    this.enemySCor = this.levelSettingInfo.level1.enemyS;
+    this.gemCor = this.levelSettingInfo.level1.gem;
+    console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
+    console.log("populating enemyS at " + this.enemySCor);
+    console.log("populating gem at " + this.gemCor);
+
+    // spawn
+    for (var count in this.enemyACor) {
+      var x = this.enemyACor[count][0];
+      var y = this.enemyACor[count][1];
+      var enemy = new EnemyArch({
+        scene: this,
+        key: "archeologist",
+        x: x,
+        y: y
+      });
+      enemy.play("archeologistAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesA.add(enemy);
+      console.log("Created "+this.enemiesA.children);
+    }
+    for (var count in this.enemySCor) {
+      var x = this.enemySCor[count][0];
+      var y = this.enemySCor[count][1];
+      var enemy = new EnemySoldier({
+        scene: this,
+        key: "soldier",
+        x: 2100,
+        y: 300,
+      });
+      enemy.play("soldierAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesS.add(enemy);
+      console.log("Created "+this.enemiesS.children);
+    }
+
+    for (var count in this.gemCor) {
+      var x = this.gemCor[count][0];
+      var y = this.gemCor[count][1];
+      this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
+    }
 
     //player
     this.player = new Mummy({
@@ -104,59 +135,36 @@ export default class level3 extends Phaser.Scene {
       y: this.spawnY
     });
 
-    //Enemies
-    this.enemy1 = new EnemyArch({
-      scene: this,
-      key: "archeologist",
-      x: 500,
-      y: 500
-    });
-
-    this.enemy2 = new EnemySoldier({
-      scene: this,
-      key: "soldier",
-      x: 600,
-      y: 600,
-    });
-
     console.log('created map layers and sprites');
 
     //player physics/input
     this.player.body.setCollideWorldBounds(true);
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    //enemy physics
-    this.enemy1.play("archeologistAnim");
-    this.enemy2.play("soldierAnim");
-    this.enemy1.body.setCollideWorldBounds(true);
-    this.enemy2.body.setCollideWorldBounds(true);
-    this.enemy1.setInteractive();
-    this.enemy2.setInteractive();
-
     //world/camera bounds
-    this.physics.world.setBounds(0, 0, map1.widthInPixels, map1.heightInPixels);
-    this.cameras.main.setBounds(0, 0, map1.widthInPixels, map1.heightInPixels);
+    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(this.player);
 
     //configure sprite collisions
-    this.boundaryBox = map1.heightInPixels - this.player.body.height;
+    this.boundaryBox = map.heightInPixels - this.player.body.height;
 
     this.physics.add.collider(this.player, worldLayer);
-    this.physics.add.collider(this.enemy1, worldLayer);
-    this.physics.add.collider(this.enemy2, worldLayer);
+    this.physics.add.collider(this.enemiesA, worldLayer);
+    this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
 
 
     this.physics.add.overlap(
       this.player,
-      this.enemy1,
+      this.enemiesA,
       this.playerRanIntoEnemy,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
-      this.enemy2,
+      this.enemiesS,
       this.playerRanIntoEnemy,
       null,
       this
@@ -168,13 +176,15 @@ export default class level3 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(
-      this.enemy2.bullets,
-      worldLayer,
-      this.enemy2.bulletHitWall,
-      null,
-      this
-    );
+    this.enemiesS.children.each(function(enemyS) {
+      this.physics.add.overlap(
+        enemyS.bullets,
+        worldLayer,
+        enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
     this.physics.add.overlap(
       this.player,
       this.collectItems,
@@ -198,6 +208,17 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
     this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
     this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    // display heart for life
+    var h;
+    this.hearts = this.add.group();
+    for (h = 0; h < this.player.lives; h++) {
+      var xLocation = 740 + h*20 ;
+      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+    }
+    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarOrgWidth = this.healthBarFill.width;
+    this.healthBarOrgHeight = this.healthBarFill.width;
 
     console.log("configured on-screen display");
     console.log('completed create function');
@@ -214,8 +235,12 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    //this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
+    this.updateHealthBar();
 
+    // player heart update - if hearts isn't equal to the player lifes, delete one heart
+    if (this.player.lives != this.hearts.countActive()) {
+      this.hearts.killAndHide(this.hearts.getFirstAlive());
+    }
     //check for and handle gameOver or levelCompleted
     if (this.player.gameOver || this.levelCompleted) {
       console.log('end of level triggered');
@@ -243,14 +268,14 @@ export default class level3 extends Phaser.Scene {
         if (b.active) {
           this.physics.add.overlap(
             b,
-            this.enemy1,
+            this.enemiesA,
             this.player.beamHitEnemy,
             null,
             this
           );
           this.physics.add.overlap(
             b,
-            this.enemy2,
+            this.enemiesS,
             this.player.beamHitEnemy,
             null,
             this
@@ -271,35 +296,41 @@ export default class level3 extends Phaser.Scene {
     );
 
     //enemy movement
-    this.enemy1.move();
-    this.enemy2.move();
+    this.enemiesA.children.each(function(enemyA) {
+      enemyA.move();
+    }, this);
+    this.enemiesS.children.each(function(enemyS) {
+      enemyS.move();
+    }, this);
 
     //configure overlaps for active enemy bullets
-    this.enemy2.bullets.children.each(
-      function (b) {
-        if (b.active) {
-          this.physics.add.overlap(
-            b,
-            this.player,
-            this.shellHitPlayer,
-            null,
-            this
-          );
+    this.enemiesS.children.each(function(enemyS) {
+          enemyS.bullets.children.each(
+            function (b) {
+              if (b.active) {
+                this.physics.add.overlap(
+                  b,
+                  this.player,
+                  this.shellHitPlayer,
+                  null,
+                  this
+                );
 
-          //deactivate bullets once they leave the screen
-          if (b.y < 0) {
-            b.setActive(false)
-          } else if (b.y > this.cameras.main.height) {
-            b.setActive(false)
-          } else if (b.x < 0) {
-            b.setActive(false)
-          } else if (b.x > this.cameras.main.width) {
-            b.setActive(false)
-          }
-        }
-      }.bind(this)  //binds the function to each of the children. scope of function
-    );
-  }
+                //deactivate bullets once they leave the screen
+                if (b.y < 0) {
+                  b.setActive(false)
+                } else if (b.y > this.cameras.main.height) {
+                  b.setActive(false)
+                } else if (b.x < 0) {
+                  b.setActive(false)
+                } else if (b.x > this.cameras.main.width) {
+                  b.setActive(false)
+                }
+              }
+            }.bind(this)  //binds the function to each of the children. scope of function
+          )
+        }, this);
+      }
 
   hitExit() {
     /**
@@ -344,11 +375,8 @@ export default class level3 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
-      //disable enemy, update player health
-      enemy.isActive = false;
-      player.updateHealth(50);  //75 ARBITRARILY CHOSEN
-      this.player.setTint(0xff0000);
-      this.player.setVelocity = 0;
+      //enemy briefly disabled
+      enemy.stun();
 
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
@@ -374,21 +402,17 @@ export default class level3 extends Phaser.Scene {
         //player takes damage
         player.updateHealth(75);  //75 ARBITRARILY CHOSEN
 
-      } else if (this.player.body.touching.left) {
+      }  else if (this.player.body.touching.left) {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
       }
 
-      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
-      //disabled enemy set to respawn with a longer delay than player sprite
-      this.time.addEvent({
-        delay: 2500,
-        callback: enemy.reset,
-        callbackScope: enemy,
-        loop: false
-      });
+      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
     //HANDLE COLLISION IF PLAYER IS ATTACKING
     } else {
@@ -447,5 +471,7 @@ export default class level3 extends Phaser.Scene {
       });
     }
   }
-
+  updateHealthBar(){
+    this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
 }

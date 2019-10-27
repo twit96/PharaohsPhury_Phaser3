@@ -12,9 +12,7 @@ export default class level1 extends Phaser.Scene {
   preload() {
     console.log('\n[LEVEL1]');
     console.log('[preload]')
-
     this.load.json("levelSetting","./src/data/levelSetting.json");
-
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
     this.load.image('bubble', './assets/images/opaquebubble.png');
     this.load.image('awdbtn', './assets/images/awdbuttons.png');
@@ -59,6 +57,7 @@ export default class level1 extends Phaser.Scene {
     const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
     itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
     */
+
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
@@ -420,7 +419,6 @@ export default class level1 extends Phaser.Scene {
     //HANDLE COLLISION IF PLAYER IS ATTACKING
     } else {
       console.log('player was attacking');
-
       //enemy dies
       enemyDied = true;
     }
