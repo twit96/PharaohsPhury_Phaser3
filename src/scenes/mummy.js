@@ -16,6 +16,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.isAttacking = false;
     this.beamSpeed = 750;
     this.beamAngle;
+    this.beamDirection = 0;
 
     this.diamondsCollected = 0;
     this.enemiesKilled = 0;
@@ -106,6 +107,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //movement
     if (this.cursors.left.isDown) {
       this.flipX = true;
+      this.beamDirection = 1;
       this.body.setVelocityX(-160);
       if (this.canAttack) {
         //animations only play while player is not attacking
@@ -124,6 +126,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     } else if (this.cursors.right.isDown) {
       this.flipX = false;
+      this.beamDirection = 0;
       this.body.setVelocityX(160);
 
       if (this.canAttack) {
@@ -176,13 +179,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
                      this.shoot();
                      }, this);
-      // console.log(this.anims.currentAnim);
-      // if (this.anims.currentAnim.frames.index == 4);
-      // {
-      //   console.log(this.anims.currentAnim.frames.index + " is this frame")
-
-      // }
-
     }
   }
 
@@ -234,6 +230,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //generate a beam attack sprite
     var beam = this.beams.get();
     beam.setAngle(this.beamAngle);
+    console.log(beam);
+    if (this.beamDirection == 1){
+      beam.flipX = true;
+    } else {
+      beam.flipX = false;
+    }
     beam
       .enableBody(true, this.x, this.y, true, true)
       .setVelocity(this.beamSpeed, 0)
