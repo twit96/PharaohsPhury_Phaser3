@@ -206,19 +206,20 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate  text
-    this.LifeDisplay = this.add.text(600,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(600,40, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(600,60, "Timer: "+ this.duration).setScrollFactor(0,0);
-    this.ScoreDisplay = this.add.text(600,80, "Score: "+ this.score).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
+
     // display heart for life
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
-      var xLocation = 740 + h*20 ;
+      var xLocation = 150 + h*20 ;
       this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 

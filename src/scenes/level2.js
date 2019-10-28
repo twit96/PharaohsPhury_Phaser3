@@ -24,9 +24,9 @@ export default class level2 extends Phaser.Scene {
     this.add.image(2240,384,'background1');
 
     //tutorial
-    this.add.image(180,530, 'bubble').setScale(.4,.4);
-    this.add.image(180,530, 'spacebtn').setScale(.3,.3);
-    this.add.text(155, 480, "Melee");
+    this.add.image(180,330, 'bubble').setScale(.4,.4);
+    this.add.image(180,330, 'spacebtn').setScale(.3,.3);
+    this.add.text(155, 280, "Melee");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -42,7 +42,7 @@ export default class level2 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 50;
-    this.spawnY = 300;
+    this.spawnY = 200;
     this.levelName = 2;
 
     //declare map and tilesets
@@ -54,11 +54,11 @@ export default class level2 extends Phaser.Scene {
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
-    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", worldTileset, 0, 0);
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
@@ -73,9 +73,9 @@ export default class level2 extends Phaser.Scene {
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level1.enemyA;
-    this.enemySCor = this.levelSettingInfo.level1.enemyS;
-    this.gemCor = this.levelSettingInfo.level1.gem;
+    this.enemyACor = this.levelSettingInfo.level2.enemyA;
+    this.enemySCor = this.levelSettingInfo.level2.enemyS;
+    this.gemCor = this.levelSettingInfo.level2.gem;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
@@ -183,7 +183,6 @@ export default class level2 extends Phaser.Scene {
       this
     );
 
-
     console.log('configured sprites and physics');
 
     // Create timer
@@ -195,20 +194,20 @@ export default class level2 extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
 
     // display heart for life
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
-      var xLocation = 740 + h*20 ;
+      var xLocation = 150 + h*20 ;
       this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -295,7 +294,6 @@ export default class level2 extends Phaser.Scene {
     this.enemiesS.children.each(function(enemyS) {
       enemyS.move();
     }, this);
-
 
     //configure overlaps for active enemy bullets
     this.enemiesS.children.each(function(enemyS) {

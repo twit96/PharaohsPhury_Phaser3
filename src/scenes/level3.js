@@ -10,7 +10,7 @@ export default class level3 extends Phaser.Scene {
   }
 
   preload() {
-    console.log('\n[LEVEL1]');
+    console.log('\n[LEVEL3]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
@@ -29,9 +29,9 @@ export default class level3 extends Phaser.Scene {
     this.add.image(2240,384,'background1');
 
     //tutorial
-    this.add.image(180,530, 'bubble').setScale(.4,.4);
-    this.add.image(180,530, 'mbtn').setScale(.3,.3);
-    this.add.text(155, 480, "Shoot");
+    this.add.image(180,330, 'bubble').setScale(.4,.4);
+    this.add.image(180,330, 'mbtn').setScale(.3,.3);
+    this.add.text(155, 280, "Shoot");
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
@@ -44,7 +44,7 @@ export default class level3 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 50;
-    this.spawnY = 500;
+    this.spawnY = 200;
     this.levelName = 3;
 
     //declare map and tilesets
@@ -82,9 +82,9 @@ export default class level3 extends Phaser.Scene {
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level1.enemyA;
-    this.enemySCor = this.levelSettingInfo.level1.enemyS;
-    this.gemCor = this.levelSettingInfo.level1.gem;
+    this.enemyACor = this.levelSettingInfo.level3.enemyA;
+    this.enemySCor = this.levelSettingInfo.level3.enemyS;
+    this.gemCor = this.levelSettingInfo.level3.gem;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
@@ -203,20 +203,22 @@ export default class level3 extends Phaser.Scene {
     // create score
     this.score = 0;
 
-    // Generate Display text
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration);
-    this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score);
-    this.HealthDisplay = this.add.text(10,90, "Health: " + this.player.health);
-    this.LifeDisplay = this.add.text(10,110, "Life Left: " + this.player.lives);
+    // Generate  text
+    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+
     // display heart for life
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
-      var xLocation = 740 + h*20 ;
+      var xLocation = 150 + h*20 ;
       this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(710,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(710,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -235,6 +237,8 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
+    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -242,7 +246,7 @@ export default class level3 extends Phaser.Scene {
       this.hearts.killAndHide(this.hearts.getFirstAlive());
     }
     //check for and handle gameOver or levelCompleted
-    if (this.player.gameOver || this.levelCompleted) {
+    if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
 
