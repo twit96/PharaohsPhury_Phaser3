@@ -237,7 +237,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       beam.flipX = false;
     }
     beam
-      .enableBody(true, this.x, this.y, true, true)
+      .enableBody(true, this.x, this.y- 15, true, true)
       .setVelocity(this.beamSpeed, 0)
       .setScale(2.5)
       .body.setSize(25, 8, 0, 0)
