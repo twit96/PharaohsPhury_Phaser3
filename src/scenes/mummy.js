@@ -46,10 +46,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     */
     console.log('[mummy.reset]');
 
-<<<<<<< HEAD
     this.anims.play("mummyCaneIdleAnim", true);
     this.body.setSize(20, 55, 50, 80);
-=======
+
     if (this.scene.scene.key == "level1"){
       this.anims.play("mummyIdleAnim", true);
     } else if (this.scene.scene.key == "level2"){
@@ -58,7 +57,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.anims.play("pharoahCaneIdleAnim", true);
     }
     this.body.setSize(40, 64, 50, 50);
->>>>>>> Grey's_Testing
+
     this.setTint();
     this.canAttack = true;
     this.isAttacking = false;
