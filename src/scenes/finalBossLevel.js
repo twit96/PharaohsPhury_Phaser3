@@ -170,7 +170,7 @@ export default class finalBossLevel extends Phaser.Scene {
     }
 
     //detect if tank died
-    if (this.tank.health == 0) {
+    if (this.tank.health <= 0) {
       this.player.levelCompleted = true;
     }
 
