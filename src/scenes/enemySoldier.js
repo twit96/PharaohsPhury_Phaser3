@@ -33,8 +33,11 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     console.log('[enemySoldier.stun]');
 
     this.isActive = false;
+    this.body.setVelocityX(0);
+    this.tint = 0xff0000;
+
     this.scene.time.addEvent({
-      delay: 1000,
+      delay: 2000,
       callback: this.reset,
       callbackScope: this,
       loop: false
@@ -46,6 +49,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     */
     console.log('[enemySoldier.reset]');
     this.isActive = true;
+    this.setTint();
   }
 
   updateHealth(damage) {

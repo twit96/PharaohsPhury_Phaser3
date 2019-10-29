@@ -20,6 +20,9 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
   stun() {
     console.log('[archeologist.stun]');
     this.isActive = false;
+    this.body.setVelocityX(0);
+    this.tint = 0xff0000;
+
     this.scene.time.addEvent({
       delay: 1000,
       callback: this.reset,
@@ -31,6 +34,7 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
   reset() {
     console.log('[enemyArch.reset]');
     this.isActive = true;
+    this.setTint();
   }
 
   updateHealth(damage) {
