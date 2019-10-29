@@ -62,7 +62,7 @@ export default class level1 extends Phaser.Scene {
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map1 = this.make.tilemap({ key: "level1map" });
-    const below2Tileset =map1.addTilesetImage("inca_back2", "incaBack2Tiles");
+    const below2Tileset = map1.addTilesetImage("inca_back2", "incaBack2Tiles");
     const worldTileset = map1.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
@@ -303,10 +303,15 @@ export default class level1 extends Phaser.Scene {
 
     //enemy movement
     this.enemiesA.children.each(function(enemyA) {
-      enemyA.move();
+      if (enemyA.isActive) {
+        enemyA.move();
+      }
     }, this);
+
     this.enemiesS.children.each(function(enemyS) {
-      enemyS.move();
+      if (enemyS.isActive) {
+        enemyS.move();
+      }
     }, this);
 
     //configure overlaps for active enemy bullets
@@ -406,7 +411,7 @@ export default class level1 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy
@@ -414,7 +419,7 @@ export default class level1 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");

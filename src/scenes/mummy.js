@@ -56,6 +56,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
       this.anims.play("pharoahCaneIdleAnim", true);
     }
+    
     this.body.setSize(20, 55, 50, 80);
     this.setTint();
     this.canAttack = true;
@@ -80,7 +81,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //update player lives if needed
     if (this.health <= 0) {
-      //this.tint = 0x000000;
 
       this.x = this.scene.spawnX;
       this.y = this.scene.spawnY;
