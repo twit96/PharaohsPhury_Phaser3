@@ -394,7 +394,7 @@ export default class level2 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy

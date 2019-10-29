@@ -262,7 +262,7 @@ export default class level3 extends Phaser.Scene {
 
     //player motion
     this.player.move();
-    
+
 
     //check if player on map
     this.playerFellOffMap(this.player);
@@ -405,7 +405,7 @@ export default class level3 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
 
       }  else if (this.player.body.touching.left) {
         //collision on right side of enemy
