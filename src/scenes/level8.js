@@ -45,7 +45,7 @@ export default class level8 extends Phaser.Scene {
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
-    const map = this.make.tilemap({ key: "level8map" });
+    const map = this.makelevel.tilemap({ key: "level8map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
     //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
