@@ -46,7 +46,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     */
     console.log('[mummy.reset]');
 
-    this.anims.play("mummyCaneIdleAnim", true);
+
     this.body.setSize(20, 55, 50, 80);
 
     if (this.scene.scene.key == "level1"){

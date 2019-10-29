@@ -6,7 +6,13 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
 
-    this.body.setSize(20,55,50,80);
+    this.body.setSize(20, 55, 50, 80);
+
+    //variables
+    this.moveCounter = 0
+    this.health = 25;
+
+
 
     //variables
     this.moveCounter = 0
@@ -79,8 +85,9 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
         this.setFlipX(false);
         this.anims.play("soldierAnim", true);
 
-      } else if (this.moveCounter == 100) {
-        //shooting animation
+
+    } else if (this.moveCounter > 100 && this.moveCounter <= 170 ) {
+
         this.anims.play("soldierShotAnim", true);
 
       } else if (this.moveCounter == 130) {
