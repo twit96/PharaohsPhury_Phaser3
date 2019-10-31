@@ -153,7 +153,7 @@ export default class level5 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
-
+    this.physics.add.collider(this.collectItems, this.collectItems);
 
     this.physics.add.overlap(
       this.player,
