@@ -380,9 +380,6 @@ export default class level5 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
-      //enemy briefly disabled
-      enemy.stun();
-
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
       var enemyRightX = enemy.x + enemyHalfWidth;
@@ -396,6 +393,7 @@ export default class level5 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
+        enemy.isActive = false;
 
         this.player.body.setVelocityY(-330);
 
@@ -405,7 +403,10 @@ export default class level5 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+
+        //enemy briefly disabled
+        enemy.stun();
 
       }  else if (this.player.body.touching.left) {
         //collision on right side of enemy
@@ -413,7 +414,10 @@ export default class level5 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
+
+        //enemy briefly disabled
+        enemy.stun();
       }
 
 

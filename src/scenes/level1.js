@@ -105,8 +105,8 @@ export default class level1 extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesA.add(enemy);
-      console.log("Created "+this.enemiesA.children);
     }
+
     for (var count in this.enemySCor) {
       var x = this.enemySCor[count][0];
       var y = this.enemySCor[count][1];
@@ -120,7 +120,6 @@ export default class level1 extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesS.add(enemy);
-      console.log("Created "+this.enemiesS.children);
     }
 
     for (var count in this.gemCor) {
@@ -386,9 +385,6 @@ export default class level1 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
-      //enemy briefly disabled
-      enemy.stun();
-
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
       var enemyRightX = enemy.x + enemyHalfWidth;
@@ -402,13 +398,16 @@ export default class level1 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
-
+        enemy.isActive = false;
         this.player.body.setVelocityY(-330);
 
       } else if (this.player.body.touching.right) {
         //collision on left side of enemy
         this.player.x = enemyLeftX - this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
+
+        //enemy briefly disabled
+        enemy.stun();
 
         //player takes damage
         player.updateHealth(25);  //75 ARBITRARILY CHOSEN
@@ -417,6 +416,9 @@ export default class level1 extends Phaser.Scene {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
+
+        //enemy briefly disabled
+        enemy.stun();
 
         //player takes damage
         player.updateHealth(25);  //25 ARBITRARILY CHOSEN

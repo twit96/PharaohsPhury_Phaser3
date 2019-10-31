@@ -125,6 +125,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     bullet
       .enableBody(true, this.x, this.y, true, true)
       .setVelocity(2000,0)
+
   }
 
 
