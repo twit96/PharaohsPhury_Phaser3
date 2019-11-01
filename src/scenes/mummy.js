@@ -168,7 +168,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     }
 
     //short range attacks
-    if (this.cursors.space.isDown) {
+    if ((this.cursors.space.isDown) && (this.canAttack)) {
       this.shortRangeAttack();
     }
 
