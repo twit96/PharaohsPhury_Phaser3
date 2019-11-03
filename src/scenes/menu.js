@@ -44,33 +44,58 @@ export default class menu extends Phaser.Scene {
     });
 
     var newGameText = this.add.text(
-      this.centerX - 100,
-      this.centerY-80,
-      "New Game", {
+      this.centerX ,
+      this.centerY + 110,
+      "New User", {
         fontFamily: 'Arial',
-        fontSize: 64,
+        fontSize: 60,
         color: '#fcba03',
         stroke: '#000000',
         strokeThickness: 7
       }
     );
-    newGameText.setInteractive();
-
-    //handle player interaction
-    newGameText.on("pointerover", function() {
+    newGameText.setInteractive().on("pointerover", function() {
       sound.play('low');
       this.setScale(1.2);
       this.x -= 25;
-    });
-    newGameText.on("pointerout", function () {
+    }).on("pointerout", function () {
       this.setScale(1.0);
       this.x += 25;
-    });
-    newGameText.on("pointerup", function () {
+    }).on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
       console.log('[MENU COMPLETE]');
-      this.scene.start('levelPicker');
+      this.scene.start('userScene', {
+        isNew: true
+      });
+    }, this);
+
+    var continueOldGameText = this.add.text(
+      this.centerX ,
+      this.centerY + 170,
+      "Continue", {
+        fontFamily: 'Arial',
+        fontSize: 60,
+        color: '#fcba03',
+        stroke: '#000000',
+        strokeThickness: 7
+      }
+    );
+    continueOldGameText.setInteractive().on("pointerover", function() {
+      sound.play('low');
+      this.setScale(1.2);
+      this.x -= 25;
+    }).on("pointerout", function () {
+      this.setScale(1.0);
+      this.x += 25;
+    }).on("pointerup", function () {
+      sound.play('high');
+      this.backgroundMusic.stop();
+      console.log('[MENU COMPLETE]');
+      console.log('[Directing to user page]');
+      this.scene.start('userScene', {
+        isNew: false
+      });
     }, this);
 }
 
