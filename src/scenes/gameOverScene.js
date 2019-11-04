@@ -117,7 +117,7 @@ export default class gameOverScene extends Phaser.Scene {
     console.log("[quitGame]");
 
     this.HESound.stop();
-    this.scene.start("menu");
+    this.scene.start("levelPicker");
   }
 
 

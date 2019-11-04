@@ -21,6 +21,7 @@ export default class levelPicker extends Phaser.Scene {
     this.load.image('slab7', './assets/images/slab7.png');
     this.load.image('slab8', './assets/images/slab8.png');
     this.load.image('final', './assets/images/final1.png');
+    this.load.json("users","./src/data/users.json");
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -34,6 +35,31 @@ export default class levelPicker extends Phaser.Scene {
 
     console.log('[create]');
     this.add.image(400,300,'background').setScale(.5,.5);
+
+    var saveLeaveBtn = this.add.text(
+      this.centerX - 100,
+      10,
+      "Save & Leave", {
+        fontFamily: 'Arial',
+        fontSize: 30,
+        color: '#fcba03',
+        stroke: '#000000',
+        strokeThickness: 7
+      }
+    );
+
+    saveLeaveBtn.setInteractive().on("pointerover", function() {
+      sound.play('low');
+      this.setScale(1.1);
+      this.x -= 25;
+    }).on("pointerout", function () {
+      this.setScale(1.0);
+      this.x += 25;
+    }).on("pointerup", function () {
+      sound.play('high');
+      this.saveANDLeave();
+    }, this);
+
     // Audio
     this.backgroundMusic = this.sound.add("short");
     this.backgroundMusic.play({loop:true});
@@ -218,6 +244,65 @@ export default class levelPicker extends Phaser.Scene {
     }, this
   );}
     console.log('configured buttons');
+}
+
+saveANDLeave(){
+  var user = {userName:this.registry.get("userName"), levelCompletion:this.registry.get("levelCompletion")};
+  this.allUser = this.cache.json.get('users');
+  var foundUser = this.getUserFromJson(this.registry.get("userName"));
+  if (foundUser == null) {
+    console.log("new user record needs to be append into json");
+    this.allUser.push(user);
+    console.log(this.allUser);
+    // this.load.saveJSON(this.allUser,"./src/data/users.json" );
+    this.save = function () {
+        jQuery.ajax({
+            type : "POST",
+            dataType : "json",
+            url : 'save.php',
+            data : {'json': JSON.stringify(this.allUser)},
+            success : function() {
+                console.log("SUCCESS");
+            },
+            error : function() {
+                console.log("ERROR");
+            }
+       });
+    }
+  } else {
+    console.log("old user record needs to be updated");
+
+    var filtered = this.allUser.filter(function(eachUser){
+      return eachUser.userName != user.userName;
+    });
+    filtered.push(user);
+    console.log(filtered);
+    // this.load.saveJSON(filtered,"./src/data/users.json" );
+    this.save = function () {
+        jQuery.ajax({
+            type : "POST",
+            dataType : "json",
+            url : 'save.php',
+            data : {'json': JSON.stringify(filtered)},
+            success : function() {
+                console.log("SUCCESS");
+            },
+            error : function() {
+                console.log("ERROR");
+            }
+       });
+    }
+  }
+  this.scene.start("menu");
+}
+
+getUserFromJson(name) {
+  for (var user of this.allUser) {
+    if (user.userName == name ) {
+      return user
+    }
+  }
+  return null;
 }
 
   update (time, delta) {

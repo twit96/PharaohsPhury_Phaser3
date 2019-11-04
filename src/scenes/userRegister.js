@@ -1,6 +1,4 @@
 /*global Phaser*/
-import User from './user.js';
-
 export default class userScene extends Phaser.Scene {
   constructor () {
     super('userScene');
@@ -92,7 +90,7 @@ export default class userScene extends Phaser.Scene {
       this.checkUserName(textEntry.text);
     }, this);
 
-    var enterBtn = this.add.text(
+    var backBtn = this.add.text(
       this.centerX - 100,
       this.centerY + 160,
       "BACK", {
@@ -104,7 +102,7 @@ export default class userScene extends Phaser.Scene {
       }
     );
 
-    enterBtn.setInteractive().on("pointerover", function() {
+    backBtn.setInteractive().on("pointerover", function() {
       sound.play('low');
       this.setScale(1.1);
       this.x -= 25;
