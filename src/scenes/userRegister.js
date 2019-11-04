@@ -13,7 +13,7 @@ export default class userScene extends Phaser.Scene {
     console.log('\n[User Page]')
     console.log('[preload]');
     this.load.image('menu', './assets/images/menu.jpg');
-    this.load.image('title', './assets/images/gametitle.png');
+    //this.load.image('title', './assets/images/gametitle.png');
     this.load.json("users","./src/data/users.json");
 
     // Declare variables for center of the scene
@@ -28,7 +28,7 @@ export default class userScene extends Phaser.Scene {
     console.log('[create]');
     // Background and title images
     var menuBG = this.add.image(400,300,'menu').setScale(.5,.5);
-    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
+    //var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
 
     // Audio
     this.backgroundMusic = this.sound.add("short");

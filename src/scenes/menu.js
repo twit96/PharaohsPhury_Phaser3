@@ -12,7 +12,7 @@ export default class menu extends Phaser.Scene {
     console.log('\n[MENU]')
     console.log('[preload]');
     this.load.image('menu', './assets/images/menu.jpg');
-    this.load.image('title', './assets/images/gametitle.png');
+    //this.load.image('title', './assets/images/gametitle.png');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
