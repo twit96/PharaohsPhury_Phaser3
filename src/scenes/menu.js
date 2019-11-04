@@ -23,7 +23,7 @@ export default class menu extends Phaser.Scene {
     console.log('[create]');
     // Background and title images
     var menuBG = this.add.image(400,300,'menu').setScale(.5,.5);
-    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
+    //var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
 
 
     // Audio
