@@ -4,7 +4,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     super(config.scene, config.x, config.y, config.key);
 
     //tank turret
-    this.turret = config.scene.add.sprite(config.x - 40, config.y - 40, 'tankTurret');
+    this.turret = config.scene.add.sprite(config.x, config.y - 40, 'tankTurret');
     this.turret.setFlipX(true);
 
     //tank body
@@ -19,9 +19,10 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     //variables
     this.moveCounter = 0;
-    this.turretAngle = 0;
-    this.health = 100;
+    this.turretAngleRAD;
+    this.turretAngleDEG;
 
+    this.health = 100;
     this.speed = 1.0;
     this.shellSpeed = 1000;
     this.isActive = true;
@@ -54,25 +55,54 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     if (this.isActive) {
       this.moveCounter += 1
 
-      //adjust turret position (workaround for sprite follow sprite)
-      if (this.turret.y != (this.y - 40)) {
-        this.turret.y = (this.y - 40);
-      }
-      if (this.turret.x != (this.x - 40)) {
-        this.turret.x = (this.x - 40);
-      }
-
-      //adjust turret angle
+      //TURRET ANGLE
       var betweenPoints = Phaser.Math.Angle.BetweenPoints;
-      var angle = betweenPoints(this.turret, this.scene.player);
-      var angleDegrees = Phaser.Math.RAD_TO_DEG * angle;
+      var angleRAD = betweenPoints(this.turret, this.scene.player);
+      var angleDEG = Phaser.Math.RAD_TO_DEG * angleRAD;
 
-      if ((-180 < angleDegrees) && (angleDegrees < 0)) {
-        this.turretAngle = angleDegrees;
-        this.turret.setAngle(this.turretAngle);
-      };
+      if ((-180 < angleDEG) && (angleDEG < 10) || (angleDEG > 170)) {
+        //update turret angle values for use in shoot function
+        this.turretAngleRAD = angleRAD;
+        this.turretAngleDEG = angleDEG;
+        this.turret.setAngle(this.turretAngleDEG);
 
-      //tank back and forth movement
+      } else {
+        //reset angle values outside of the range the turret can shoot in
+        this.turretAngleRAD = 10;
+        this.turretAngleDEG = 10;
+      }
+
+      //TURRET X POSITION
+      if (((this.turretAngleDEG < -90) || (this.turretAngleDEG > 170)) && (this.turret.x != this.x - 40)) {
+        //adjust for flipping past vertical to the left
+        this.turret.x -= 0.5;
+
+      } else if ((this.turretAngleDEG > -90) && (this.turretAngleDEG < 10) && (this.turret.x != this.x)) {
+        //adjust for flipping past vertical to the right
+        this.turret.x += 0.5;
+      }
+
+      // TURRET Y POSITION TESTING
+      // if (((this.turretAngleDEG > -155) && (this.turretAngleDEG < -25)) && (this.turret.y > this.y - 50)) {
+      //   //adjust up for flipping turret over top of tank
+      //   this.turret.y -= 0.5;
+      //
+      // } else if (this.turret.y < this.y - 40) {
+      //   //adjust back down for turret in normal position
+      //   this.turret.y += 0.5;
+      //
+      // } else {
+      //   //if error, affix turret to top of tank
+      //   this.turret.y = this.y - 40;
+      // }
+
+      //TURRET Y POSITION
+      if (this.turret.y != this.y) {
+        //affix turret to top of tank
+        this.turret.y = this.y - 40;
+      }
+
+      //TANK MOVEMENT
       if (this.moveCounter < 250) {
         this.x += this.speed;
         this.turret.x += this.speed;
@@ -81,12 +111,12 @@ export default class Tank extends Phaser.GameObjects.Sprite {
         this.turret.x -= this.speed;
       }
 
-      //tank shooting behavior (5 times per back and forth cycle)
+      //TANK SHOOTING (5 times per count cycle)
       if (this.moveCounter % 100 == 0) {
         this.shoot(this.scene.player);
       }
 
-      //reset count at 500 to repeat the behavior loop
+      //REPEAT BEHAVIOR LOOP
       if (this.moveCounter == 500) {
         this.moveCounter = 0;
       }
@@ -97,21 +127,23 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     /*
     function to define behavior of tank shooting at the player
     */
-    console.log('[tank.shoot]');
 
-    var velocityFromRotation = this.scene.physics.velocityFromRotation;
+    if ((-180 < this.turretAngleDEG) && (this.turretAngleDEG < 10) || (this.turretAngleDEG > 170)) {
+      console.log('[tank.shoot]');
 
-    //create a variable called velocity from a vector2
-    var velocity = new Phaser.Math.Vector2();
-    velocityFromRotation(this.turretAngle, this.shellSpeed, velocity);
+      var velocityFromRotation = this.scene.physics.velocityFromRotation;
 
-    //get the shells group and generate shell
-    var shell = this.shells.get();
-    shell.setAngle(this.turretAngle);
-    shell
-      .enableBody(true, this.x, this.y, true, true)
-      .setVelocity(velocity.x, velocity.y)
-      .setFlipX(true)
+      //create a variable called velocity from a vector2
+      var velocity = new Phaser.Math.Vector2();
+      velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+
+      //get the shells group and generate shell
+      var shell = this.shells.get();
+      shell.setAngle(this.turretAngleDEG);
+      shell
+        .enableBody(true, this.turret.x, this.turret.y, true, true)
+        .setVelocity(velocity.x, velocity.y)
+    }
   }
 
 

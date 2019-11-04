@@ -303,7 +303,7 @@ export default class finalBossLevel extends Phaser.Scene {
 
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
-    console.log("Update player health bar fill");
+    //console.log("Update player health bar fill");
   }
 
 }
