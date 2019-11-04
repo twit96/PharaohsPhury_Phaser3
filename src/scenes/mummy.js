@@ -233,7 +233,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //generate a beam attack sprite
     var beam = this.beams.get();
     beam.setAngle(this.beamAngle);
-    console.log(beam);
+    //console.log(beam);
     if (this.beamDirection == 1){
       beam.flipX = true;
     } else {

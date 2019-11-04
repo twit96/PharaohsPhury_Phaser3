@@ -111,20 +111,14 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 64
     });
 
-
-
     //final boss (tank)
-    this.load.spritesheet("tankMove", "../assets/spriteSheets/tankMove.png", {
-      frameWidth: 201,
-      frameHeight: 140
+    this.load.spritesheet("tankBase", "../assets/spriteSheets/tankBase.png", {
+      frameWidth: 192,
+      frameHeight: 64
     });
-    this.load.spritesheet("tankAttack", "../assets/spriteSheets/tankAttack.png", {
-      frameWidth: 197,
-      frameHeight: 136
-    });
-    this.load.spritesheet("tankAttackHigh", "../assets/spriteSheets/tankAttackHigh.png", {
-      frameWidth: 196.4,
-      frameHeight: 136
+    this.load.spritesheet("tankTurret", "../assets/spriteSheets/tankTurret.png", {
+      frameWidth: 128,
+      frameHeight: 30
     });
     this.load.spritesheet("explosion", "../assets/spriteSheets/tankAttackHigh.png", {
       frameWidth: 16,
@@ -251,21 +245,15 @@ export default class BootScene extends Phaser.Scene {
     //final boss (tank)
     this.anims.create({
       key: "tankMove",
-      frames: this.anims.generateFrameNumbers("tankMove"),
+      frames: this.anims.generateFrameNumbers("tankBase"),
       frameRate: 4,
       repeat: -1
     });
     this.anims.create({
       key: "tankAttack",
-      frames: this.anims.generateFrameNumbers("tankAttack"),
-      frameRate: 4,
-      repeat: -1
-    });
-    this.anims.create({
-      key: "tankAttackHigh",
-      frames: this.anims.generateFrameNumbers("tankAttackHigh"),
-      frameRate: 4,
-      repeat: -1
+      frames: this.anims.generateFrameNumbers("tankTurret"),
+      frameRate: 10,
+      repeat: 0
     });
     this.anims.create({
       key: "explode",
