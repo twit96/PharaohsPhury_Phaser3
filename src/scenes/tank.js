@@ -3,14 +3,14 @@ export default class Tank extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
+    //tank turret
+    this.turret = config.scene.add.sprite(config.x - 40, config.y - 40, 'tankTurret');
+    this.turret.setFlipX(true);
+
     //tank body
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
     this.body.setSize(192, 64);
-
-    //tank turret
-    this.turret = config.scene.add.sprite(config.x - 40, config.y - 50, 'tankTurret');
-
 
     //tank shells
     this.shells = this.scene.physics.add.group({
@@ -18,7 +18,8 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     });
 
     //variables
-    this.moveCounter = 0
+    this.moveCounter = 0;
+    this.turretAngle = 0;
     this.health = 100;
 
     this.speed = 1.0;
@@ -54,8 +55,8 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       this.moveCounter += 1
 
       //adjust turret position (workaround for sprite follow sprite)
-      if (this.turret.y != (this.y - 50)) {
-        this.turret.y = (this.y - 50);
+      if (this.turret.y != (this.y - 40)) {
+        this.turret.y = (this.y - 40);
       }
       if (this.turret.x != (this.x - 40)) {
         this.turret.x = (this.x - 40);
@@ -63,8 +64,13 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
       //adjust turret angle
       var betweenPoints = Phaser.Math.Angle.BetweenPoints;
-      var angle = Phaser.Math.RAD_TO_DEG * betweenPoints(this.turret, this.scene.player);
-      this.turret.setAngle(angle);
+      var angle = betweenPoints(this.turret, this.scene.player);
+      var angleDegrees = Phaser.Math.RAD_TO_DEG * angle;
+
+      if ((-180 < angleDegrees) && (angleDegrees < 0)) {
+        this.turretAngle = angleDegrees;
+        this.turret.setAngle(this.turretAngle);
+      };
 
       //tank back and forth movement
       if (this.moveCounter < 250) {
@@ -93,20 +99,19 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     */
     console.log('[tank.shoot]');
 
-    var betweenPoints = Phaser.Math.Angle.BetweenPoints;
-    var angle = betweenPoints(this, this.scene.player);
     var velocityFromRotation = this.scene.physics.velocityFromRotation;
 
     //create a variable called velocity from a vector2
     var velocity = new Phaser.Math.Vector2();
-    velocityFromRotation(angle, this.shellSpeed, velocity);
+    velocityFromRotation(this.turretAngle, this.shellSpeed, velocity);
 
     //get the shells group and generate shell
     var shell = this.shells.get();
-    shell.setAngle(Phaser.Math.RAD_TO_DEG * angle);
+    shell.setAngle(this.turretAngle);
     shell
       .enableBody(true, this.x, this.y, true, true)
       .setVelocity(velocity.x, velocity.y)
+      .setFlipX(true)
   }
 
 
