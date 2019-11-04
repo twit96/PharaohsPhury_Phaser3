@@ -60,9 +60,9 @@ export default class finalBossLevel extends Phaser.Scene {
 
     this.tank = new Tank({
       scene: this,
-      key: "tankMove",
+      key: "tankBase",
       x: 400,
-      y: 400
+      y: 450
     });
 
     console.log('created map layers and sprites');

@@ -36,8 +36,8 @@ export default class gameOverScene extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     //audio
-    this.HESound = this.sound.add("HE");
-    this.HESound.play({loop:false});
+    this.backgroundMusic = this.sound.add("HE");
+    this.backgroundMusic.play({loop:false});
 
     this.add.image(400,300,'gameoverbg').setScale(.5,.5);
 
@@ -105,7 +105,7 @@ export default class gameOverScene extends Phaser.Scene {
     }
 
     //stop audio, start correct level scene, update variable to exit this scene
-    this.HESound.stop();
+    this.backgroundMusic.stop();
     this.scene.start(levelScene);
   }
 
@@ -116,7 +116,7 @@ export default class gameOverScene extends Phaser.Scene {
     */
     console.log("[quitGame]");
 
-    this.HESound.stop();
+    this.backgroundMusic.stop();
     this.scene.start("menu");
   }
 

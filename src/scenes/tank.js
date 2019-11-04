@@ -3,8 +3,19 @@ export default class Tank extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
+    //tank body
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
+    this.body.setSize(192, 64);
+
+    //tank turret
+    this.turret = config.scene.add.sprite(config.x - 40, config.y - 50, 'tankTurret');
+
+
+    //tank shells
+    this.shells = this.scene.physics.add.group({
+      defaultKey: "shell"
+    });
 
     //variables
     this.moveCounter = 0
@@ -14,10 +25,6 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     this.shellSpeed = 1000;
     this.isActive = true;
 
-    //tank shells
-    this.shells = this.scene.physics.add.group({
-      defaultKey: "shell"
-    });
   }
 
   //TANK HELPER FUNCTIONS
@@ -46,11 +53,26 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     if (this.isActive) {
       this.moveCounter += 1
 
+      //adjust turret position (workaround for sprite follow sprite)
+      if (this.turret.y != (this.y - 50)) {
+        this.turret.y = (this.y - 50);
+      }
+      if (this.turret.x != (this.x - 40)) {
+        this.turret.x = (this.x - 40);
+      }
+
+      //adjust turret angle
+      var betweenPoints = Phaser.Math.Angle.BetweenPoints;
+      var angle = Phaser.Math.RAD_TO_DEG * betweenPoints(this.turret, this.scene.player);
+      this.turret.setAngle(angle);
+
       //tank back and forth movement
       if (this.moveCounter < 250) {
-        this.x += this.speed
+        this.x += this.speed;
+        this.turret.x += this.speed;
       } else {
-        this.x -= this.speed
+        this.x -= this.speed;
+        this.turret.x -= this.speed;
       }
 
       //tank shooting behavior (5 times per back and forth cycle)
