@@ -115,6 +115,9 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       if (this.moveCounter % 100 == 0) {
         this.shoot(this.scene.player);
       }
+      if (this.moveCounter % 100 == 25) {
+        this.turret.setFrame(0);
+      }
 
       //REPEAT BEHAVIOR LOOP
       if (this.moveCounter == 500) {
@@ -130,6 +133,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     if ((-180 < this.turretAngleDEG) && (this.turretAngleDEG < 10) || (this.turretAngleDEG > 170)) {
       console.log('[tank.shoot]');
+      this.turret.play('tankAttack');
 
       var velocityFromRotation = this.scene.physics.velocityFromRotation;
 

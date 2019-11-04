@@ -252,7 +252,7 @@ export default class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "tankAttack",
       frames: this.anims.generateFrameNumbers("tankTurret"),
-      frameRate: 4,
+      frameRate: 10,
       repeat: 0
     });
     this.anims.create({
