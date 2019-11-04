@@ -1,3 +1,4 @@
+/*global Phaser*/
 export default class EnemyArch extends Phaser.GameObjects.Sprite{
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
@@ -8,28 +9,19 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
     this.body.setSize(20,55,50,80);
 
     //variables
-    this.isActive = true;
     this.moveCounter = 0
-    this.speed = 1.0;
-    this.destroyed = false;
+    this.health = 10;
 
-    config.scene.events.on("update", this.update, this);
-    config.scene.events.once("shutdown", this.destroy, this);
-    config.scene.events.once("destroy", this.destroy, this);
+    this.speed = 100;
+    this.isActive = true;
   }
 
-  update() {
-    if (this.destroyed) return;
-    if (this.isActive) {
-      this.move();
-    } else {
-      this.body.setVelocityX(0);
-    }
-  }
-
+  //ARCHEOLOGIST HELPER FUNCTIONS
   stun() {
     console.log('[archeologist.stun]');
     this.isActive = false;
+    this.body.setVelocityX(0);
+    this.tint = 0xff0000;
 
     this.scene.time.addEvent({
       delay: 1000,
@@ -38,40 +30,48 @@ export default class EnemyArch extends Phaser.GameObjects.Sprite{
       loop: false
     });
   }
+
   reset() {
-    console.log('[archeologist.reset]');
+    console.log('[enemyArch.reset]');
     this.isActive = true;
+    this.setTint();
+  }
+
+  updateHealth(damage) {
+    /** To subtract damage from this enemy's health when player attacks it. */
+    console.log('[enemyArch.updateHealth]');
+
+    this.health = this.health - damage;
+
+    //handle "death" if necessary
+    if (this.health <= 0) {
+      this.isActive = false;
+      this.scene.physics.world.disable(this);
+      this.visible = false;
+    }
   }
 
   move() {
     /*
     function for back and forth movement
     */
-    this.moveCounter += 1
+    if (this.isActive) {
 
-    if (this.moveCounter < 250) {
-      this.body.setVelocityX(this.speed+100);
-      this.setFlipX(false);
-    } else {
-      this.body.setVelocityX(-this.speed-100);
-      this.setFlipX(true);
-    }
+      //update or reset counter
+      this.moveCounter ++;
+      if (this.moveCounter == 500) {
+        this.moveCounter = 0;
+      }
 
-    //reset count at 500 to repeat the behavior loop
-    if (this.moveCounter == 500) {
-      this.moveCounter = 0;
+      //handle movement and animations
+      if (this.moveCounter < 250) {
+        this.body.setVelocityX(this.speed);
+        this.setFlipX(false);
+      } else {
+        this.body.setVelocityX(-this.speed);
+        this.setFlipX(true);
+      }
+
     }
   }
-
-  destro() {
-   this.destroyed = true;
-
-   //event listeners
-	this.scene.events.off("update", this.update, this);
-	this.scene.events.off("shutdown", this.destroy, this);
-	this.scene.events.off("destroy", this.destroy, this);
-
-   this.destroy();
-  }
-
 }

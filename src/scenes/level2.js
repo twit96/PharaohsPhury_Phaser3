@@ -241,6 +241,12 @@ export default class level2 extends Phaser.Scene {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
 
+      var newLevelCompletion = this.registry.pop("levelCompletion");
+      newLevelCompletion[1] = 1;
+
+      this.registry.set({levelCompletion:newLevelCompletion});
+      console.log(this.registry);
+
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
         level: this.levelName,

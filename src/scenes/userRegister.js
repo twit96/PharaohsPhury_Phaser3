@@ -122,14 +122,14 @@ checkUserName (input){
   var foundUser = this.getUserFromJson(input);
   console.log("Found in storage");
   console.log(foundUser);
+  this.registry.reset();
 
   // create new profile
   if (this.isNew){
     console.log("New user creating....");
     if (foundUser == null){
-      var user = new User(input);
       // Set user data to registry for runtime get and set
-      this.registry.set(user);
+      this.registry.set({ userName: input, levelCompletion:[0,0,0,0,0,0,0,0,0]});
       this.backgroundMusic.stop();
       console.log("New name received, created new user");
       this.scene.start('levelPicker');
@@ -145,7 +145,7 @@ checkUserName (input){
     } else {
       // Found user; then instanciate an object using the info;
       // Set user to registry for runtime get and set
-      this.registry.set(foundUser);
+      this.registry.set({ userName: foundUser.userName, levelCompletion:foundUser.levelCompletion});
       this.backgroundMusic.stop();
       console.log("Old name found, directing to level picker");
       this.scene.start('levelPicker');

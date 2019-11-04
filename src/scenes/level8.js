@@ -246,6 +246,12 @@ export default class level8 extends Phaser.Scene {
       console.log('[LEVEL ENDING]');
 
       this.backgroundMusic.stop();
+      var newLevelCompletion = this.registry.pop("levelCompletion");
+      newLevelCompletion[7] = 1;
+
+      this.registry.set({levelCompletion:newLevelCompletion});
+      console.log(this.registry);
+
       this.scene.start('gameOverScene', {
         level: this.levelName,
         diamond: this.player.diamondsCollected,

@@ -27,6 +27,11 @@ export default class levelPicker extends Phaser.Scene {
   }
 
   create (data) {
+    // User information
+    console.log(this.registry.get("userName"));
+    console.log(this.registry.get("levelCompletion"));
+    this.levelCompletion = this.registry.get("levelCompletion");
+
     console.log('[create]');
     this.add.image(400,300,'background').setScale(.5,.5);
     // Audio
@@ -66,21 +71,28 @@ export default class levelPicker extends Phaser.Scene {
     );
 
     var b2 = this.add.image(515, 140, 'slab2').setScale(.5,.5).setInteractive();
-    b2.on("pointerover", function() {
-      this.setScale(.7);
-      sound.play('low')
-    });
-    b2.on("pointerout", function () {
-      this.setScale(.5);
-    });
-    b2.on("pointerup", function () {
-      sound.play('high');
-      this.backgroundMusic.stop();
-      this.scene.start('level2');
-    }, this
-    );
+    if (this.levelCompletion[0] != 1) {
+      b2.tint = 0x707070;
+    } else {
+      b2.on("pointerover", function() {
+        this.setScale(.7);
+        sound.play('low')
+      });
+      b2.on("pointerout", function () {
+        this.setScale(.5);
+      });
+      b2.on("pointerup", function () {
+        sound.play('high');
+        this.backgroundMusic.stop();
+        this.scene.start('level2');
+      }, this
+      );
+    }
 
     var b3 = this.add.image(285, 225, 'slab3').setScale(.5,.5).setInteractive();
+    if (this.levelCompletion[1] != 1) {
+      b3.tint = 0x707070;
+    } else{
     b3.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')
@@ -94,57 +106,69 @@ export default class levelPicker extends Phaser.Scene {
       this.scene.start('level3');
     }, this   // scope so above line works
     );
+  }
 
     var b4 = this.add.image(515, 225, 'slab4').setScale(.5,.5).setInteractive();
-    // b4.tint = 0x707070;
-    b4.on("pointerover", function() {
-      this.setScale(.7);
-      sound.play('low')
-    });
-    b4.on("pointerout", function () {
-      this.setScale(.5);
-    });
-    b4.on("pointerup", function () {
-      sound.play('high');
-      this.backgroundMusic.stop();
-      this.scene.start('level4');
-      }, this
-    );
+    if (this.levelCompletion[2] != 1) {
+      b4.tint = 0x707070;
+    } else {
+      b4.on("pointerover", function() {
+        this.setScale(.7);
+        sound.play('low')
+      });
+      b4.on("pointerout", function () {
+        this.setScale(.5);
+      });
+      b4.on("pointerup", function () {
+        sound.play('high');
+        this.backgroundMusic.stop();
+        this.scene.start('level4');
+        }, this
+      );
+    }
 
     var b5 = this.add.sprite(285, 315, 'slab5').setScale(.5,.5).setInteractive();
-    // b5.tint = 0x707070;
-    b5.on("pointerover", function() {
-      this.setScale(.7);
-      sound.play('low')
-    });
-    b5.on("pointerout", function () {
-      this.setScale(.5);
-    });
-    b5.on("pointerup", function () {
-      sound.play('high');
-      this.backgroundMusic.stop();
-      this.scene.start('level5');
-    }, this
-    );
+    if (this.levelCompletion[3] != 1) {
+      b5.tint = 0x707070;
+    } else{
+      b5.on("pointerover", function() {
+        this.setScale(.7);
+        sound.play('low')
+      });
+      b5.on("pointerout", function () {
+        this.setScale(.5);
+      });
+      b5.on("pointerup", function () {
+        sound.play('high');
+        this.backgroundMusic.stop();
+        this.scene.start('level5');
+      }, this
+      );
+    }
 
     var b6 = this.add.image(515, 315, 'slab6').setScale(.5,.5).setInteractive();
-    // b6.tint = 0x707070;
-    b6.on("pointerover", function() {
-      this.setScale(.7);
-      sound.play('low')
-    });
-    b6.on("pointerout", function () {
-      this.setScale(.5);
-    });
-    b6.on("pointerup", function () {
-      sound.play('high');
-      this.backgroundMusic.stop();
-      this.scene.start('level6');
-    }, this   // scope so above line works
-    );
+    if (this.levelCompletion[4] != 1) {
+      b6.tint = 0x707070;
+    } else {
+      b6.on("pointerover", function() {
+        this.setScale(.7);
+        sound.play('low')
+      });
+      b6.on("pointerout", function () {
+        this.setScale(.5);
+      });
+      b6.on("pointerup", function () {
+        sound.play('high');
+        this.backgroundMusic.stop();
+        this.scene.start('level6');
+      }, this   // scope so above line works
+      );
+    }
 
     var b7 = this.add.image(285, 405, 'slab7').setScale(.5,.5).setInteractive();
-    // b7.tint = 0x707070;
+    if (this.levelCompletion[5] != 1) {
+      b7.tint = 0x707070;
+    } else {
     b7.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')
@@ -157,10 +181,12 @@ export default class levelPicker extends Phaser.Scene {
       this.backgroundMusic.stop();
       this.scene.start('level7');
       }, this
-    );
+    );}
 
     var b8 = this.add.image(515, 405, 'slab8').setScale(.5,.5).setInteractive();
-    b8.tint = 0x707070;
+    if (this.levelCompletion[6] != 1) {
+      b8.tint = 0x707070;
+    } else {
     b8.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')
@@ -173,9 +199,12 @@ export default class levelPicker extends Phaser.Scene {
       this.backgroundMusic.stop();
       // this.scene.start('level8');
     }, this
-    );
+  );}
 
     var b9 = this.add.image(388, 538, 'final').setScale(.55,.55).setInteractive();
+    if (this.levelCompletion[7] != 1) {
+      b9.tint = 0x707070;
+    } else {
     b9.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')
@@ -187,10 +216,9 @@ export default class levelPicker extends Phaser.Scene {
       sound.play('high');
       this.scene.start('finalBossLevel');
     }, this
-    );
-
+  );}
     console.log('configured buttons');
-  }
+}
 
   update (time, delta) {
     // Update the scene
