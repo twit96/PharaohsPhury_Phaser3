@@ -9,6 +9,10 @@ export default class BootScene extends Phaser.Scene {
     console.log('[preload]');
     this.load.image('title', './assets/images/gametitle.png');
 
+    this.loadingTxt = this.add.text(300, 400, "Loading game...",{
+      fontFamily: 'Arial',
+      fontSize: 30,
+      color: '#FFFFFF'});
 
     //LOAD LEVEL ASSETS
     //tile maps
@@ -152,12 +156,6 @@ export default class BootScene extends Phaser.Scene {
   create (data) {
     console.log('[create]');
 
-    var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
-
-    this.loadingTxt = this.add.text(380, 400, "Loading game...",{
-      fontFamily: 'Arial',
-      fontSize: 52,
-      color: '#FFFFFF'});
     //CREATE SPRITE ANIMATIONS
     //player (mummy)
     this.anims.create({
@@ -278,7 +276,6 @@ export default class BootScene extends Phaser.Scene {
   }
 
   update (time, delta) {
-    // Update the scene
-    this.loadingTxt.text = "Loading game.." + ".";
+
   }
 }
