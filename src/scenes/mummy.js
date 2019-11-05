@@ -19,6 +19,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.beamDirection = 0;
 
     this.diamondsCollected = 0;
+    this.scrollsCollected = 0;
     this.enemiesKilled = 0;
     this.gameOver = false;
     this.levelCompleted = false;

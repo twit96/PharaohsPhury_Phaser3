@@ -51,8 +51,8 @@ export default class BootScene extends Phaser.Scene {
     //LOAD SPRITESHEET ASSETS
     // ASSETS
     this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
-      frameWidth: 30,
-      frameHeight: 30
+      frameWidth: 48,
+      frameHeight: 32
     });
 
     //levelPicker
@@ -151,6 +151,12 @@ export default class BootScene extends Phaser.Scene {
     console.log('[create]');
 
     //CREATE SPRITE ANIMATIONS
+    this.anims.create({
+      key: "chestOpen",
+      frames: this.anims.generateFrameNumbers("chest"),
+      frameRate: 3,
+      repeat: 0
+    });
     //player (mummy)
     this.anims.create({
       key: "mummyIdleAnim",
