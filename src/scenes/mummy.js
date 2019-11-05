@@ -111,7 +111,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     if (this.cursors.left.isDown) {
       this.flipX = true;
       this.beamDirection = 1;
-      this.body.setVelocityX(-160);
+      this.body.setVelocityX(-220);
       if (this.canAttack) {
         //animations only play while player is not attacking
         //animation dependent on level
@@ -130,7 +130,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     } else if (this.cursors.right.isDown) {
       this.flipX = false;
       this.beamDirection = 0;
-      this.body.setVelocityX(160);
+      this.body.setVelocityX(220);
 
       if (this.canAttack) {
         //animations only play while player is not attacking
@@ -164,7 +164,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //jumping
     if (this.cursors.up.isDown && this.body.onFloor())  {
       //only jumps if sprite body is on ground
-      this.body.setVelocityY(-330);
+      this.body.setVelocityY(-530);
     }
 
     //short range attacks
