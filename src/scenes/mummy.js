@@ -49,11 +49,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.anims.play("mummyCaneIdleAnim", true);
     this.body.setSize(20, 55, 50, 80);
 
-    if (this.scene.scene.key == "level1"){
+    if (this.scene.scene.key == "level1" || this.scene.scene.key == "level2"){
       this.anims.play("mummyIdleAnim", true);
-    } else if (this.scene.scene.key == "level2"){
+    } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
       this.anims.play("mummyCaneIdleAnim", true);
-    } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
+    } else if (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+     this.scene.scene.key == "finalBossLevel") {
       this.anims.play("pharoahCaneIdleAnim", true);
     }
 
@@ -115,11 +116,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       if (this.canAttack) {
         //animations only play while player is not attacking
         //animation dependent on level
-        if (this.scene.scene.key == "level1"){
+        if (this.scene.scene.key == "level1" || this.scene.scene.key == "level2"){
           this.anims.play("mummyWalkAnim", true);
-        } else if (this.scene.scene.key == "level2"){
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
           this.anims.play("mummyCaneWalkAnim", true);
-        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
+        } else if (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+         this.scene.scene.key == "finalBossLevel") {
           this.anims.play("pharoahCaneWalkAnim", true);
         }
       }
@@ -135,11 +137,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       if (this.canAttack) {
         //animations only play while player is not attacking
         //animations dependent on level
-        if (this.scene.scene.key == "level1"){
+        if (this.scene.scene.key == "level1" || this.scene.scene.key == "level2"){
           this.anims.play("mummyWalkAnim", true);
-        } else if (this.scene.scene.key == "level2"){
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
           this.anims.play("mummyCaneWalkAnim", true);
-        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel"){
+        } else if (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+         this.scene.scene.key == "finalBossLevel"){
           this.anims.play("pharoahCaneWalkAnim", true);
         }
       }
@@ -151,11 +154,12 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.body.setVelocityX(0);
       if (this.canAttack) {
         //animations only play while player is not attacking
-        if (this.scene.scene.key == "level1"){
+        if (this.scene.scene.key == "level1" || this.scene.scene.key == "level2"){
           this.anims.play("mummyIdleAnim", true);
-        } else if (this.scene.scene.key == "level2"){
+        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
           this.anims.play("mummyCaneIdleAnim", true);
-        } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel") {
+        } else if (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+         this.scene.scene.key == "finalBossLevel") {
           this.anims.play("pharoahCaneIdleAnim", true);
         }
       }
@@ -173,7 +177,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     }
 
     //long range attacks
-    if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel")) {
+    if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+     this.scene.scene.key == "finalBossLevel")) {
       //this.anims.play("mummyRangeCaneAnim", true);
       console.log('shoot');
       this.canAttack = false;
@@ -186,7 +191,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
   }
 
   shortRangeAttack() {
-    if (this.scene.scene.key == "level2" || this.scene.scene.key == "level3") {
+    if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5" || this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+     this.scene.scene.key == "finalBossLevel") {
       /*
       function to define behavior of player using melee (short-range) attacks
       */
@@ -200,9 +206,10 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.caneAttack = this.scene.physics.add.sprite('mummyCane');
       this.body.setSize(64, 64, 50, 50);
 
-       if (this.scene.scene.key == "level2"){
+       if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
         this.anims.play("mummyCaneAnim", true);
-      } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "finalBossLevel"){
+      } else if (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
+       this.scene.scene.key == "finalBossLevel"){
         this.anims.play("pharoahCaneAnim", true);
       }
 

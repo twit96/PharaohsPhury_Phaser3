@@ -28,10 +28,7 @@ export default class level5 extends Phaser.Scene {
     //background image
     this.add.image(2240,384,'background1');
 
-    //tutorial
-    this.add.image(290,200, 'bubble').setScale(.4,.4);
-    this.add.image(290,200, 'mbtn').setScale(.3,.3);
-    this.add.text(270, 150, "Shoot");
+    
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
