@@ -41,8 +41,8 @@ export default class level2 extends Phaser.Scene {
 
     //VARIABLES
     //player
-    this.spawnX = 50;
-    this.spawnY = 200;
+    this.spawnX = 250;
+    this.spawnY = 400;
     this.levelName = 2;
 
     //declare map and tilesets
@@ -58,7 +58,7 @@ export default class level2 extends Phaser.Scene {
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
@@ -144,7 +144,6 @@ export default class level2 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
-    this.physics.add.collider(this.collectItems, this.collectItems);
 
     this.physics.add.overlap(
       this.player,
@@ -199,7 +198,7 @@ export default class level2 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -228,7 +227,7 @@ export default class level2 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -240,12 +239,6 @@ export default class level2 extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[1] = 1;
-
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
 
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
@@ -401,7 +394,7 @@ export default class level2 extends Phaser.Scene {
         this.player.y = enemyBottomY - playerHalfHeight;
 
         //player takes damage
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy

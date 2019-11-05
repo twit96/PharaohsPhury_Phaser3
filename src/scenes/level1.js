@@ -23,14 +23,7 @@ export default class level1 extends Phaser.Scene {
     //background
     this.add.image(2240,384,'background1');
 
-    //tutorial
-    this.add.image(180,530, 'bubble').setScale(.4,.4);
-    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
-    this.add.text(125,570, "Left   Right");
-    this.add.text(162, 475, "Jump");
 
-    this.add.image(685, 510, 'bubble').setScale(.4, .4);
-    this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -71,6 +64,15 @@ export default class level1 extends Phaser.Scene {
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+
+    //tutorial
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
+    this.add.text(125,570, "Left   Right");
+    this.add.text(162, 475, "Jump");
+
+    this.add.image(685, 510, 'bubble').setScale(.4, .4);
+    this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
 
     //create diamonds group
     this.collectItems = this.add.group();
