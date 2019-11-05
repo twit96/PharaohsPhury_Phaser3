@@ -376,9 +376,6 @@ export default class level2 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
-      //enemy briefly disabled
-      enemy.stun();
-
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
       var enemyRightX = enemy.x + enemyHalfWidth;
@@ -392,7 +389,7 @@ export default class level2 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
-
+        enemy.isActive = false;
         this.player.body.setVelocityY(-330);
 
       } else if (this.player.body.touching.right) {
@@ -400,16 +397,22 @@ export default class level2 extends Phaser.Scene {
         this.player.x = enemyLeftX - this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
+        //enemy briefly disabled
+        enemy.stun();
+
         //player takes damage
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
+        //enemy briefly disabled
+        enemy.stun();
+
         //player takes damage
-        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
@@ -417,7 +420,6 @@ export default class level2 extends Phaser.Scene {
     //HANDLE COLLISION IF PLAYER IS ATTACKING
     } else {
       console.log('player was attacking');
-
       //enemy dies
       enemyDied = true;
     }
