@@ -53,7 +53,7 @@ export default class level2 extends Phaser.Scene {
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
