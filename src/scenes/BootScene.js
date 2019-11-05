@@ -7,7 +7,7 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
-    this.load.image('title', './assets/images/gametitle.png');
+    //this.load.image('title', './assets/images/gametitle.png');
 
 
     //LOAD LEVEL ASSETS
@@ -36,7 +36,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
-    this.load.image('title', './assets/images/gametitle.png');
+    //this.load.image('title', './assets/images/gametitle.png');
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
@@ -44,10 +44,7 @@ export default class BootScene extends Phaser.Scene {
 
     //LOAD SPRITESHEET ASSETS
     //levelPicker
-    this.load.spritesheet('buttons', './assets/spriteSheets/buttons.png', {
-      frameHeight: 100,
-      frameWidth: 200
-    });
+
 
     //player (mummy)
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
@@ -120,10 +117,7 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 30
     });
-    this.load.spritesheet("explosion", "../assets/spriteSheets/tankAttackHigh.png", {
-      frameWidth: 16,
-      frameHeight: 16
-    });
+
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
