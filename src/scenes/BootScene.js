@@ -39,10 +39,6 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
-<<<<<<< HEAD
-    //this.load.image('title', './assets/images/gametitle.png');
-=======
->>>>>>> 49135906f752646cc6ae5b2510d80baa8e65e90a
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
