@@ -14,19 +14,14 @@ export default class level2 extends Phaser.Scene {
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
-    this.load.image('bubble', './assets/images/opaquebubble.png');
-    this.load.image('spacebtn', './assets/images/spacebutton.png');
-  }
+}
 
   create() {
     console.log('[create]');
     // background
     this.add.image(2240,384,'background1');
 
-    //tutorial
-    this.add.image(180,330, 'bubble').setScale(.4,.4);
-    this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-    this.add.text(155, 280, "Melee");
+
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -58,7 +53,7 @@ export default class level2 extends Phaser.Scene {
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
