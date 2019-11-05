@@ -15,8 +15,10 @@ export default class level6 extends Phaser.Scene {
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
+
     this.load.image('bubble', './assets/images/opaquebubble.png');
     this.load.image('mbtn', './assets/images/mbutton.png');
+
   }
 
   create() {
@@ -27,6 +29,11 @@ export default class level6 extends Phaser.Scene {
 
     //background image
     this.add.image(2240,384,'background1');
+
+    //tutorial
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'mbtn').setScale(.3,.3);
+    this.add.text(155, 480, "Shoot");
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
@@ -55,7 +62,7 @@ export default class level6 extends Phaser.Scene {
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     /*
     // for collecting item @ dyven

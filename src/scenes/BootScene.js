@@ -7,7 +7,7 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
-    this.load.image('title', './assets/images/gametitle.png');
+    //this.load.image('title', './assets/images/gametitle.png');
 
 
     //LOAD LEVEL ASSETS
@@ -28,6 +28,9 @@ export default class BootScene extends Phaser.Scene {
     //items
     this.load.image("gem", "../assets/sprites/gem.png");
     this.load.image("cane", "../assets/sprites/mummyCane.png");
+    this.load.image("scroll", "../assets/sprites/Scroll.png");
+    this.load.image("arrow", "../assets/sprites/Arrow.png");
+    this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
 
     this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
@@ -36,18 +39,20 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
-    this.load.image('title', './assets/images/gametitle.png');
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
-    //levelPicker
-    this.load.spritesheet('buttons', './assets/spriteSheets/buttons.png', {
-      frameHeight: 100,
-      frameWidth: 200
+    // ASSETS
+    this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
+      frameWidth: 30,
+      frameHeight: 30
     });
+
+    //levelPicker
+
 
     //player (mummy)
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
@@ -120,10 +125,7 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 30
     });
-    this.load.spritesheet("explosion", "../assets/spriteSheets/tankAttackHigh.png", {
-      frameWidth: 16,
-      frameHeight: 16
-    });
+
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
