@@ -36,7 +36,7 @@ export default class finalBossLevel extends Phaser.Scene {
     //player
     this.spawnX = 25;
     this.spawnY = 500;
-    this.levelName = 'Final Boss';
+    this.levelName = "Final Boss";
 
     //CREATE LEVEL
     //declare map and tilesets
@@ -185,7 +185,7 @@ export default class finalBossLevel extends Phaser.Scene {
         level: this.levelName,
         diamond: this.player.diamondsCollected,
         killed: this.player.enemiesKilled,
-        done: this.levelCompleted
+        done: this.player.levelCompleted
       });
       return;
     }
