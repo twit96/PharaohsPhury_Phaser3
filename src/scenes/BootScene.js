@@ -28,6 +28,9 @@ export default class BootScene extends Phaser.Scene {
     //items
     this.load.image("gem", "../assets/sprites/gem.png");
     this.load.image("cane", "../assets/sprites/mummyCane.png");
+    this.load.image("scroll", "../assets/sprites/Scroll.png");
+    this.load.image("arrow", "../assets/sprites/Arrow.png");
+    this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
 
     this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
     this.load.image("shell", "../assets/sprites/bomb.png");
@@ -36,13 +39,22 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
     this.load.image("heart","../assets/images/lifeHeart.png");
 
+<<<<<<< HEAD
     //this.load.image('title', './assets/images/gametitle.png');
+=======
+>>>>>>> 49135906f752646cc6ae5b2510d80baa8e65e90a
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
+    // ASSETS
+    this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
+      frameWidth: 30,
+      frameHeight: 30
+    });
+
     //levelPicker
 
 
