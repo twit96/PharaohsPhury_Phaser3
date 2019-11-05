@@ -430,7 +430,6 @@ export default class level3 extends Phaser.Scene {
         enemy.stun();
       }
 
-
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
     //HANDLE COLLISION IF PLAYER IS ATTACKING
