@@ -23,14 +23,7 @@ export default class level1 extends Phaser.Scene {
     //background
     this.add.image(2240,384,'background1');
 
-    //tutorial
-    this.add.image(180,530, 'bubble').setScale(.4,.4);
-    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
-    this.add.text(125,570, "Left   Right");
-    this.add.text(162, 475, "Jump");
 
-    this.add.image(685, 510, 'bubble').setScale(.4, .4);
-    this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -62,14 +55,24 @@ export default class level1 extends Phaser.Scene {
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map1 = this.make.tilemap({ key: "level1map" });
-    const below2Tileset = map1.addTilesetImage("inca_back2", "incaBack2Tiles");
+    const below2Tileset =map1.addTilesetImage("inca_back2", "incaBack2Tiles");
     const worldTileset = map1.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
     const bgLayer = map1.createStaticLayer("Below Player", below2Tileset, 0, 0);
+
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+
+    //tutorial
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'awdbtn').setScale(.3,.3);
+    this.add.text(125,570, "Left   Right");
+    this.add.text(162, 475, "Jump");
+
+    this.add.image(685, 510, 'bubble').setScale(.4, .4);
+    this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
 
     //create diamonds group
     this.collectItems = this.add.group();
@@ -105,8 +108,8 @@ export default class level1 extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesA.add(enemy);
+      console.log("Created "+this.enemiesA.children);
     }
-
     for (var count in this.enemySCor) {
       var x = this.enemySCor[count][0];
       var y = this.enemySCor[count][1];
@@ -120,6 +123,7 @@ export default class level1 extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesS.add(enemy);
+      console.log("Created "+this.enemiesS.children);
     }
 
     for (var count in this.gemCor) {
@@ -136,7 +140,7 @@ export default class level1 extends Phaser.Scene {
       y: this.spawnY
     });
 
-    //const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
+    const aboveLayer = map1.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -155,7 +159,6 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
-    this.physics.add.collider(this.collectItems, this.collectItems);
 
     this.physics.add.overlap(
       this.player,
@@ -210,7 +213,7 @@ export default class level1 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Coordinates: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -239,7 +242,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -253,12 +256,6 @@ export default class level1 extends Phaser.Scene {
       console.log('[LEVEL ENDING]');
 
       this.backgroundMusic.stop();
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[0] = 1;
-
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
-      
       this.scene.start('gameOverScene', {
         level: this.levelName,
         diamond: this.player.diamondsCollected,
@@ -309,15 +306,10 @@ export default class level1 extends Phaser.Scene {
 
     //enemy movement
     this.enemiesA.children.each(function(enemyA) {
-      if (enemyA.isActive) {
-        enemyA.move();
-      }
+      enemyA.move();
     }, this);
-
     this.enemiesS.children.each(function(enemyS) {
-      if (enemyS.isActive) {
-        enemyS.move();
-      }
+      enemyS.move();
     }, this);
 
     //configure overlaps for active enemy bullets
@@ -392,6 +384,9 @@ export default class level1 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
+      //enemy briefly disabled
+      enemy.stun();
+
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
       var enemyRightX = enemy.x + enemyHalfWidth;
@@ -405,7 +400,7 @@ export default class level1 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
-        enemy.isActive = false;
+
         this.player.body.setVelocityY(-330);
 
       } else if (this.player.body.touching.right) {
@@ -413,22 +408,16 @@ export default class level1 extends Phaser.Scene {
         this.player.x = enemyLeftX - this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
