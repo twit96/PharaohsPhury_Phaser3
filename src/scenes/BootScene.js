@@ -120,10 +120,16 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 30
     });
-    this.load.spritesheet("explosion", "../assets/spriteSheets/tankAttackHigh.png", {
+    this.load.spritesheet("tankTurretHigh", "../assets/spriteSheets/tankTurretHigh.png", {
+      frameWidth: 112,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet("explosion", "../assets/spriteSheets/explosion.png", {
       frameWidth: 16,
       frameHeight: 16
     });
+
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
@@ -144,12 +150,13 @@ export default class BootScene extends Phaser.Scene {
   create (data) {
     console.log('[create]');
 
+    //LOADING TEXT
     var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
-
     this.loadingTxt = this.add.text(380, 400, "Loading game...",{
       fontFamily: 'Arial',
       fontSize: 52,
       color: '#FFFFFF'});
+
     //CREATE SPRITE ANIMATIONS
     //player (mummy)
     this.anims.create({
@@ -164,7 +171,7 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    //With cane
+    //with cane
     this.anims.create({
       key: "mummyCaneIdleAnim",
       frames: this.anims.generateFrameNumbers("mummyCaneIdle"),
@@ -177,7 +184,7 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    //With pharaoh mask
+    //with pharaoh mask
     this.anims.create({
       key: "pharoahCaneIdleAnim",
       frames: this.anims.generateFrameNumbers("pharoahCaneIdle"),

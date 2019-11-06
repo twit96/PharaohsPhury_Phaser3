@@ -21,7 +21,7 @@ export default class finalBossLevel extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     // background image
-    this.add.image(2560, 384, 'bossbackground');
+    this.add.image(1600, 320, 'bossbackground');
 
     //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
@@ -35,7 +35,7 @@ export default class finalBossLevel extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 25;
-    this.spawnY = 500;
+    this.spawnY = 300;
     this.levelName = "Final Boss";
 
     //CREATE LEVEL
@@ -62,7 +62,7 @@ export default class finalBossLevel extends Phaser.Scene {
       scene: this,
       key: "tankBase",
       x: 400,
-      y: 450
+      y: 300
     });
 
     console.log('created map layers and sprites');

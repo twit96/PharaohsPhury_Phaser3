@@ -258,7 +258,7 @@ export default class level1 extends Phaser.Scene {
 
       this.registry.set({levelCompletion:newLevelCompletion});
       console.log(this.registry);
-      
+
       this.scene.start('gameOverScene', {
         level: this.levelName,
         diamond: this.player.diamondsCollected,
