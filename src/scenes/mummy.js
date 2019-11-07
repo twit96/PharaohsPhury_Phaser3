@@ -215,6 +215,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       }
 
       //attack audio
+      this.scene.meleeSound.play({volume: 1});
 
       //enable player attacks again after a delay
       this.scene.time.addEvent({

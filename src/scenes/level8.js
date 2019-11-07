@@ -32,6 +32,7 @@ export default class level8 extends Phaser.Scene {
     this.backgroundMusic = this.sound.add("creepy");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");

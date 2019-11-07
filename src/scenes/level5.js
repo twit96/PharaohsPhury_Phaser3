@@ -28,12 +28,13 @@ export default class level5 extends Phaser.Scene {
     //background image
     this.add.image(2240,384,'background1');
 
-    
+
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
