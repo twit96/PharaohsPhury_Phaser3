@@ -29,7 +29,7 @@ export default class level7 extends Phaser.Scene {
     this.add.image(2240,384,'background1');
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.yell = this.sound.add("diedYell");
@@ -232,7 +232,7 @@ export default class level7 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
 

@@ -12,7 +12,6 @@ export default class menu extends Phaser.Scene {
     console.log('\n[MENU]')
     console.log('[preload]');
     this.load.image('menu', './assets/images/menu.jpg');
-    //this.load.image('title', './assets/images/gametitle.png');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -23,11 +22,9 @@ export default class menu extends Phaser.Scene {
     console.log('[create]');
     // Background and title images
     var menuBG = this.add.image(400,300,'menu').setScale(.5,.5);
-    //var titleImage = this.add.image(470,120, "title").setScale(.5,.5);
-
 
     // Audio
-    this.backgroundMusic = this.sound.add("short");
+    this.backgroundMusic = this.sound.add("bg1");
     this.backgroundMusic.play({loop:true});
 
     //configure audio
@@ -63,6 +60,7 @@ export default class menu extends Phaser.Scene {
       this.x += 25;
     }).on("pointerup", function () {
       sound.play('high');
+
       this.backgroundMusic.stop();
       console.log('[MENU COMPLETE]');
       this.scene.start('userScene', {

@@ -27,7 +27,7 @@ export default class level1 extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
@@ -97,6 +97,20 @@ export default class level1 extends Phaser.Scene {
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
+
+    // //  Our container - to make enemy health bar
+    //     var container = this.add.container(400, 300);
+    //
+    //     //  Create some sprites - positions are relative to the Container x/y
+    //     var sprite0 = this.add.sprite(-400, 0, 'rick');
+    //     var sprite1 = this.add.sprite(0, 0, 'rick');
+    // this.tweens.add({
+    //     targets: container,
+    //     angle: { value: 360, duration: 6000 },
+    //     scaleX: { value: 0.5, duration: 3000, yoyo: true, ease: 'Quad.easeInOut' },
+    //     scaleY: { value: 0.5, duration: 3000, yoyo: true, ease: 'Quad.easeInOut' },
+    //     repeat: -1
+    // });
 
     // spawn
     for (var count in this.enemyACor) {
@@ -271,7 +285,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
