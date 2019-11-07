@@ -60,7 +60,7 @@ export default class level1 extends Phaser.Scene {
 
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
 
     //tutorial
     this.add.image(180,530, 'bubble').setScale(.4,.4);
@@ -400,6 +400,7 @@ export default class level1 extends Phaser.Scene {
     this.pickupSound.play();
   }
 
+
   pickupChests(player,chest) {
     chest.play("chestOpen");
     this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
@@ -414,6 +415,7 @@ export default class level1 extends Phaser.Scene {
     console.log("scrollsC collected:" + this.player.scrollsCollected);
     this.pickupSound.play();
   }
+
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy.
@@ -426,6 +428,9 @@ export default class level1 extends Phaser.Scene {
     //HANDLE COLLISION IF PLAYER IS NOT ATTACKING
     if (player.isAttacking == false) {
       console.log('player was not attacking');
+
+      //enemy briefly disabled
+      enemy.stun();
 
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
@@ -440,7 +445,7 @@ export default class level1 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
-        enemy.isActive = false;
+
         this.player.body.setVelocityY(-330);
 
       } else if (this.player.body.touching.right) {
@@ -448,22 +453,16 @@ export default class level1 extends Phaser.Scene {
         this.player.x = enemyLeftX - this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
