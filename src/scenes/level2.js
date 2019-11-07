@@ -27,7 +27,7 @@ export default class level2 extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
@@ -223,7 +223,7 @@ export default class level2 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart

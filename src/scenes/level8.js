@@ -29,7 +29,7 @@ export default class level8 extends Phaser.Scene {
     this.add.image(2240,384,'background1');
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
