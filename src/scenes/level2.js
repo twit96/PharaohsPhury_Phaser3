@@ -14,14 +14,19 @@ export default class level2 extends Phaser.Scene {
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
-}
+    this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('spacebtn', './assets/images/spacebutton.png');
+  }
 
   create() {
     console.log('[create]');
     // background
     this.add.image(2240,384,'background1');
 
-
+    //tutorial
+    this.add.image(180,330, 'bubble').setScale(.4,.4);
+    this.add.image(180,330, 'spacebtn').setScale(.3,.3);
+    this.add.text(155, 280, "Melee");
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -49,11 +54,11 @@ export default class level2 extends Phaser.Scene {
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
-    const bgLayer = map.createStaticLayer("Below Player", worldTileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
@@ -120,6 +125,8 @@ export default class level2 extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
+
+    const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -364,6 +371,9 @@ export default class level2 extends Phaser.Scene {
     if (player.isAttacking == false) {
       console.log('player was not attacking');
 
+      //enemy briefly disabled
+      enemy.stun();
+
       //variables to adjust player x away from enemy
       var enemyHalfWidth = enemy.width / 2;
       var enemyRightX = enemy.x + enemyHalfWidth;
@@ -377,7 +387,7 @@ export default class level2 extends Phaser.Scene {
       if (this.player.body.touching.down) {
         //collision on top or bottom of enemy
         enemyDied = true;
-        enemy.isActive = false;
+
         this.player.body.setVelocityY(-330);
 
       } else if (this.player.body.touching.right) {
@@ -385,22 +395,16 @@ export default class level2 extends Phaser.Scene {
         this.player.x = enemyLeftX - this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
 
       } else if (this.player.body.touching.left) {
         //collision on right side of enemy
         this.player.x = enemyRightX + this.player.width;
         this.player.y = enemyBottomY - playerHalfHeight;
 
-        //enemy briefly disabled
-        enemy.stun();
-
         //player takes damage
-        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+        player.updateHealth(75);  //75 ARBITRARILY CHOSEN
       }
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
@@ -408,6 +412,7 @@ export default class level2 extends Phaser.Scene {
     //HANDLE COLLISION IF PLAYER IS ATTACKING
     } else {
       console.log('player was attacking');
+
       //enemy dies
       enemyDied = true;
     }
