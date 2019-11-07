@@ -288,7 +288,7 @@ export default class level1 extends Phaser.Scene {
           this.physics.add.overlap(
             b,
             this.enemiesS,
-            this.player.beamHitEnemy,
+            this.player.beamHitWall,
             null,
             this
           );

@@ -29,8 +29,9 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("gem", "../assets/sprites/gem.png");
     this.load.image("cane", "../assets/sprites/mummyCane.png");
 
-    this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
-    this.load.image("shell", "../assets/sprites/bomb.png");
+    this.load.image("bullet", "../assets/sprites/bullet.png");
+    this.load.image("shell", "../assets/sprites/shell.png");
+    this.load.image("bomb", "../assets/sprites/bomb.png");
 
     this.load.image("healthBarFrame","../assets/images/healthbarframe.png");
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
@@ -77,8 +78,8 @@ export default class BootScene extends Phaser.Scene {
     });
 
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
-      frameWidth: 44,
-      frameHeight: 48
+      frameWidth: 28,
+      frameHeight: 7
     });
     this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCaneAttack.png", {
       frameWidth: 64,
@@ -259,6 +260,12 @@ export default class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "tankAttack",
       frames: this.anims.generateFrameNumbers("tankTurret"),
+      frameRate: 10,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "tankAttackHigh",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh"),
       frameRate: 10,
       repeat: 0
     });

@@ -233,18 +233,17 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //generate a beam attack sprite
     var beam = this.beams.get();
     beam.setAngle(this.beamAngle);
-    //console.log(beam);
+
     if (this.beamDirection == 1){
       beam.flipX = true;
     } else {
       beam.flipX = false;
     }
+
     beam
-      .enableBody(true, this.x, this.y- 15, true, true)
+      .enableBody(true, this.x, this.y - 15, true, true)
       .setVelocity(this.beamSpeed, 0)
       .setScale(2.5)
-      .body.setSize(25, 8, 0, 0)
-      .setOffset(12,20);
 
     // AUDIO
     this.scene.shootBeam.play({volume: 1});
@@ -266,20 +265,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     collides = true (i.e. the beam hit a wall tile)
     */
 
-    //make sure beam is outside of player before detecting collisions
-    var playerWidthBox = this.player.width / 2;
-    var playerHeightBox = this.player.height / 2;
-    var toleranceX = Math.abs(this.player.x - beam.x);
-    var toleranceY = Math.abs(this.player.y - beam.y);
-    var beamHittingPlayer = true;
-
-    //update beamHittingPlayer if beam is outside of player
-    if (toleranceX > playerWidthBox && toleranceY > playerHeightBox) {
-      beamHittingPlayer = false;
-    }
-
     //test each worldLayer tile outside of player for collides = true
-    if (worldLayer.collides && !beamHittingPlayer) {
+    if (worldLayer.collides) {
       console.log('[mummy.beamHitWall]');
       beam.disableBody(true, true);
       this.shootBeam.play();
