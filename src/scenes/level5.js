@@ -28,7 +28,7 @@ export default class level5 extends Phaser.Scene {
     //background image
     this.add.image(2240,384,'background1');
 
-    
+
 
     //AUDIO
     this.backgroundMusic = this.sound.add("creepy");
@@ -49,12 +49,11 @@ export default class level5 extends Phaser.Scene {
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map = this.make.tilemap({ key: "level5map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
+    const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
-    const bgLayer = map.createStaticLayer("Below Player", worldTileset, 0, 0);
-    //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
@@ -131,6 +130,8 @@ export default class level5 extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
+
+    const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 

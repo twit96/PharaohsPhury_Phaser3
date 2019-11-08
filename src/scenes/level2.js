@@ -55,7 +55,6 @@ export default class level2 extends Phaser.Scene {
 
     //render map/player/enemies in specific order
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
-    //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
