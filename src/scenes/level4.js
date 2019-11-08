@@ -40,7 +40,7 @@ export default class level4 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 94;
-    this.spawnY = 644;
+    this.spawnY = 544;
     this.levelName = 4;
 
     //declare map and tilesets

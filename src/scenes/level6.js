@@ -47,7 +47,7 @@ export default class level6 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 75;
-    this.spawnY = 612;
+    this.spawnY = 512;
     this.levelName = 6;
 
     //declare map and tilesets
