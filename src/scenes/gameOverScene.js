@@ -12,13 +12,13 @@ export default class gameOverScene extends Phaser.Scene {
         level: this.levelNum ,
         diamond: this.diamondSCollected,
         killed : this.enemyKilled,
-        done: this.isCompleted
+        done: this.levelCompleted
       });
     */
     this.levelName = data.level;
     this.diamondCollected = data.diamond;
     this.enemiesKilled = data.killed;
-    this.isCompleted = data.done;
+    this.levelCompleted = data.done;
   }
 
   preload () {
@@ -55,26 +55,33 @@ export default class gameOverScene extends Phaser.Scene {
     var btnText = "Try Again";
     var quitText = "Quit";
 
-    if (this.isCompleted){
+    if (this.levelCompleted){
       btnText = "Continue";
     }
 
-    if (this.levelName === "Final Boss" && this.isCompleted ) {
+
+
+
+    if (this.levelName === "Final Boss" && this.levelCompleted ) {
       btnText = "You just won. \n You are now free";
     }
+
+
+
+
 
     //button actions
     this.nextButton = this.add.text(500, 500, btnText, { font: '24px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 3})
       .setInteractive()
-      //.on('pointerdown', () => this.getLevelScene(this.isCompleted,this.levelNum))
-      .on('pointerdown', () => this.getLevelScene(this.isCompleted, this.levelName))
+      //.on('pointerdown', () => this.getLevelScene(this.levelCompleted,this.levelNum))
+      .on('pointerdown', () => this.getLevelScene(this.levelCompleted, this.levelName))
       .on('pointerover',() => this.enterButtonHoverState(this.nextButton))﻿
       .on('pointerout',() => this.enterButtonRestState(this.nextButton));
     console.log('generated next button');
 
     this.exitButton = this.add.text(220, 500, quitText, { font: '24px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 3})
       .setInteractive()
-      //.on('pointerdown', () => this.getLevelScene(this.isCompleted,this.levelNum))
+      //.on('pointerdown', () => this.getLevelScene(this.levelCompleted,this.levelNum))
       .on('pointerdown', () => this.quitGame())
       .on('pointerover',() => this.enterButtonHoverState(this.exitButton))﻿
       .on('pointerout',() => this.enterButtonRestState(this.exitButton));
@@ -83,7 +90,7 @@ export default class gameOverScene extends Phaser.Scene {
   }
 
   //BUTTON PRESS HANDLERS
-  getLevelScene(isCompleted, levelNum) {
+  getLevelScene(levelCompleted, levelNum) {
     /**
     function called when player clicks 'try again'/'continue' button. If player
     just died, the function takes the player back to the same level. If the
@@ -91,17 +98,28 @@ export default class gameOverScene extends Phaser.Scene {
     */
     console.log("[getLevelScene]");
 
-    //initial string to call next played level
-    var levelScene = "level"
-
-    if (isCompleted) {
-      //player finished the level, levelScene string takes player to next level
-      levelNum +=  1;
-      levelScene += levelNum;
+    if (this.levelName == "Final Boss") {
+      if (levelCompleted) {
+        //player finished the level, levelScene string takes player to next level
+        levelScene = "levelPicker";
+      } else {
+        //player died, levelScene string makes player repeat the same level
+        levelScene = "finalBossLevel";
+      }
 
     } else {
-      //player died, levelScene string makes player repeat the same level
-      levelScene += levelNum;
+      //all other levels
+      //initial string to call next played level
+      var levelScene = "level"
+
+      if (levelCompleted) {
+        //player finished the level, levelScene string takes player to next level
+        levelNum +=  1;
+        levelScene += levelNum;
+      } else {
+        //player died, levelScene string makes player repeat the same level
+        levelScene += levelNum;
+      }
     }
 
     //stop audio, start correct level scene, update variable to exit this scene

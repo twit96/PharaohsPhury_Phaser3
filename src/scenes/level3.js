@@ -297,6 +297,13 @@ export default class level3 extends Phaser.Scene {
             null,
             this
           );
+          this.physics.add.overlap(
+            b,
+            this.worldLayer,
+            this.player.beamHitWall,
+            null,
+            this
+          );
 
           //deactivate beams once they leave the screen
           if (b.y < 0) {
