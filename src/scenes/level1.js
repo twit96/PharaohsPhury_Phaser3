@@ -37,8 +37,8 @@ export default class level1 extends Phaser.Scene {
 
     //VARIABLES
     //player
-    this.spawnX = 50;
-    this.spawnY = 500;
+    this.spawnX = 180;
+    this.spawnY = 580;
     this.levelName = 1;
 
     /*
