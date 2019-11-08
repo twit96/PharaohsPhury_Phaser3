@@ -12,6 +12,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
     this.body.setSize(192, 64);
+    this.play("tankMove");
 
     //SHELLS
     this.shells = this.scene.physics.add.group({
@@ -33,7 +34,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     //general
     this.health = 100;
     this.speed = 0.5;
-    this.shellSpeed = 1000;
+    this.shellSpeed = 1500;
     this.bombSpeed = 750;
     this.isActive = true;
 
@@ -100,7 +101,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       //anim
       if (this.moveCounter == 0) {
         this.play("tankMove");
-      } else
+      }
 
       //TANK MOVEMENT
       if (this.moveCounter < (3 * this.maxCount / 4)) {
@@ -118,7 +119,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       if (this.moveCounter % 200 == 0) {
         this.shoot(this.scene.player);
       }
-      if (this.moveCounter % 200 == 15) {
+      if (this.moveCounter % 200 == 25) {
         //reset turret sprite after shoot completes
         this.turret.setFrame(0);
         this.highTurret.setFrame(0);
@@ -137,6 +138,10 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       //CLUSTER BOMB ATTACK
       if (this.moveCounter == 1700) {
         this.clusterBomb();
+      }
+      if (this.moveCounter == 1725) {
+        this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
       }
 
       //UPDATE AND REPEAT BEHAVIOR LOOP
