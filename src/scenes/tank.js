@@ -6,7 +6,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     //TURRET
     this.turret = config.scene.add.sprite(config.x, config.y - 40, 'tankTurret');
     this.highTurret = config.scene.add.sprite(config.x, config.y - 60, 'tankTurretHigh');
-    //this.turret.setFlipX(true);
+    this.highTurret.visible = false;
 
     //BASE
     config.scene.physics.world.enable(this);
@@ -28,6 +28,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     this.health = 100;
     this.speed = 0.5;
     this.shellSpeed = 1000;
+    this.bombSpeed = 750;
     this.isActive = true;
 
     //for behavior cycle
@@ -35,11 +36,12 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     this.maxCount = 1000;
     this.maxCountIncrement = 500;
 
-    //count values where tank does special attack
-    this.triShootAttackCounts = [800, 1300, 1800];
-
-    //angles that tank can shoot at
-    this.shootAngles = [-179, -135, -45, -1];
+    //count values where tank does triple shot attacks
+    this.triShootAttackCounts = [
+      900, 920, 940,
+      1300, 1320, 1340,
+      1900, 1920, 1940
+    ];
 
     //to store shoot angles
     this.turretAngleRAD;
@@ -106,16 +108,21 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       if (this.moveCounter % 200 == 25) {
         //reset turret sprite after shoot completes
         this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
       }
 
       //TRIPLE SHOT ATTACK
-      //check if the move counter is at the preset values for triShoot attack
-      if (this.triShootAttackCounts.indexOf(this.moveCounter) !== -1) {
-        this.triShootAttack();
+      if (this.triShootAttackCounts.includes(this.moveCounter)) {
+        this.shoot();
+      }
+      if (this.triShootAttackCounts.includes(this.moveCounter - 15)) {
+        //reset turret after shoot completes
+        this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
       }
 
       //CLUSTER BOMB ATTACK
-      if (this.moveCounter == Math.floor(7 * this.maxCount / 8)) {
+      if (this.moveCounter == 1700) {
         this.clusterBomb();
       }
 
@@ -156,7 +163,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     of the player and the tank body.
     */
 
-    //FIX POSITION ON TANK
+    //fix position on tank
     if (this.turret.y != this.y - 40) {
       this.turret.y = this.y - 40;
     }
@@ -164,7 +171,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       this.highTurret.y = this.y - 60;
     }
 
-    //UPDATE ANGLE VALUE
+    //update turret direction
     if (this.scene.player.x > this.x) {
       this.turret.setFlipX(true);
       this.highTurret.setFlipX(true);
@@ -174,6 +181,54 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       this.highTurret.setFlipX(false);
       this.turretAngleDEG = -179;
     }
+
+    //update shoot angle
+    var lastAngle = this.turretAngleDEG;
+    var betweenPoints = Phaser.Math.Angle.BetweenPoints;
+    var angleDEG = Phaser.Math.RAD_TO_DEG * betweenPoints(this.turret, this.scene.player);
+    if (((-180 < angleDEG) && (angleDEG < 10)) || (angleDEG > 170)) {
+      this.turretAngleDEG = this.closestAngle(angleDEG);
+      this.turretAngleRAD = Phaser.Math.DEG_TO_RAD * this.turretAngleDEG;
+    }
+
+    //turret raise/lower anims (buggy and not really needed even for polish)
+    // if (((lastAngle == -1) && (this.turretAngleDEG == -45)) || ((lastAngle == -179) && (this.turretAngleDEG == -135))) {
+    //   this.turret.visible = false;
+    //   this.highTurret.visible = true;
+    //   this.highTurret.play('raiseTurret');
+    // }
+    // if (((lastAngle == -45) && (this.turretAngleDEG == -1)) || ((lastAngle == -135) && (this.turretAngleDEG == -179))) {
+    //   this.turret.visible = false;
+    //   this.highTurret.visible = true;
+    //   this.highTurret.play('lowerTurret');
+    // }
+
+  }
+
+  closestAngle(angle) {
+    /*
+    function to find the closest allowed shoot angle to the one calculated
+    between the player and the tank.
+    Used to update shoot angle in this.adjustTurretPosition.
+    */
+
+    //angles that tank can shoot at
+    var shootAngles = [-179, -135, -45, -1];
+    if (angle > 0) {
+      angle = -180;
+    }
+
+    //iterate through values to find closest one to our angle parameter
+    var curr = shootAngles[0];
+    var diff = Math.abs(angle - curr);
+    for (var val = 0; val < shootAngles.length; val++) {
+      var newDiff = Math.abs(angle - shootAngles[val]);
+      if (newDiff < diff) {
+        diff = newDiff;
+        curr = shootAngles[val];
+      }
+    }
+    return curr
   }
 
   shoot(player) {
@@ -182,30 +237,31 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     */
     console.log('[tank.shoot]');
 
-    //this.turret.play('tankAttackHigh');
-    this.turret.setFrame(3);
+    //swap visibility of turret sprites and handle animation
+    if ((this.turretAngleDEG == -135) || (this.turretAngleDEG == -45)) {
+      this.turret.visible = false;
+      this.highTurret.visible = true;
+      this.highTurret.play('tankAttackHigh');
+    } else {
+      this.turret.visible = true;
+      this.highTurret.visible = false;
+      this.turret.play('tankAttack');
+    }
 
     var velocityFromRotation = this.scene.physics.velocityFromRotation;
-
-    var deg = -135;
-    var rad = Phaser.Math.DEG_TO_RAD * deg;
 
     //create a variable called velocity from a vector2
     var velocity = new Phaser.Math.Vector2();
     //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
-    velocityFromRotation(rad, this.shellSpeed, velocity);
+    velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
 
     //get the shells group and generate shell
     var shell = this.shells.get();
-    shell.setAngle(deg);
+    shell.setAngle(this.turretAngleDEG);
     shell
       .enableBody(true, this.turret.x, this.turret.y, true, true)
       .setVelocity(velocity.x, velocity.y)
 
-  }
-
-  triShootAttack() {
-    console.log('[tank.triShootAttack]');
   }
 
   clusterBomb() {
@@ -213,7 +269,32 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     function to define the behavior of the tank when it is stationary
     (in the last 1/4 of each behavior loop)
     */
-    console.log('[tank.stationaryAttack]');
+    console.log('[tank.clusterBomb]');
+
+    //swap visibility of turret sprites and handle animation
+    if ((this.turretAngleDEG == -135) || (this.turretAngleDEG == -45)) {
+      this.turret.visible = false;
+      this.highTurret.visible = true;
+      this.highTurret.play('tankAttackHigh');
+    } else {
+      this.turret.visible = true;
+      this.highTurret.visible = false;
+      this.turret.play('tankAttack');
+    }
+
+    var velocityFromRotation = this.scene.physics.velocityFromRotation;
+
+    //create a variable called velocity from a vector2
+    var velocity = new Phaser.Math.Vector2();
+    //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+    velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+
+    //get the shells group and generate shell
+    var bomb = this.bombs.get();
+    bomb.setAngle(this.turretAngleDEG);
+    bomb
+      .enableBody(true, this.turret.x, this.turret.y, true, true)
+      .setVelocity(velocity.x, velocity.y)
   }
 
 

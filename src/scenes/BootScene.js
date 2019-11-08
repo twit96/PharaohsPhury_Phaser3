@@ -263,9 +263,32 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: 0
     });
+
+    this.anims.create({
+      key: "raiseTurret",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 4,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "lowerTurret",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 7,
+        end: 9
+      }),
+      frameRate: 4,
+      repeat: 0
+    });
+
     this.anims.create({
       key: "tankAttackHigh",
-      frames: this.anims.generateFrameNumbers("tankTurretHigh"),
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 4,
+        end: 7
+      }),
       frameRate: 10,
       repeat: 0
     });

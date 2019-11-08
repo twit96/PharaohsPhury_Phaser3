@@ -108,6 +108,14 @@ export default class finalBossLevel extends Phaser.Scene {
       this
     );
 
+    this.physics.add.overlap(
+      this.tank.bombs,
+      worldLayer,
+      this.tank.shellHitWall,
+      null,
+      this
+    );
+
     console.log('configured sprites and physics');
     console.log('completed create function');
 
@@ -243,6 +251,32 @@ export default class finalBossLevel extends Phaser.Scene {
             s.setActive(false)
           } else if (s.x > this.cameras.main.width) {
             s.setActive(false)
+          }
+        }
+      }.bind(this)  //binds the function to each of the children. scope of function
+    );
+
+    //configure overlaps for active tank bombs
+    this.tank.bombs.children.each(
+      function (b) {
+        if (b.active) {
+          this.physics.add.overlap(
+            b,
+            this.player,
+            this.tank.shellHitPlayer,
+            null,
+            this
+          );
+
+          //deactivate shells once they leave the screen
+          if (b.y < 0) {
+            b.setActive(false)
+          } else if (b.y > this.cameras.main.height) {
+            b.setActive(false)
+          } else if (b.x < 0) {
+            b.setActive(false)
+          } else if (b.x > this.cameras.main.width) {
+            b.setActive(false)
           }
         }
       }.bind(this)  //binds the function to each of the children. scope of function
