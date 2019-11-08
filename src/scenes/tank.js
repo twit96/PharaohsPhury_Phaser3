@@ -23,6 +23,12 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       defaultKey: "bomb"
     });
 
+    //SOLDIERS
+    this.soldiers = this.scene.physics.add.group({
+      defaultKey: "bomb"
+    });
+
+
     //VARIABLES
     //general
     this.health = 100;
@@ -91,11 +97,18 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     if (this.isActive) {
       this.moveCounter ++;
 
+      //anim
+      if (this.moveCounter == 0) {
+        this.play("tankMove");
+      } else
+
       //TANK MOVEMENT
       if (this.moveCounter < (3 * this.maxCount / 4)) {
         this.x += this.speed;
         this.turret.x += this.speed;
         this.highTurret.x += this.speed;
+      } else {
+        this.setFrame(0);
       }
 
       //TURRET POSITION
@@ -105,7 +118,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       if (this.moveCounter % 200 == 0) {
         this.shoot(this.scene.player);
       }
-      if (this.moveCounter % 200 == 25) {
+      if (this.moveCounter % 200 == 15) {
         //reset turret sprite after shoot completes
         this.turret.setFrame(0);
         this.highTurret.setFrame(0);

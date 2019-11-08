@@ -71,7 +71,6 @@ export default class finalBossLevel extends Phaser.Scene {
     this.player.body.setCollideWorldBounds(true);
 
     //tank physics
-    this.tank.play("tankMove");
     this.tank.body.setCollideWorldBounds(true);
     this.tank.setInteractive();
 
