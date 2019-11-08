@@ -4,8 +4,8 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     super(config.scene, config.x, config.y, config.key);
 
     //TURRET
-    this.turret = config.scene.add.sprite(config.x, config.y - 40, 'tankTurret');
-    this.highTurret = config.scene.add.sprite(config.x, config.y - 60, 'tankTurretHigh');
+    this.turret = config.scene.add.sprite(config.x - 30, config.y - 50, 'tankTurret');
+    this.highTurret = config.scene.add.sprite(config.x - 30, config.y - 60, 'tankTurretHigh');
     this.highTurret.visible = false;
 
     //BASE
