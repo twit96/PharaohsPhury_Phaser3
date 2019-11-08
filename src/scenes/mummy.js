@@ -180,23 +180,24 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
      this.scene.scene.key == "finalBossLevel")) {
-      //this.anims.play("mummyRangeCaneAnim", true);
-      console.log('shoot');
       this.canAttack = false;
       this.anims.play("pharoahRangeCaneAnim");
 
-      this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
-                     this.shoot();
-                     }, this);
+      this.scene.time.addEvent({
+        delay: 500,
+        callback: this.shoot,
+        callbackScope: this,
+        loop: false
+      });
     }
   }
 
   shortRangeAttack() {
+    /*
+    function to define behavior of player using melee (short-range) attacks
+    */
     if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5" || this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
      this.scene.scene.key == "finalBossLevel") {
-      /*
-      function to define behavior of player using melee (short-range) attacks
-      */
       console.log('[mummy.shortRangeAttack]');
 
       //temporarily disable more attacks
@@ -226,7 +227,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       });
     }
   }
-
 
 
   shoot() {
