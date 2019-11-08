@@ -45,8 +45,8 @@ export default class level6 extends Phaser.Scene {
 
     //VARIABLES
     //player
-    this.spawnX = 50;
-    this.spawnY = 550;
+    this.spawnX = 75;
+    this.spawnY = 612;
     this.levelName = 6;
 
     //declare map and tilesets
@@ -135,7 +135,7 @@ export default class level6 extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
-    
+
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
@@ -211,7 +211,7 @@ export default class level6 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -240,7 +240,7 @@ export default class level6 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
 
