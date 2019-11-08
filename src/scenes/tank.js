@@ -3,151 +3,316 @@ export default class Tank extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
-    //tank turret
-    this.turret = config.scene.add.sprite(config.x, config.y - 40, 'tankTurret');
-    this.turret.setFlipX(true);
+    //TURRET
+    this.turret = config.scene.add.sprite(config.x - 30, config.y - 50, 'tankTurret');
+    this.highTurret = config.scene.add.sprite(config.x - 30, config.y - 60, 'tankTurretHigh');
+    this.highTurret.visible = false;
 
-    //tank body
+    //BASE
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
     this.body.setSize(192, 64);
+    this.play("tankMove");
 
-    //tank shells
+    //SHELLS
     this.shells = this.scene.physics.add.group({
       defaultKey: "shell"
     });
 
-    //variables
-    this.moveCounter = 0;
-    this.turretAngleRAD;
-    this.turretAngleDEG;
+    //CLUSTER BOMBS
+    this.bombs = this.scene.physics.add.group({
+      defaultKey: "bomb"
+    });
 
+    //SOLDIERS
+    this.soldiers = this.scene.physics.add.group({
+      defaultKey: "bomb"
+    });
+
+
+    //VARIABLES
+    //general
     this.health = 100;
-    this.speed = 1.0;
-    this.shellSpeed = 1000;
+    this.speed = 0.5;
+    this.shellSpeed = 1500;
+    this.bombSpeed = 750;
     this.isActive = true;
 
+    //for behavior cycle
+    this.moveCounter = 0;
+    this.maxCount = 1000;
+    this.maxCountIncrement = 500;
+
+    //count values where tank does triple shot attacks
+    this.triShootAttackCounts = [
+      900, 920, 940,
+      1300, 1320, 1340,
+      1900, 1920, 1940
+    ];
+
+    //to store shoot angles
+    this.turretAngleRAD;
+    this.turretAngleDEG;
   }
 
   //TANK HELPER FUNCTIONS
   reset() {
-    console.log('[resetTank]');
+    console.log('[tank.reset]');
     this.tank.isActive = true;
   }
 
   updateHealth(damage) {
     /*
     function called when player beam hits tank.
-    will subtract damage from tank health and if tank health = 0,
-    it will update level levelCompleted status
+    Subtracts damage from tank health.
     */
     console.log('[tank.updateHealth]');
-    this.health = this.health - damage;
+    this.health -= damage;
   }
 
+
+  //BEHAVIOR CYCLE HELPER FUNCTIONS
   move() {
     /*
-    function to create tank behavior loop:
-    back and forth movement, calling shoot function periodically.
-    only runs if this.activeTank = true
+    function to create a repeating tank behavior cycle, consisting of:
+      3 behavior loops of increasing length and intensity,
+      which play in reverse after completion to start the behavior cycle over.
+
+      Here is a visual of what the code is doing to the tank...
+
+      Behavior Cycle:
+      ----------------------------->
+      |-loop1-|--Loop2--|---Loop3---|   cycle moves tank in forward direction
+
+      |---Loop3---|--Loop2--|-loop1-|   cycle moves tank in reverse direction
+      <-----------------------------
+
+    Note:
+    - tank moves during first 3/4 of each loop,
+    - stationary attacks occur during the final 1/4 of each loop,
+    - tank does single shots at regular intervals throughout each loop.
+
+    This function runs while this.isActive = true. Allows for pausing the cycle.
     */
 
     if (this.isActive) {
-      this.moveCounter += 1
+      this.moveCounter ++;
 
-      //TURRET ANGLE
-      var betweenPoints = Phaser.Math.Angle.BetweenPoints;
-      var angleRAD = betweenPoints(this.turret, this.scene.player);
-      var angleDEG = Phaser.Math.RAD_TO_DEG * angleRAD;
-
-      if ((-180 < angleDEG) && (angleDEG < 10) || (angleDEG > 170)) {
-        //update turret angle values for use in shoot function
-        this.turretAngleRAD = angleRAD;
-        this.turretAngleDEG = angleDEG;
-        this.turret.setAngle(this.turretAngleDEG);
-
-      } else {
-        //reset angle values outside of the range the turret can shoot in
-        this.turretAngleRAD = 10;
-        this.turretAngleDEG = 10;
-      }
-
-      //TURRET X POSITION
-      if (((this.turretAngleDEG < -90) || (this.turretAngleDEG > 170)) && (this.turret.x != this.x - 40)) {
-        //adjust for flipping past vertical to the left
-        this.turret.x -= 0.5;
-
-      } else if ((this.turretAngleDEG > -90) && (this.turretAngleDEG < 10) && (this.turret.x != this.x)) {
-        //adjust for flipping past vertical to the right
-        this.turret.x += 0.5;
-      }
-
-      // TURRET Y POSITION TESTING
-      // if (((this.turretAngleDEG > -155) && (this.turretAngleDEG < -25)) && (this.turret.y > this.y - 50)) {
-      //   //adjust up for flipping turret over top of tank
-      //   this.turret.y -= 0.5;
-      //
-      // } else if (this.turret.y < this.y - 40) {
-      //   //adjust back down for turret in normal position
-      //   this.turret.y += 0.5;
-      //
-      // } else {
-      //   //if error, affix turret to top of tank
-      //   this.turret.y = this.y - 40;
-      // }
-
-      //TURRET Y POSITION
-      if (this.turret.y != this.y) {
-        //affix turret to top of tank
-        this.turret.y = this.y - 40;
+      //anim
+      if (this.moveCounter == 0) {
+        this.play("tankMove");
       }
 
       //TANK MOVEMENT
-      if (this.moveCounter < 250) {
+      if (this.moveCounter < (3 * this.maxCount / 4)) {
         this.x += this.speed;
         this.turret.x += this.speed;
+        this.highTurret.x += this.speed;
       } else {
-        this.x -= this.speed;
-        this.turret.x -= this.speed;
+        this.setFrame(0);
       }
 
-      //TANK SHOOTING (5 times per count cycle)
-      if (this.moveCounter % 100 == 0) {
+      //TURRET POSITION
+      this.adjustTurretPosition();
+
+      //SHOOTING ATTACK
+      if (this.moveCounter % 200 == 0) {
         this.shoot(this.scene.player);
       }
-      if (this.moveCounter % 100 == 25) {
+      if (this.moveCounter % 200 == 25) {
+        //reset turret sprite after shoot completes
         this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
       }
 
-      //REPEAT BEHAVIOR LOOP
-      if (this.moveCounter == 500) {
-        this.moveCounter = 0;
+      //TRIPLE SHOT ATTACK
+      if (this.triShootAttackCounts.includes(this.moveCounter)) {
+        this.shoot();
+      }
+      if (this.triShootAttackCounts.includes(this.moveCounter - 15)) {
+        //reset turret after shoot completes
+        this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
+      }
+
+      //CLUSTER BOMB ATTACK
+      if (this.moveCounter == 1700) {
+        this.clusterBomb();
+      }
+      if (this.moveCounter == 1725) {
+        this.turret.setFrame(0);
+        this.highTurret.setFrame(0);
+      }
+
+      //UPDATE AND REPEAT BEHAVIOR LOOP
+      if (this.moveCounter == this.maxCount) {
+        this.updateBehaviorLoop();
       }
     }
+  }
+
+  updateBehaviorLoop() {
+    /*
+    function that adjusts the total length of the behavior loop of the tank,
+    which in turn "uncovers" or "re-covers" more complex attacks that trigger
+    when the moveCounter reaches higher values. After the 3 loops complete,
+    function swaps the direction of the tank and repeats the 3 loops.
+    */
+    console.log('[tank.updateBehaviorLoop] - end of loop');
+
+    //update length of behavior loop and moveCounter
+    this.maxCount += this.maxCountIncrement;
+    this.moveCounter = 0;
+
+    //handle tank switching directions after three behavior loops
+    if (this.maxCount > 2000) {
+      console.log('behavior cycle reversing');
+
+      this.maxCount = 1000;
+      this.speed *= -1;
+    }
+  }
+
+
+  //TURRET AND SHOOTING HELPER FUNCTIONS
+  adjustTurretPosition() {
+    /*
+    function to adjust turret position based on position
+    of the player and the tank body.
+    */
+
+    //fix position on tank
+    if (this.turret.y != this.y - 40) {
+      this.turret.y = this.y - 40;
+    }
+    if (this.highTurret.y != this.y - 60) {
+      this.highTurret.y = this.y - 60;
+    }
+
+    //update turret direction
+    if (this.scene.player.x > this.x) {
+      this.turret.setFlipX(true);
+      this.highTurret.setFlipX(true);
+      this.turretAngleDEG = -1;
+    } else {
+      this.turret.setFlipX(false);
+      this.highTurret.setFlipX(false);
+      this.turretAngleDEG = -179;
+    }
+
+    //update shoot angle
+    var lastAngle = this.turretAngleDEG;
+    var betweenPoints = Phaser.Math.Angle.BetweenPoints;
+    var angleDEG = Phaser.Math.RAD_TO_DEG * betweenPoints(this.turret, this.scene.player);
+    if (((-180 < angleDEG) && (angleDEG < 10)) || (angleDEG > 170)) {
+      this.turretAngleDEG = this.closestAngle(angleDEG);
+      this.turretAngleRAD = Phaser.Math.DEG_TO_RAD * this.turretAngleDEG;
+    }
+
+    //turret raise/lower anims (buggy and not really needed even for polish)
+    // if (((lastAngle == -1) && (this.turretAngleDEG == -45)) || ((lastAngle == -179) && (this.turretAngleDEG == -135))) {
+    //   this.turret.visible = false;
+    //   this.highTurret.visible = true;
+    //   this.highTurret.play('raiseTurret');
+    // }
+    // if (((lastAngle == -45) && (this.turretAngleDEG == -1)) || ((lastAngle == -135) && (this.turretAngleDEG == -179))) {
+    //   this.turret.visible = false;
+    //   this.highTurret.visible = true;
+    //   this.highTurret.play('lowerTurret');
+    // }
+
+  }
+
+  closestAngle(angle) {
+    /*
+    function to find the closest allowed shoot angle to the one calculated
+    between the player and the tank.
+    Used to update shoot angle in this.adjustTurretPosition.
+    */
+
+    //angles that tank can shoot at
+    var shootAngles = [-179, -135, -45, -1];
+    if (angle > 0) {
+      angle = -180;
+    }
+
+    //iterate through values to find closest one to our angle parameter
+    var curr = shootAngles[0];
+    var diff = Math.abs(angle - curr);
+    for (var val = 0; val < shootAngles.length; val++) {
+      var newDiff = Math.abs(angle - shootAngles[val]);
+      if (newDiff < diff) {
+        diff = newDiff;
+        curr = shootAngles[val];
+      }
+    }
+    return curr
   }
 
   shoot(player) {
     /*
     function to define behavior of tank shooting at the player
     */
+    console.log('[tank.shoot]');
 
-    if ((-180 < this.turretAngleDEG) && (this.turretAngleDEG < 10) || (this.turretAngleDEG > 170)) {
-      console.log('[tank.shoot]');
+    //swap visibility of turret sprites and handle animation
+    if ((this.turretAngleDEG == -135) || (this.turretAngleDEG == -45)) {
+      this.turret.visible = false;
+      this.highTurret.visible = true;
+      this.highTurret.play('tankAttackHigh');
+    } else {
+      this.turret.visible = true;
+      this.highTurret.visible = false;
       this.turret.play('tankAttack');
-
-      var velocityFromRotation = this.scene.physics.velocityFromRotation;
-
-      //create a variable called velocity from a vector2
-      var velocity = new Phaser.Math.Vector2();
-      velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
-
-      //get the shells group and generate shell
-      var shell = this.shells.get();
-      shell.setAngle(this.turretAngleDEG);
-      shell
-        .enableBody(true, this.turret.x, this.turret.y, true, true)
-        .setVelocity(velocity.x, velocity.y)
     }
+
+    var velocityFromRotation = this.scene.physics.velocityFromRotation;
+
+    //create a variable called velocity from a vector2
+    var velocity = new Phaser.Math.Vector2();
+    //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+    velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+
+    //get the shells group and generate shell
+    var shell = this.shells.get();
+    shell.setAngle(this.turretAngleDEG);
+    shell
+      .enableBody(true, this.turret.x, this.turret.y, true, true)
+      .setVelocity(velocity.x, velocity.y)
+
+  }
+
+  clusterBomb() {
+    /*
+    function to define the behavior of the tank when it is stationary
+    (in the last 1/4 of each behavior loop)
+    */
+    console.log('[tank.clusterBomb]');
+
+    //swap visibility of turret sprites and handle animation
+    if ((this.turretAngleDEG == -135) || (this.turretAngleDEG == -45)) {
+      this.turret.visible = false;
+      this.highTurret.visible = true;
+      this.highTurret.play('tankAttackHigh');
+    } else {
+      this.turret.visible = true;
+      this.highTurret.visible = false;
+      this.turret.play('tankAttack');
+    }
+
+    var velocityFromRotation = this.scene.physics.velocityFromRotation;
+
+    //create a variable called velocity from a vector2
+    var velocity = new Phaser.Math.Vector2();
+    //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+    velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
+
+    //get the shells group and generate shell
+    var bomb = this.bombs.get();
+    bomb.setAngle(this.turretAngleDEG);
+    bomb
+      .enableBody(true, this.turret.x, this.turret.y, true, true)
+      .setVelocity(velocity.x, velocity.y)
   }
 
 
@@ -177,7 +342,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     shell.disableBody(true, true);
 
     //update player stats
-    this.player.updateHealth(50);
+    this.player.updateHealth(5);
   }
 
 }

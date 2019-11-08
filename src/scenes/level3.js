@@ -48,7 +48,7 @@ export default class level3 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 58;
-    this.spawnY = 420;
+    this.spawnY = 320;
     this.levelName = 3;
 
     //declare map and tilesets
@@ -294,6 +294,13 @@ export default class level3 extends Phaser.Scene {
             b,
             this.enemiesS,
             this.player.beamHitEnemy,
+            null,
+            this
+          );
+          this.physics.add.overlap(
+            b,
+            this.worldLayer,
+            this.player.beamHitWall,
             null,
             this
           );

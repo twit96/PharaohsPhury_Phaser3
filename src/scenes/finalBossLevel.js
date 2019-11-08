@@ -21,7 +21,7 @@ export default class finalBossLevel extends Phaser.Scene {
     ChangeScene.addSceneEventListeners(this);
 
     // background image
-    this.add.image(2560, 384, 'bossbackground');
+    this.add.image(1600, 320, 'bossbackground');
 
     //AUDIO
     this.backgroundMusic = this.sound.add("platformerSound");
@@ -35,8 +35,8 @@ export default class finalBossLevel extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 25;
-    this.spawnY = 500;
-    this.levelName = 'Final Boss';
+    this.spawnY = 300;
+    this.levelName = "Final Boss";
 
     //CREATE LEVEL
     //declare map and tilesets
@@ -62,7 +62,7 @@ export default class finalBossLevel extends Phaser.Scene {
       scene: this,
       key: "tankBase",
       x: 400,
-      y: 450
+      y: 400
     });
 
     console.log('created map layers and sprites');
@@ -71,7 +71,6 @@ export default class finalBossLevel extends Phaser.Scene {
     this.player.body.setCollideWorldBounds(true);
 
     //tank physics
-    this.tank.play("tankMove");
     this.tank.body.setCollideWorldBounds(true);
     this.tank.setInteractive();
 
@@ -102,6 +101,14 @@ export default class finalBossLevel extends Phaser.Scene {
 
     this.physics.add.overlap(
       this.tank.shells,
+      worldLayer,
+      this.tank.shellHitWall,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.tank.bombs,
       worldLayer,
       this.tank.shellHitWall,
       null,
@@ -185,7 +192,7 @@ export default class finalBossLevel extends Phaser.Scene {
         level: this.levelName,
         diamond: this.player.diamondsCollected,
         killed: this.player.enemiesKilled,
-        done: this.levelCompleted
+        done: this.player.levelCompleted
       });
       return;
     }
@@ -243,6 +250,32 @@ export default class finalBossLevel extends Phaser.Scene {
             s.setActive(false)
           } else if (s.x > this.cameras.main.width) {
             s.setActive(false)
+          }
+        }
+      }.bind(this)  //binds the function to each of the children. scope of function
+    );
+
+    //configure overlaps for active tank bombs
+    this.tank.bombs.children.each(
+      function (b) {
+        if (b.active) {
+          this.physics.add.overlap(
+            b,
+            this.player,
+            this.tank.shellHitPlayer,
+            null,
+            this
+          );
+
+          //deactivate shells once they leave the screen
+          if (b.y < 0) {
+            b.setActive(false)
+          } else if (b.y > this.cameras.main.height) {
+            b.setActive(false)
+          } else if (b.x < 0) {
+            b.setActive(false)
+          } else if (b.x > this.cameras.main.width) {
+            b.setActive(false)
           }
         }
       }.bind(this)  //binds the function to each of the children. scope of function

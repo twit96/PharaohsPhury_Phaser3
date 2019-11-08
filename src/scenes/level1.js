@@ -38,7 +38,7 @@ export default class level1 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 180;
-    this.spawnY = 580;
+    this.spawnY = 440;
     this.levelName = 1;
 
     /*
@@ -328,7 +328,7 @@ export default class level1 extends Phaser.Scene {
           this.physics.add.overlap(
             b,
             this.enemiesS,
-            this.player.beamHitEnemy,
+            this.player.beamHitWall,
             null,
             this
           );
