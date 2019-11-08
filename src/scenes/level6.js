@@ -59,8 +59,7 @@ export default class level6 extends Phaser.Scene {
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
-    const bgLayer = map.createStaticLayer("Below Player", worldTileset, 0, 0);
-    //const belowLayer = map.createStaticLayer("Below Player", belowTileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
@@ -137,6 +136,8 @@ export default class level6 extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
+    
+    const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
