@@ -123,6 +123,9 @@ export default class level2 extends Phaser.Scene {
       y: this.spawnY
     });
 
+    const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
+
+
     console.log('created map layers and sprites');
 
     //player physics/input
