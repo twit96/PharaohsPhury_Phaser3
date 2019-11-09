@@ -31,9 +31,10 @@ export default class level5 extends Phaser.Scene {
 
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
@@ -41,7 +42,7 @@ export default class level5 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 173;
-    this.spawnY = 420;
+    this.spawnY = 320;
     this.levelName = 5;
 
     //declare map and tilesets
@@ -240,7 +241,8 @@ export default class level5 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+
 
     this.updateHealthBar();
 

@@ -61,7 +61,7 @@ export default class levelPicker extends Phaser.Scene {
     }, this);
 
     // Audio
-    this.backgroundMusic = this.sound.add("short");
+    this.backgroundMusic = this.sound.add("bg3");
     this.backgroundMusic.play({loop:true});
 
     //configure audio
@@ -293,6 +293,7 @@ saveANDLeave(){
        });
     }
   }
+  this.backgroundMusic.stop();
   this.scene.start("menu");
 }
 

@@ -36,8 +36,9 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("arrow", "../assets/sprites/Arrow.png");
     this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
 
-    this.load.image("bullet", "../assets/sprites/Sprite_Bullet.png");
-    this.load.image("shell", "../assets/sprites/bomb.png");
+    this.load.image("bullet", "../assets/sprites/bullet.png");
+    this.load.image("shell", "../assets/sprites/shell.png");
+    this.load.image("bomb", "../assets/sprites/bomb.png");
 
     this.load.image("healthBarFrame","../assets/images/healthbarframe.png");
     this.load.image("healthBarFill","../assets/images/healthbarfill.png");
@@ -51,12 +52,11 @@ export default class BootScene extends Phaser.Scene {
     //LOAD SPRITESHEET ASSETS
     // ASSETS
     this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
-      frameWidth: 30,
-      frameHeight: 30
+      frameWidth: 48,
+      frameHeight: 32
     });
 
     //levelPicker
-
 
     //player (mummy)
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
@@ -86,8 +86,8 @@ export default class BootScene extends Phaser.Scene {
     });
 
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
-      frameWidth: 44,
-      frameHeight: 48
+      frameWidth: 28,
+      frameHeight: 7
     });
     this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCaneAttack.png", {
       frameWidth: 64,
@@ -129,10 +129,23 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 30
     });
+    this.load.spritesheet("tankTurretHigh", "../assets/spriteSheets/tankTurretHigh.png", {
+      frameWidth: 112,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet("explosion", "../assets/spriteSheets/explosion.png", {
+      frameWidth: 16,
+      frameHeight: 16
+    });
 
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
+    this.load.audio('bg', './assets/sounds/background.mp3');
+    this.load.audio('bg1', './assets/sounds/background1.mp3');
+    this.load.audio('bg2', './assets/sounds/background2.mp3');
+    this.load.audio('bg3', './assets/sounds/background3.mp3');
     this.load.audio('beam', './assets/sounds/beam.mp3');
     this.load.audio('pops', './assets/sounds/buttonPops.mp3');
     this.load.audio('creepy', './assets/sounds/creepy.mp3');
@@ -140,8 +153,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('diedYell', './assets/sounds/dyingSound_2.mp3');
     this.load.audio('bomb', './assets/sounds/explosion.mp3');
     this.load.audio('HE', './assets/sounds/HappyEndingPlay.mp3');
-    this.load.audio('pickupSound', './assets/sounds/pickup.mp3');
     this.load.audio('meleeAttack', './assets/sounds/MeleeAttack.mp3');
+    this.load.audio('pickupSound', './assets/sounds/pickup.mp3');
     this.load.audio('short', './assets/sounds/short.mp3');
     this.load.audio('platformerSound', './assets/sounds/typicalPlatformer.mp3');
     console.log('loaded audio assets');
@@ -151,6 +164,12 @@ export default class BootScene extends Phaser.Scene {
     console.log('[create]');
 
     //CREATE SPRITE ANIMATIONS
+    this.anims.create({
+      key: "chestOpen",
+      frames: this.anims.generateFrameNumbers("chest"),
+      frameRate: 3,
+      repeat: 0
+    });
     //player (mummy)
     this.anims.create({
       key: "mummyIdleAnim",
@@ -164,7 +183,7 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    //With cane
+    //with cane
     this.anims.create({
       key: "mummyCaneIdleAnim",
       frames: this.anims.generateFrameNumbers("mummyCaneIdle"),
@@ -177,7 +196,7 @@ export default class BootScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    //With pharaoh mask
+    //with pharaoh mask
     this.anims.create({
       key: "pharoahCaneIdleAnim",
       frames: this.anims.generateFrameNumbers("pharoahCaneIdle"),
@@ -252,6 +271,35 @@ export default class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "tankAttack",
       frames: this.anims.generateFrameNumbers("tankTurret"),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: "raiseTurret",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 4,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "lowerTurret",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 7,
+        end: 9
+      }),
+      frameRate: 4,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: "tankAttackHigh",
+      frames: this.anims.generateFrameNumbers("tankTurretHigh", {
+        start: 4,
+        end: 7
+      }),
       frameRate: 10,
       repeat: 0
     });

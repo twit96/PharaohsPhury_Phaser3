@@ -23,13 +23,11 @@ export default class level1 extends Phaser.Scene {
     //background
     this.add.image(2240,384,'background1');
 
-
-
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
@@ -40,9 +38,8 @@ export default class level1 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 180;
-    this.spawnY = 580;
+    this.spawnY = 440;
     this.levelName = 1;
-
 
     /*
     // for collecting item @ dyven
@@ -77,6 +74,11 @@ export default class level1 extends Phaser.Scene {
     //create diamonds group
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
+    this.scroll = this.add.group();
+    this.scroll.enableBody = true;
+    this.chests = this.physics.add.group({
+      defaultKey: "chest"
+    });
 
     //create enemies group
     this.enemiesA = this.add.group();
@@ -90,9 +92,25 @@ export default class level1 extends Phaser.Scene {
     this.enemyACor = this.levelSettingInfo.level1.enemyA;
     this.enemySCor = this.levelSettingInfo.level1.enemyS;
     this.gemCor = this.levelSettingInfo.level1.gem;
+    this.chestCor = this.levelSettingInfo.level1.chest;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
+    console.log("populating chest at " + this.chestCor);
+
+    // //  Our container - to make enemy health bar
+    //     var container = this.add.container(400, 300);
+    //
+    //     //  Create some sprites - positions are relative to the Container x/y
+    //     var sprite0 = this.add.sprite(-400, 0, 'rick');
+    //     var sprite1 = this.add.sprite(0, 0, 'rick');
+    // this.tweens.add({
+    //     targets: container,
+    //     angle: { value: 360, duration: 6000 },
+    //     scaleX: { value: 0.5, duration: 3000, yoyo: true, ease: 'Quad.easeInOut' },
+    //     scaleY: { value: 0.5, duration: 3000, yoyo: true, ease: 'Quad.easeInOut' },
+    //     repeat: -1
+    // });
 
     // spawn
     for (var count in this.enemyACor) {
@@ -131,6 +149,14 @@ export default class level1 extends Phaser.Scene {
       var y = this.gemCor[count][1];
       this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
     }
+    for (var count in this.chestCor) {
+      var x = this.chestCor[count][0];
+      var y = this.chestCor[count][1];
+
+      var chest = this.chests.get();
+      chest
+        .enableBody(true, x, y, true, true);
+    }
 
     //player
     this.player = new Mummy({
@@ -165,6 +191,7 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
+
 
     this.physics.add.overlap(
       this.player,
@@ -203,7 +230,20 @@ export default class level1 extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.overlap(
+      this.player,
+      this.scroll,
+      this.pickup,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.chests,
+      this.pickupChests,
+      null,
+      this
+    );
     console.log('configured sprites and physics');
 
     // Create timer
@@ -248,7 +288,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -291,7 +331,7 @@ export default class level1 extends Phaser.Scene {
           this.physics.add.overlap(
             b,
             this.enemiesS,
-            this.player.beamHitEnemy,
+            this.player.beamHitWall,
             null,
             this
           );
@@ -377,6 +417,22 @@ export default class level1 extends Phaser.Scene {
     this.pickupSound.play();
   }
 
+
+  pickupChests(player,chest) {
+    chest.play("chestOpen");
+    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    chest.setFrame(2);
+    chest.disableBody(true,false);
+    this.pickupSound.play();
+  }
+
+  pickUpScroll() {
+    item.destroy();
+    this.player.scrollsCollected++;
+    console.log("scrollsC collected:" + this.player.scrollsCollected);
+    this.pickupSound.play();
+  }
+
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy.
@@ -451,7 +507,7 @@ export default class level1 extends Phaser.Scene {
 
         //spawn diamond
         var diamondX = enemy.x + randomShiftX;
-        var diamondY = enemy.y - randomShiftY;
+        var diamondY = enemy.y - 50 - randomShiftY;
         this.spawnDiamond(diamondX, diamondY);
       }
 

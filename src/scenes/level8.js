@@ -29,9 +29,10 @@ export default class level8 extends Phaser.Scene {
     this.add.image(2240,384,'background1');
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("creepy");
+    this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
     this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
@@ -39,7 +40,7 @@ export default class level8 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 50;
-    this.spawnY = 200;
+    this.spawnY = 100;
     this.levelName = 8;
 
     //declare map and tilesets
