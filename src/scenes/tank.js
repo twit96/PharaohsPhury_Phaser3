@@ -1,4 +1,7 @@
 /*global Phaser*/
+import EnemyArch from './enemyArch.js';
+import EnemySoldier from './enemySoldier.js';
+
 export default class Tank extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
@@ -24,11 +27,11 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       defaultKey: "bomb"
     });
 
-    //SOLDIERS
-    this.soldiers = this.scene.physics.add.group({
-      defaultKey: "bomb"
-    });
-
+    //ENEMIES
+    this.enemiesA = this.scene.physics.add.group();
+    this.enemiesA.enableBody = true;
+    this.enemiesS = this.scene.physics.add.group();
+    this.enemiesS.enableBody = true;
 
     //VARIABLES
     //general
@@ -49,6 +52,9 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       1300, 1320, 1340,
       1900, 1920, 1940
     ];
+
+    //count values where tank does triple shot attacks
+    this.enemySwarmCounts = [750, 1000, 1500];
 
     //to store shoot angles
     this.turretAngleRAD;
@@ -109,6 +115,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
         this.turret.x += this.speed;
         this.highTurret.x += this.speed;
       } else {
+        //pause anim for stationary part of loop
         this.setFrame(0);
       }
 
@@ -142,6 +149,11 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       if (this.moveCounter == 1725) {
         this.turret.setFrame(0);
         this.highTurret.setFrame(0);
+      }
+
+      //ENEMY SWARMS
+      if (this.enemySwarmCounts.includes(this.moveCounter)) {
+        this.enemySwarm();
       }
 
       //UPDATE AND REPEAT BEHAVIOR LOOP
@@ -208,19 +220,6 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       this.turretAngleDEG = this.closestAngle(angleDEG);
       this.turretAngleRAD = Phaser.Math.DEG_TO_RAD * this.turretAngleDEG;
     }
-
-    //turret raise/lower anims (buggy and not really needed even for polish)
-    // if (((lastAngle == -1) && (this.turretAngleDEG == -45)) || ((lastAngle == -179) && (this.turretAngleDEG == -135))) {
-    //   this.turret.visible = false;
-    //   this.highTurret.visible = true;
-    //   this.highTurret.play('raiseTurret');
-    // }
-    // if (((lastAngle == -45) && (this.turretAngleDEG == -1)) || ((lastAngle == -135) && (this.turretAngleDEG == -179))) {
-    //   this.turret.visible = false;
-    //   this.highTurret.visible = true;
-    //   this.highTurret.play('lowerTurret');
-    // }
-
   }
 
   closestAngle(angle) {
@@ -230,7 +229,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     Used to update shoot angle in this.adjustTurretPosition.
     */
 
-    //angles that tank can shoot at
+    //angles that the tank can shoot at
     var shootAngles = [-179, -135, -45, -1];
     if (angle > 0) {
       angle = -180;
@@ -270,7 +269,6 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     //create a variable called velocity from a vector2
     var velocity = new Phaser.Math.Vector2();
-    //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
     velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
 
     //get the shells group and generate shell
@@ -284,8 +282,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
   clusterBomb() {
     /*
-    function to define the behavior of the tank when it is stationary
-    (in the last 1/4 of each behavior loop)
+    function to define behavior of tank's cluster bomb shooting at the player
     */
     console.log('[tank.clusterBomb]');
 
@@ -304,7 +301,6 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     //create a variable called velocity from a vector2
     var velocity = new Phaser.Math.Vector2();
-    //velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
     velocityFromRotation(this.turretAngleRAD, this.shellSpeed, velocity);
 
     //get the shells group and generate shell
@@ -313,6 +309,29 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     bomb
       .enableBody(true, this.turret.x, this.turret.y, true, true)
       .setVelocity(velocity.x, velocity.y)
+  }
+
+
+  enemySwarm() {
+    /*
+    function called to spawn a swarm of enemies around the tank
+    */
+    var rand1 = Math.floor(Math.random() * Math.floor(5));
+    var rand2 = Math.floor(Math.random() * Math.floor(3));
+
+    var x;
+    for (x = 0; x < rand1; x++) {
+      var enemy = new EnemyArch({
+        scene: this.scene,
+        key: "archeologist",
+        x: this.x,
+        y: this.y
+      });
+      enemy.play("archeologistAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesA.add(enemy);
+    }
   }
 
 
