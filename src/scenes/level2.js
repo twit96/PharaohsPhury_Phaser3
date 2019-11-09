@@ -55,6 +55,9 @@ export default class level2 extends Phaser.Scene {
 
     //render map/player/enemies in specific order
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
+
+    const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
+
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([31,32], this.hitExit, this);
@@ -145,6 +148,12 @@ export default class level2 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
+    this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.scroll, this.scroll);
+    this.physics.add.collider(this.scroll, worldLayer);
+    this.physics.add.collider(this.chests, worldLayer);
+    this.physics.add.collider(this.enemiesA, invisLayer);
+    this.physics.add.collider(this.enemiesS, invisLayer);
 
     this.physics.add.overlap(
       this.player,
