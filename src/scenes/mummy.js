@@ -151,7 +151,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.beamSpeed = 750;
 
     //idle
-  } else if (this.canAttack) {
+  } else {
       this.body.setVelocityX(0);
       if (this.canAttack) {
         //animations only play while player is not attacking
@@ -180,23 +180,24 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     if (this.cursors.m.isDown && this.canAttack && (this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
      this.scene.scene.key == "finalBossLevel")) {
-      //this.anims.play("mummyRangeCaneAnim", true);
-      console.log('shoot');
       this.canAttack = false;
       this.anims.play("pharoahRangeCaneAnim");
 
-      this.on('animationcomplete-pharoahRangeCaneAnim',  ()=>{
-                     this.shoot();
-                     }, this);
+      this.scene.time.addEvent({
+        delay: 500,
+        callback: this.shoot,
+        callbackScope: this,
+        loop: false
+      });
     }
   }
 
   shortRangeAttack() {
+    /*
+    function to define behavior of player using melee (short-range) attacks
+    */
     if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5" || this.scene.scene.key == "level6" || this.scene.scene.key == "level7" || this.scene.scene.key == "level8" ||
      this.scene.scene.key == "finalBossLevel") {
-      /*
-      function to define behavior of player using melee (short-range) attacks
-      */
       console.log('[mummy.shortRangeAttack]');
 
       //temporarily disable more attacks
@@ -204,7 +205,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.isAttacking = true;
 
       //generate a cane attack (or replace mummy sprite with attack sprite)
-      this.caneAttack = this.scene.physics.add.sprite('mummyCane');
       this.body.setSize(64, 64, 50, 50);
 
        if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
@@ -226,7 +226,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       });
     }
   }
-
 
 
   shoot() {

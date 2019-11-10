@@ -222,7 +222,7 @@ export default class levelPicker extends Phaser.Scene {
     });
     b8.on("pointerup", function () {
       sound.play('high');
-      this.backgroundMusic.stop();
+      //this.backgroundMusic.stop();
       // this.scene.start('level8');
     }, this
   );}
@@ -240,6 +240,7 @@ export default class levelPicker extends Phaser.Scene {
     });
     b9.on("pointerup", function () {
       sound.play('high');
+      this.backgroundMusic.stop();
       this.scene.start('finalBossLevel');
     }, this
   );}
