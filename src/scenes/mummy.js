@@ -151,7 +151,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.beamSpeed = 750;
 
     //idle
-  } else if (this.canAttack) {
+  } else {
       this.body.setVelocityX(0);
       if (this.canAttack) {
         //animations only play while player is not attacking

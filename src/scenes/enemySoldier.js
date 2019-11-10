@@ -45,11 +45,14 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
   }
   reset() {
     /**
-    * function to start this enemy's movement function again after a delay
+    function to start this enemy's movement function again after a delay.
+    (if statement is a bug fix: does not reset if enemy was killed during delay)
     */
-    console.log('[enemySoldier.reset]');
-    this.isActive = true;
-    this.setTint();
+    if (this.health > 0) {
+      console.log('[enemySoldier.reset]');
+      this.isActive = true;
+      this.setTint();
+    }
   }
 
   updateHealth(damage) {
