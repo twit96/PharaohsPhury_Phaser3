@@ -96,6 +96,8 @@ export default class finalBossLevel extends Phaser.Scene {
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
 
+    //configure sprite overlaps
+    //for player
     this.physics.add.overlap(
       this.player,
       this.tank,
@@ -103,30 +105,6 @@ export default class finalBossLevel extends Phaser.Scene {
       null,
       this
     );
-
-    this.physics.add.overlap(
-      this.player.beams,
-      worldLayer,
-      this.player.beamHitWall,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.tank.shells,
-      worldLayer,
-      this.tank.shellHitWall,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.tank.bombs,
-      worldLayer,
-      this.tank.shellHitWall,
-      null,
-      this
-    );
-
     this.physics.add.overlap(
       this.player,
       this.tank.enemiesA,
@@ -145,6 +123,45 @@ export default class finalBossLevel extends Phaser.Scene {
       this.player,
       this.collectItems,
       this.pickup,
+      null,
+      this
+    );
+
+    //for player beams
+    this.physics.add.overlap(
+      this.player.beams,
+      this.tank.enemiesA,
+      this.player.beamHitEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player.beams,
+      this.tank.enemiesS,
+      this.player.beamHitEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player.beams,
+      worldLayer,
+      this.player.beamHitWall,
+      null,
+      this
+    );
+
+    //for tank projectiles
+    this.physics.add.overlap(
+      this.tank.shells,
+      worldLayer,
+      this.tank.shellHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.tank.bombs,
+      worldLayer,
+      this.tank.shellHitWall,
       null,
       this
     );

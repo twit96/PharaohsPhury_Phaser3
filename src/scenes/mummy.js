@@ -205,7 +205,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.isAttacking = true;
 
       //generate a cane attack (or replace mummy sprite with attack sprite)
-      this.caneAttack = this.scene.physics.add.sprite('mummyCane');
       this.body.setSize(64, 64, 50, 50);
 
        if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){

@@ -170,7 +170,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     when the moveCounter reaches higher values. After the 3 loops complete,
     function swaps the direction of the tank and repeats the 3 loops.
     */
-    console.log('[tank.updateBehaviorLoop] - end of loop');
+    console.log('[tank.updateBehaviorLoop] - end of loop\n\n');
 
     //update length of behavior loop and moveCounter
     this.maxCount += this.maxCountIncrement;
@@ -178,7 +178,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     //handle tank switching directions after three behavior loops
     if (this.maxCount > 2000) {
-      console.log('behavior cycle reversing');
+      console.log('tank behavior cycle reversing\n\n');
 
       this.maxCount = 1000;
       this.speed *= -1;
@@ -331,6 +331,20 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesA.add(enemy);
+    }
+
+    var y;
+    for (y = 0; y < rand2; y++) {
+      var enemy = new EnemySoldier({
+        scene: this.scene,
+        key: "soldier",
+        x: this.x,
+        y: this.y
+      });
+      enemy.play("soldierAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesS.add(enemy);
     }
   }
 
