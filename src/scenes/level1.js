@@ -57,10 +57,11 @@ export default class level1 extends Phaser.Scene {
 
     //render map/player/enemies in specific order
     const bgLayer = map1.createStaticLayer("Below Player", below2Tileset, 0, 0);
-
+    const invisLayer = map1.createStaticLayer("Invisible", worldTileset, 0, 0);
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
+    invisLayer.setCollisionByProperty({ collides: true });
+    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     //tutorial
     this.add.image(180,530, 'bubble').setScale(.4,.4);
@@ -189,6 +190,10 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.scroll, this.scroll);
     this.physics.add.collider(this.scroll, worldLayer);
     this.physics.add.collider(this.chests, worldLayer);
+    this.physics.add.collider(this.enemiesA, invisLayer);
+    this.physics.add.collider(this.enemiesS, invisLayer);
+
+
 
     this.physics.add.overlap(
       this.player,
@@ -215,6 +220,15 @@ export default class level1 extends Phaser.Scene {
       this.physics.add.overlap(
         enemyS.bullets,
         worldLayer,
+        enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
+    this.enemiesS.children.each(function(enemyS) {
+      this.physics.add.overlap(
+        enemyS.bullets,
+        invisLayer,
         enemyS.bulletHitWall,
         null,
         this

@@ -60,8 +60,10 @@ export default class level6 extends Phaser.Scene {
 
     //render map/player/enemies in specific order
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
+    const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+    invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     /*
@@ -158,6 +160,9 @@ export default class level6 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.enemiesA, invisLayer);
+    this.physics.add.collider(this.enemiesS, invisLayer);
 
     this.physics.add.overlap(
       this.player,
@@ -184,6 +189,15 @@ export default class level6 extends Phaser.Scene {
       this.physics.add.overlap(
         enemyS.bullets,
         worldLayer,
+        enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
+    this.enemiesS.children.each(function(enemyS) {
+      this.physics.add.overlap(
+        enemyS.bullets,
+        invisLayer,
         enemyS.bulletHitWall,
         null,
         this
@@ -241,7 +255,7 @@ export default class level6 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
 
