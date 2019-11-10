@@ -60,6 +60,7 @@ export default class level1 extends Phaser.Scene {
     const invisLayer = map1.createStaticLayer("Invisible", worldTileset, 0, 0);
     const worldLayer = map1.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+    invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([27,28], this.hitExit, this);
 
     //tutorial
@@ -191,6 +192,7 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
+    
 
 
     this.physics.add.overlap(
