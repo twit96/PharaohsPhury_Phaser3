@@ -58,6 +58,7 @@ export default class level2 extends Phaser.Scene {
 
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+    invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     //diamonds
@@ -148,9 +149,6 @@ export default class level2 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
-    this.physics.add.collider(this.scroll, this.scroll);
-    this.physics.add.collider(this.scroll, worldLayer);
-    this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
@@ -179,6 +177,15 @@ export default class level2 extends Phaser.Scene {
       this.physics.add.overlap(
         enemyS.bullets,
         worldLayer,
+        enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
+    this.enemiesS.children.each(function(enemyS) {
+      this.physics.add.overlap(
+        enemyS.bullets,
+        invisLayer,
         enemyS.bulletHitWall,
         null,
         this
