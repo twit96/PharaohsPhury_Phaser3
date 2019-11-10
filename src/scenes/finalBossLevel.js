@@ -3,6 +3,10 @@ import * as ChangeScene from './ChangeScene.js';
 import Mummy from "./mummy.js";
 import Tank from "./tank.js";
 
+import EnemyArch from './enemyArch.js';
+import EnemySoldier from './enemySoldier.js';
+
+
 export default class finalBossLevel extends Phaser.Scene {
   constructor () {
     super('finalBossLevel');
@@ -31,6 +35,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.meleeSound = this.sound.add("meleeAttack");
     this.shootBeam = this.sound.add("beam");
     this.cry = this.sound.add("diedCry");
+    this.pickupSound = this.sound.add("pickupSound");
 
     //VARIABLES
     //player
@@ -65,6 +70,10 @@ export default class finalBossLevel extends Phaser.Scene {
       y: 400
     });
 
+    //diamonds
+    this.collectItems = this.add.group();
+    this.collectItems.enableBody = true;
+
     console.log('created map layers and sprites');
 
     //player physics/input
@@ -82,7 +91,13 @@ export default class finalBossLevel extends Phaser.Scene {
     //configure sprite collisions
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.collider(this.tank, worldLayer);
+    this.physics.add.collider(this.tank.enemiesA, worldLayer);
+    this.physics.add.collider(this.tank.enemiesS, worldLayer);
+    this.physics.add.collider(this.collectItems, worldLayer);
+    this.physics.add.collider(this.collectItems, this.collectItems);
 
+    //configure sprite overlaps
+    //for player
     this.physics.add.overlap(
       this.player,
       this.tank,
@@ -90,7 +105,43 @@ export default class finalBossLevel extends Phaser.Scene {
       null,
       this
     );
+    this.physics.add.overlap(
+      this.player,
+      this.tank.enemiesA,
+      this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.tank.enemiesS,
+      this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.collectItems,
+      this.pickup,
+      null,
+      this
+    );
 
+    //for player beams
+    this.physics.add.overlap(
+      this.player.beams,
+      this.tank.enemiesA,
+      this.player.beamHitEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player.beams,
+      this.tank.enemiesS,
+      this.player.beamHitEnemy,
+      null,
+      this
+    );
     this.physics.add.overlap(
       this.player.beams,
       worldLayer,
@@ -99,6 +150,7 @@ export default class finalBossLevel extends Phaser.Scene {
       this
     );
 
+    //for tank projectiles
     this.physics.add.overlap(
       this.tank.shells,
       worldLayer,
@@ -106,7 +158,6 @@ export default class finalBossLevel extends Phaser.Scene {
       null,
       this
     );
-
     this.physics.add.overlap(
       this.tank.bombs,
       worldLayer,
@@ -281,6 +332,58 @@ export default class finalBossLevel extends Phaser.Scene {
       }.bind(this)  //binds the function to each of the children. scope of function
     );
 
+    //enemy movement
+    this.tank.enemiesA.children.each(function(enemyA) {
+      enemyA.move();
+    }, this);
+    this.tank.enemiesS.children.each(function(enemyS) {
+      enemyS.move();
+    }, this);
+
+    //configure overlaps for active enemy bullets
+    this.tank.enemiesS.children.each(function(enemyS) {
+          enemyS.bullets.children.each(
+            function (b) {
+              if (b.active) {
+                this.physics.add.overlap(
+                  b,
+                  this.player,
+                  this.shellHitPlayer,
+                  null,
+                  this
+                );
+
+                //deactivate bullets once they leave the screen
+                if (b.y < 0) {
+                  b.setActive(false)
+                } else if (b.y > this.cameras.main.height) {
+                  b.setActive(false)
+                } else if (b.x < 0) {
+                  b.setActive(false)
+                } else if (b.x > this.cameras.main.width) {
+                  b.setActive(false)
+                }
+              }
+            }.bind(this)  //binds the function to each of the children. scope of function
+          )
+        }, this);
+
+
+  }
+
+  shellHitPlayer(shell, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[level.shellHitPlayer]');
+
+
+    //disable shell
+    shell.disableBody(true, true);
+
+    //update player stats
+    player.updateHealth(20);
   }
 
   playerRanIntoTank(player, tank) {
@@ -332,6 +435,105 @@ export default class finalBossLevel extends Phaser.Scene {
       callbackScope: this,
       loop: false
     });
+  }
+
+  playerRanIntoEnemy(player, enemy) {
+    /*
+    function to handle the case of player colliding with an enemy.
+    Player loses a life if not attacking, and enemy is always destroyed.
+    */
+    console.log('[level.playerRanIntoEnemy]');
+
+    var enemyDied = false;
+
+    //HANDLE COLLISION IF PLAYER IS NOT ATTACKING
+    if (player.isAttacking == false) {
+      console.log('player was not attacking');
+
+      //variables to adjust player x away from enemy
+      var enemyHalfWidth = enemy.width / 2;
+      var enemyRightX = enemy.x + enemyHalfWidth;
+      var enemyLeftX = enemy.x - enemyHalfWidth;
+
+      //variables to adjust player y away from enemy
+      var playerHalfHeight = this.player.height / 2;
+      var enemyHalfHeight = enemy.height / 2;
+      var enemyBottomY = enemy.y + enemyHalfHeight;
+
+      if (this.player.body.touching.down) {
+        //collision on top or bottom of enemy
+        enemyDied = true;
+        enemy.isActive = false;
+
+        this.player.body.setVelocityY(-330);
+
+      } else if (this.player.body.touching.right) {
+        //collision on left side of enemy
+        this.player.x = enemyLeftX - this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+
+        //enemy briefly disabled
+        enemy.stun();
+
+      }  else if (this.player.body.touching.left) {
+        //collision on right side of enemy
+        this.player.x = enemyRightX + this.player.width;
+        this.player.y = enemyBottomY - playerHalfHeight;
+
+        //player takes damage
+        player.updateHealth(25);  //75 ARBITRARILY CHOSEN
+
+        //enemy briefly disabled
+        enemy.stun();
+      }
+
+      console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
+
+    //HANDLE COLLISION IF PLAYER IS ATTACKING
+    } else {
+      console.log('player was attacking');
+      enemyDied = true;
+    }
+
+    //HANDLE ENEMY DEATH IF NEEDED
+    if (enemyDied == true) {
+      console.log('enemy died');
+
+      //generate random number of diamonds to burst from dead enemy
+      var randAmount = Math.floor(Math.random() * Math.floor(10));
+      var x;
+      for (x = 0; x < randAmount; x++) {
+        //within 75 pixels left or right from the enemy
+        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+        //up to 75 pixels above the enemy
+        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+        //spawn diamond
+        var diamondX = enemy.x + randomShiftX;
+        var diamondY = enemy.y - randomShiftY;
+        this.spawnDiamond(diamondX, diamondY);
+      }
+
+      //"kill" enemy, update player stats
+      enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
+      this.cry.play();
+      player.enemiesKilled++;
+    }
+  }
+
+  spawnDiamond(diamondX, diamondY){
+    this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
+  }
+
+  pickup(player,item) {
+    item.destroy();
+    this.player.diamondsCollected++;
+    console.log("diamonds collected:" + this.player.diamondsCollected);
+    this.pickupSound.play();
   }
 
   updateHealthBar(){
