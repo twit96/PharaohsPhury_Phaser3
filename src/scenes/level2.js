@@ -52,6 +52,7 @@ export default class level2 extends Phaser.Scene {
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
+
     worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
@@ -130,6 +131,7 @@ export default class level2 extends Phaser.Scene {
       chest
         .enableBody(true, x, y, true, true);
     }
+
     //player
     this.player = new Mummy({
       scene: this,
@@ -140,6 +142,10 @@ export default class level2 extends Phaser.Scene {
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
 
+
+    this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
+    this.hiddenCaveLayer.setAlpha(1);
+    this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
 
     console.log('created map layers and sprites');
 
@@ -170,6 +176,13 @@ export default class level2 extends Phaser.Scene {
       this.player,
       this.enemiesA,
       this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.hiddenCaveLayer,
+      this.uncoverHiddenCave,
       null,
       this
     );
@@ -531,5 +544,8 @@ export default class level2 extends Phaser.Scene {
   }
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+  uncoverHiddenCave(){
+    this.hiddenCaveLayer.setAlpha(0.1);
   }
 }
