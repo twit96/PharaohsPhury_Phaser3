@@ -444,7 +444,7 @@ export default class level1 extends Phaser.Scene {
     this.pickupSound.play();
   }
 
-  pickUpScroll()
+  pickUpScroll() {
     item.destroy();
     this.player.scrollsCollected++;
     console.log("scrollsC collected:" + this.player.scrollsCollected);
