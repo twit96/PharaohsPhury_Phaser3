@@ -60,6 +60,7 @@ export default class level2 extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    invisLayer.setAlpha(0);
 
     //diamonds
     this.collectItems = this.add.group();

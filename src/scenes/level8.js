@@ -57,6 +57,7 @@ export default class level8 extends Phaser.Scene {
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    invisLayer.setAlpha(0);
 
     /*
     // for collecting item @ dyven

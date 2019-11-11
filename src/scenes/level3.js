@@ -66,6 +66,7 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    invisLayer.setAlpha(0);
 
     /*
     // for collecting item @ dyven
