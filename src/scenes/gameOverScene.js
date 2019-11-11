@@ -59,16 +59,9 @@ export default class gameOverScene extends Phaser.Scene {
       btnText = "Continue";
     }
 
-
-
-
     if (this.levelName === "Final Boss" && this.levelCompleted ) {
-      btnText = "You just won. \n You are now free";
+      btnText = "You Won! \n You are now free";
     }
-
-
-
-
 
     //button actions
     this.nextButton = this.add.text(500, 500, btnText, { font: '24px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 3})
