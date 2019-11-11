@@ -438,13 +438,13 @@ export default class level1 extends Phaser.Scene {
 
   pickupChests(player,chest) {
     chest.play("chestOpen");
-    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-100,'scroll'));
     chest.setFrame(2);
     chest.disableBody(true,false);
     this.pickupSound.play();
   }
 
-  pickUpScroll() {
+  pickUpScroll()
     item.destroy();
     this.player.scrollsCollected++;
     console.log("scrollsC collected:" + this.player.scrollsCollected);
