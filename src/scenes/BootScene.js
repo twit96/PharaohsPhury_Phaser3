@@ -7,7 +7,6 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
-    //this.load.image('title', './assets/images/gametitle.png');
 
     this.loadingTxt = this.add.text(300, 400, "Loading game...",{
       fontFamily: 'Arial',
@@ -35,6 +34,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("scroll", "../assets/sprites/Scroll.png");
     this.load.image("arrow", "../assets/sprites/Arrow.png");
     this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
+    this.load.image("exit", "../assets/images/exit.png");
 
     this.load.image("bullet", "../assets/sprites/bullet.png");
     this.load.image("shell", "../assets/sprites/shell.png");
@@ -146,6 +146,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('bg1', './assets/sounds/background1.mp3');
     this.load.audio('bg2', './assets/sounds/background2.mp3');
     this.load.audio('bg3', './assets/sounds/background3.mp3');
+    this.load.audio('bg4', './assets/sounds/background4.mp3');
     this.load.audio('beam', './assets/sounds/beam.mp3');
     this.load.audio('pops', './assets/sounds/buttonPops.mp3');
     this.load.audio('creepy', './assets/sounds/creepy.mp3');

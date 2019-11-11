@@ -62,7 +62,7 @@ export default class level1 extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
-
+    invisLayer.setAlpha(0);
     //tutorial
     this.add.image(180,530, 'bubble').setScale(.4,.4);
     this.add.image(180,530, 'awdbtn').setScale(.3,.3);
@@ -86,6 +86,11 @@ export default class level1 extends Phaser.Scene {
     this.enemiesA.enableBody = true;
     this.enemiesS = this.add.group();
     this.enemiesS.enableBody = true;
+
+    //arrow trap
+    this.arrow = this.physics.add.sprite(500, 800, "arrow");
+    this.arrow.body.setAllowGravity(false)
+    this.arrow.body.setVelocityY(-100)
 
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
@@ -195,6 +200,7 @@ export default class level1 extends Phaser.Scene {
 
 
 
+
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -213,6 +219,20 @@ export default class level1 extends Phaser.Scene {
       this.player.beams,
       worldLayer,
       this.player.beamHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.arrow,
+      worldLayer,
+      this.arrowHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.arrow,
+      this.player,
+      this.arrowHitPlayer,
       null,
       this
     );
@@ -266,21 +286,22 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate  text
-    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
-    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    this.location = this.add.text(10,100, "Coordinates: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+this.levelName).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,40, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,60, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,80, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,100, "Score: "+ this.score).setScrollFactor(0,0);
+    // this.location = this.add.text(10,100, "Coordinates: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
       var xLocation = 150 + h*20 ;
-      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+      this.hearts.add(this.add.image(xLocation,48, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,58,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,58,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -299,7 +320,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -437,7 +458,7 @@ export default class level1 extends Phaser.Scene {
 
   pickupChests(player,chest) {
     chest.play("chestOpen");
-    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-100,'scroll'));
     chest.setFrame(2);
     chest.disableBody(true,false);
     this.pickupSound.play();
@@ -566,4 +587,31 @@ export default class level1 extends Phaser.Scene {
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
   }
 
+  arrowHitWall(bullet, worldLayer, invisLayer) {
+    /*
+    function to check each worldLayer tile the soldier bullet overlaps with for
+    its collides property. destroys the bullet if it encounters a tile with
+    collides = true (i.e. the bullet hit a wall tile)
+    */
+    if (worldLayer.collides) {
+      console.log('[arrowHitWall]');
+      bullet.disableBody(true, true);
+    }
+
+  }
+
+  arrowHitPlayer(bullet, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[arrowHitPlayer]');
+    //this.bomb.play();
+
+    //disable shell
+    bullet.disableBody(true, true);
+
+    //update player stats
+    this.player.updateHealth(50);
+  }
 }

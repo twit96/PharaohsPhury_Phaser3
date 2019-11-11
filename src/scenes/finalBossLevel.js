@@ -14,7 +14,8 @@ export default class finalBossLevel extends Phaser.Scene {
 
   preload() {
     console.log('\n[FINALBOSSLEVEL]');
-    console.log('[preload]')
+    console.log('[preload]');
+    this.load.image('bubble', './assets/images/opaquebubble.png');
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
   }
 
@@ -28,7 +29,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.add.image(1600, 320, 'bossbackground');
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("platformerSound");
+    this.backgroundMusic = this.sound.add("bg4");
     this.backgroundMusic.play({loop:true});
 
     this.bomb = this.sound.add("bomb");
@@ -62,6 +63,15 @@ export default class finalBossLevel extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
+
+    this.enemyHealth = this.add.container(400, 450);
+    this.EhealthBar = this.add.sprite(0,0,"healthBarFrame").setOrigin(0,0).setScale(0.1);
+    this.EhealthBarFill = this.add.sprite(0,0,"healthBarFill").setOrigin(0,0).setScale(0.1);
+    this.EhealthBarOrgWidth = this.EhealthBarFill.width;
+    this.EhealthBarOrgHeight = this.EhealthBarFill.width;
+    this.enemyHealth.add(this.EhealthBar);
+    this.enemyHealth.add(this.EhealthBarFill);
+
 
     this.tank = new Tank({
       scene: this,
@@ -178,24 +188,24 @@ export default class finalBossLevel extends Phaser.Scene {
     this.score = 0;
 
     // Generate Display text
-    this.LifeDisplay = this.add.text(10,10, "Life Left: " + this.player.lives, { color: '#00000' }).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,30, "Health: " + this.player.health, { color: '#000000' }).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,50, "Timer: "+ this.duration, {color: '#000000' }).setScrollFactor(0,0);
-    //this.ScoreDisplay = this.add.text(10,70, "Score: "+ this.score).setScrollFactor(0,0);
-    this.EnemyHealthDisplay = this.add.text(650,10,"Tank Health: "+this.tank.health, { color: '#00000' }).setScrollFactor(0,0);
-    // create Health Bar
-    this.healthBar = this.add.image(130,30,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(130,30,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarOrgWidth = this.healthBarFill.width;
-    this.healthBarOrgHeight = this.healthBarFill.width;
+    // this.add.image(100,80, 'bubble').setScale(.5,.5).setScrollFactor(0);
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at "+this.levelName,{ color: '#00000' }).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,40, "Life Left: " + this.player.lives,{ color: '#00000' }).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,60, "Health: " + this.player.health,{ color: '#00000' }).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,80, "Timer: "+ this.duration,{ color: '#00000' }).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,100, "Score: "+ this.score,{ color: '#00000' }).setScrollFactor(0,0);
 
-    // Create Hearts
+    this.EnemyHealthDisplay = this.add.text(650,10,"Tank Health: "+this.tank.health, { color: '#00000' }).setScrollFactor(0,0);
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
       var xLocation = 150 + h*20 ;
-      this.hearts.add(this.add.image(xLocation,18, "heart").setScrollFactor(0,0).setScale(0.03));
+      this.hearts.add(this.add.image(xLocation,48, "heart").setScrollFactor(0,0).setScale(0.03));
     }
+    this.healthBar = this.add.image(120,58,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,58,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarOrgWidth = this.healthBarFill.width;
+    this.healthBarOrgHeight = this.healthBarFill.width;
 
     console.log("completed configurating display")
   }
@@ -204,15 +214,17 @@ export default class finalBossLevel extends Phaser.Scene {
     //duration and score
     this.endTime = new Date();
     this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
-    //this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
-
+    this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
     //display
     this.timerDisplay.setText("Timer: "+ this.duration);
-    //this.ScoreDisplay.setText("Score: "+ this.score);
+    this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
     this.EnemyHealthDisplay.setText("Tank Health:" + this.tank.health)
     this.updateHealthBar();
+    this.updateEHealthBar();
+    this.enemyHealth.x = this.tank.x - 60;
+
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
     if (this.player.lives != this.hearts.countActive()) {
       this.scene.pause();
@@ -540,5 +552,8 @@ export default class finalBossLevel extends Phaser.Scene {
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
     //console.log("Update player health bar fill");
   }
-
+  updateEHealthBar(){
+    this.EhealthBarFill.setCrop(0,0,this.EhealthBarOrgWidth*this.tank.health /100,this.EhealthBarOrgHeight);
+    //console.log("Update player health bar fill");
+  }
 }
