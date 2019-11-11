@@ -91,8 +91,8 @@ export default class level1 extends Phaser.Scene {
 
     //arrow trap
     this.arrow = this.physics.add.sprite(500, 800, "arrow");
-    this.arrow.body.setAllowGravity(false)
-    this.arrow.body.setVelocityY(-100)
+    this.arrow.body.setAllowGravity(false);
+    this.arrow.body.setVelocityY(-100);
 
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
