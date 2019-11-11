@@ -72,7 +72,12 @@ export default class level5 extends Phaser.Scene {
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
-
+    this.scroll = this.add.group();
+    this.scroll.enableBody = true;
+    this.chests = this.physics.add.group({
+      defaultKey: "chest"
+    });
+    
     //create enemies group
     this.enemiesA = this.add.group();
     this.enemiesA.enableBody = true;
@@ -85,9 +90,12 @@ export default class level5 extends Phaser.Scene {
     this.enemyACor = this.levelSettingInfo.level5.enemyA;
     this.enemySCor = this.levelSettingInfo.level5.enemyS;
     this.gemCor = this.levelSettingInfo.level5.gem;
+    this.chestCor = this.levelSettingInfo.level5.chest;
+
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
+    console.log("populating chest at " + this.chestCor);
 
     // spawn
     for (var count in this.enemyACor) {
@@ -126,7 +134,14 @@ export default class level5 extends Phaser.Scene {
       var y = this.gemCor[count][1];
       this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
     }
+    for (var count in this.chestCor) {
+      var x = this.chestCor[count][0];
+      var y = this.chestCor[count][1];
 
+      var chest = this.chests.get();
+      chest
+        .enableBody(true, x, y, true, true);
+    }
     //player
     this.player = new Mummy({
       scene: this,
@@ -156,6 +171,9 @@ export default class level5 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.scroll, this.scroll);
+    this.physics.add.collider(this.scroll, worldLayer);
+    this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
     this.physics.add.overlap(
@@ -204,7 +222,20 @@ export default class level5 extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.overlap(
+      this.player,
+      this.scroll,
+      this.pickup,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.chests,
+      this.pickupChests,
+      null,
+      this
+    );
     console.log('configured sprites and physics');
 
     // Create timer
@@ -389,7 +420,20 @@ export default class level5 extends Phaser.Scene {
     console.log("diamonds collected:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
+  pickupChests(player,chest) {
+    chest.play("chestOpen");
+    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    chest.setFrame(2);
+    chest.disableBody(true,false);
+    this.pickupSound.play();
+  }
 
+  pickUpScroll() {
+    item.destroy();
+    this.player.scrollsCollected++;
+    console.log("scrollsC collected:" + this.player.scrollsCollected);
+    this.pickupSound.play();
+  }
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy.

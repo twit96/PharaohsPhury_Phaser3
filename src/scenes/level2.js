@@ -21,8 +21,6 @@ export default class level2 extends Phaser.Scene {
     // background
     this.add.image(2240,384,'background1');
 
-
-
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
@@ -52,10 +50,7 @@ export default class level2 extends Phaser.Scene {
     //render map/player/enemies in specific order
 
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
-
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
-
-
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
@@ -65,6 +60,11 @@ export default class level2 extends Phaser.Scene {
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
+    this.scroll = this.add.group();
+    this.scroll.enableBody = true;
+    this.chests = this.physics.add.group({
+      defaultKey: "chest"
+    });
 
     //create enemies group
     this.enemiesA = this.add.group();
@@ -78,9 +78,12 @@ export default class level2 extends Phaser.Scene {
     this.enemyACor = this.levelSettingInfo.level2.enemyA;
     this.enemySCor = this.levelSettingInfo.level2.enemyS;
     this.gemCor = this.levelSettingInfo.level2.gem;
+    this.chestCor = this.levelSettingInfo.level2.chest;
+
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
+    console.log("populating chest at " + this.chestCor);
 
     // spawn
     for (var count in this.enemyACor) {
@@ -119,7 +122,14 @@ export default class level2 extends Phaser.Scene {
       var y = this.gemCor[count][1];
       this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
     }
+    for (var count in this.chestCor) {
+      var x = this.chestCor[count][0];
+      var y = this.chestCor[count][1];
 
+      var chest = this.chests.get();
+      chest
+        .enableBody(true, x, y, true, true);
+    }
     //player
     this.player = new Mummy({
       scene: this,
@@ -150,6 +160,9 @@ export default class level2 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.scroll, this.scroll);
+    this.physics.add.collider(this.scroll, worldLayer);
+    this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
@@ -199,7 +212,20 @@ export default class level2 extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.overlap(
+      this.player,
+      this.scroll,
+      this.pickup,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.chests,
+      this.pickupChests,
+      null,
+      this
+    );
     console.log('configured sprites and physics');
 
     // Create timer
@@ -215,7 +241,7 @@ export default class level2 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -244,7 +270,7 @@ export default class level2 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
@@ -374,6 +400,20 @@ export default class level2 extends Phaser.Scene {
     item.destroy();
     this.player.diamondsCollected++;
     console.log("diamonds collected:" + this.player.diamondsCollected);
+    this.pickupSound.play();
+  }
+  pickupChests(player,chest) {
+    chest.play("chestOpen");
+    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    chest.setFrame(2);
+    chest.disableBody(true,false);
+    this.pickupSound.play();
+  }
+
+  pickUpScroll() {
+    item.destroy();
+    this.player.scrollsCollected++;
+    console.log("scrollsC collected:" + this.player.scrollsCollected);
     this.pickupSound.play();
   }
 
