@@ -126,14 +126,14 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     var bullet = this.bullets.get();
     bullet.setAngle(180);
     bullet
-      .enableBody(true, this.x, this.y, true, true)
+      .enableBody(true, this.x, (this.y+5), true, true)
       .setVelocity(2000,0)
 
   }
 
 
   //SOLDIER BULLETS HELPER FUNCTIONS
-  bulletHitWall(bullet, worldLayer) {
+  bulletHitWall(bullet, worldLayer, invisLayer) {
     /*
     function to check each worldLayer tile the soldier bullet overlaps with for
     its collides property. destroys the bullet if it encounters a tile with
@@ -143,6 +143,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
       console.log('[enemySoldier.bulletHitWall]');
       bullet.disableBody(true, true);
     }
+
   }
 
   bulletHitPlayer(bullet, player) {
