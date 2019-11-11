@@ -266,21 +266,22 @@ export default class level1 extends Phaser.Scene {
     this.score = 0;
 
     // Generate  text
-    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
-    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    this.location = this.add.text(10,100, "Coordinates: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+this.levelName).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,40, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,60, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,80, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,100, "Score: "+ this.score).setScrollFactor(0,0);
+    // this.location = this.add.text(10,100, "Coordinates: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
       var xLocation = 150 + h*20 ;
-      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+      this.hearts.add(this.add.image(xLocation,48, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,58,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,58,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -299,7 +300,7 @@ export default class level1 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
     this.updateHealthBar();
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart

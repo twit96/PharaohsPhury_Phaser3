@@ -7,7 +7,6 @@ export default class BootScene extends Phaser.Scene {
   preload () {
     console.log('\n[BOOTSCENE]');
     console.log('[preload]');
-    //this.load.image('title', './assets/images/gametitle.png');
 
     this.loadingTxt = this.add.text(300, 400, "Loading game...",{
       fontFamily: 'Arial',
@@ -35,6 +34,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("scroll", "../assets/sprites/Scroll.png");
     this.load.image("arrow", "../assets/sprites/Arrow.png");
     this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
+    this.load.image("exit", "../assets/images/exit.png");
 
     this.load.image("bullet", "../assets/sprites/bullet.png");
     this.load.image("shell", "../assets/sprites/shell.png");

@@ -35,25 +35,25 @@ export default class levelPicker extends Phaser.Scene {
 
     console.log('[create]');
     this.add.image(400,300,'background').setScale(.5,.5);
-
-    var saveLeaveBtn = this.add.text(
-      this.centerX - 100,
-      10,
-      "Save & Leave", {
-        fontFamily: 'Arial',
-        fontSize: 30,
-        color: '#fcba03',
-        stroke: '#000000',
-        strokeThickness: 7
-      }
-    );
+    var saveLeaveBtn = this.add.sprite(this.centerX - 200,550,"exit").setScale(.15,.15);
+    // var saveLeaveBtn = this.add.text(
+    //   this.centerX - 200,
+    //   500,
+    //   "Exit", {
+    //     fontFamily: 'Arial',
+    //     fontSize: 30,
+    //     color: '#fcba03',
+    //     stroke: '#000000',
+    //     strokeThickness: 7
+    //   }
+    // );
 
     saveLeaveBtn.setInteractive().on("pointerover", function() {
       sound.play('low');
-      this.setScale(1.1);
+      this.setScale(.2);
       this.x -= 25;
     }).on("pointerout", function () {
-      this.setScale(1.0);
+      this.setScale(.15);
       this.x += 25;
     }).on("pointerup", function () {
       sound.play('high');
