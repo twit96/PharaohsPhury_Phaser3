@@ -55,7 +55,6 @@ export default class level2 extends Phaser.Scene {
 
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     //diamonds
     this.collectItems = this.add.group();
@@ -124,6 +123,7 @@ export default class level2 extends Phaser.Scene {
     });
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
+    aboveLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
 
     console.log('created map layers and sprites');
@@ -144,7 +144,7 @@ export default class level2 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
-
+    this.physics.add.collider(this.player,aboveLayer);
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
