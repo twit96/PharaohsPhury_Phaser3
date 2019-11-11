@@ -88,6 +88,12 @@ export default class level1 extends Phaser.Scene {
     this.enemiesS.enableBody = true;
     this.enemiesG = this.add.group();
     this.enemiesG.enableBody = true;
+
+    //arrow trap
+    this.arrow = this.physics.add.sprite(500, 800, "arrow");
+    this.arrow.body.setAllowGravity(false)
+    this.arrow.body.setVelocityY(-100)
+
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
@@ -212,6 +218,7 @@ export default class level1 extends Phaser.Scene {
 
 
 
+
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -230,6 +237,20 @@ export default class level1 extends Phaser.Scene {
       this.player.beams,
       worldLayer,
       this.player.beamHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.arrow,
+      worldLayer,
+      this.arrowHitWall,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.arrow,
+      this.player,
+      this.arrowHitPlayer,
       null,
       this
     );
@@ -584,4 +605,31 @@ export default class level1 extends Phaser.Scene {
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
   }
 
+  arrowHitWall(bullet, worldLayer, invisLayer) {
+    /*
+    function to check each worldLayer tile the soldier bullet overlaps with for
+    its collides property. destroys the bullet if it encounters a tile with
+    collides = true (i.e. the bullet hit a wall tile)
+    */
+    if (worldLayer.collides) {
+      console.log('[arrowHitWall]');
+      bullet.disableBody(true, true);
+    }
+
+  }
+
+  arrowHitPlayer(bullet, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[arrowHitPlayer]');
+    //this.bomb.play();
+
+    //disable shell
+    bullet.disableBody(true, true);
+
+    //update player stats
+    this.player.updateHealth(50);
+  }
 }
