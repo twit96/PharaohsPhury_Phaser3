@@ -28,7 +28,7 @@ export default class finalBossLevel extends Phaser.Scene {
     this.add.image(1600, 320, 'bossbackground');
 
     //AUDIO
-    this.backgroundMusic = this.sound.add("platformerSound");
+    this.backgroundMusic = this.sound.add("bg4");
     this.backgroundMusic.play({loop:true});
 
     this.bomb = this.sound.add("bomb");
