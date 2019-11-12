@@ -155,6 +155,7 @@ export default class level6 extends Phaser.Scene {
     });
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
+    this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -186,6 +187,14 @@ export default class level6 extends Phaser.Scene {
       this.player,
       this.enemiesA,
       this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.overlap(
+      this.player,
+      this.hiddenCaveLayer,
+      this.uncoverHiddenCave,
       null,
       this
     );
@@ -554,5 +563,11 @@ export default class level6 extends Phaser.Scene {
   }
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+  uncoverHiddenCave(player,hiddenCaveLayer){
+    if (hiddenCaveLayer.collides) {
+      console.log("uncoverHiddenCave");
+      this.hiddenCaveLayer.setAlpha(0);
+    }
   }
 }
