@@ -569,6 +569,8 @@ export default class level6 extends Phaser.Scene {
     if (hiddenCaveLayer.collides) {
       console.log("uncoverHiddenCave");
       this.hiddenCaveLayer.setAlpha(0);
+    } else {
+      this.hiddenCaveLayer.setAlpha(1);
     }
   }
 }

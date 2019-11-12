@@ -40,7 +40,7 @@ export default class level4 extends Phaser.Scene {
     //VARIABLES
     //player
     this.spawnX = 94;
-    this.spawnY = 644;
+    this.spawnY = 630;
     this.levelName = 4;
 
     //declare map and tilesets
@@ -565,6 +565,8 @@ export default class level4 extends Phaser.Scene {
     if (hiddenCaveLayer.collides) {
       console.log("uncoverHiddenCave");
       this.hiddenCaveLayer.setAlpha(0);
+    }else {
+      this.hiddenCaveLayer.setAlpha(1);
     }
   }
 }
