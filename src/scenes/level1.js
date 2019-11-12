@@ -3,6 +3,7 @@ import * as ChangeScene from './ChangeScene.js';
 import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
+import EnemyGunner from './enemyGunner.js';
 
 export default class level1 extends Phaser.Scene {
   constructor () {
@@ -98,7 +99,7 @@ export default class level1 extends Phaser.Scene {
     this.arrowCor = this.levelSettingInfo.level1.arrow;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
-    console.log("populating enemyS at " + this.enemyGCor);
+    console.log("populating enemyG at " + this.enemyGCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
     console.log("populating arrow at " + this.arrowCor);
@@ -153,11 +154,11 @@ export default class level1 extends Phaser.Scene {
       var y = this.enemyGCor[count][1];
       var enemy = new EnemyGunner({
         scene: this,
-        key: "soldier",
+        key: "gunner",
         x: x,
         y: y,
       });
-      //enemy.play("soldierAnim");
+      enemy.play("gunnerAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesG.add(enemy);
@@ -238,6 +239,13 @@ export default class level1 extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(
+      this.player,
+      this.enemiesG,
+      this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.physics.add.overlap(
       this.player.beams,
       worldLayer,
       this.player.beamHitWall,
@@ -275,7 +283,25 @@ export default class level1 extends Phaser.Scene {
         null,
         this
       );
-    }, this);
+      }, this);
+      this.enemiesG.children.each(function(enemyG) {
+        this.physics.add.overlap(
+          enemyG.bullets,
+          worldLayer,
+          enemyG.bulletHitWall,
+          null,
+          this
+        );
+      }, this);
+      this.enemiesG.children.each(function(enemyG) {
+        this.physics.add.overlap(
+          enemyG.bullets,
+          invisLayer,
+          enemyG.bulletHitWall,
+          null,
+          this
+        );
+      }, this);
     this.physics.add.overlap(
       this.player,
       this.collectItems,
@@ -395,6 +421,13 @@ export default class level1 extends Phaser.Scene {
             null,
             this
           );
+          this.physics.add.overlap(
+            b,
+            this.enemiesG,
+            this.player.beamHitWall,
+            null,
+            this
+          );
 
           //deactivate beams once they leave the screen
           if (b.y < 0) {
@@ -416,6 +449,9 @@ export default class level1 extends Phaser.Scene {
     }, this);
     this.enemiesS.children.each(function(enemyS) {
       enemyS.move();
+    }, this);
+    this.enemiesG.children.each(function(enemyG) {
+      enemyG.move();
     }, this);
 
     //configure overlaps for active enemy bullets
@@ -445,7 +481,36 @@ export default class level1 extends Phaser.Scene {
             }.bind(this)  //binds the function to each of the children. scope of function
           )
         }, this);
-      }
+      
+
+      //configure overlaps for active enemy bullets
+      this.enemiesG.children.each(function(enemyG) {
+            enemyG.bullets.children.each(
+              function (b) {
+                if (b.active) {
+                  this.physics.add.overlap(
+                    b,
+                    this.player,
+                    this.shellHitPlayer,
+                    null,
+                    this
+                  );
+
+                  //deactivate bullets once they leave the screen
+                  if (b.y < 0) {
+                    b.setActive(false)
+                  } else if (b.y > this.cameras.main.height) {
+                    b.setActive(false)
+                  } else if (b.x < 0) {
+                    b.setActive(false)
+                  } else if (b.x > this.cameras.main.width) {
+                    b.setActive(false)
+                  }
+                }
+              }.bind(this)  //binds the function to each of the children. scope of function
+            )
+          }, this);
+        }
 
   hitExit() {
     /**

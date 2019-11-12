@@ -13,7 +13,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     this.health = 25;
 
     this.speed = 100;
-    this.bulletSpeed = 2000;
+    this.bulletSpeed = 100;
     this.isActive = true;
 
     //soldier bullets
@@ -30,7 +30,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     * function to delay this enemy's movement function when the player runs
     * into it, allowing the player time to run away.
     */
-    console.log('[enemySoldier.stun]');
+    console.log('[enemyGunner.stun]');
 
     this.isActive = false;
     this.body.setVelocityX(0);
@@ -49,7 +49,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     (if statement is a bug fix: does not reset if enemy was killed during delay)
     */
     if (this.health > 0) {
-      console.log('[enemySoldier.reset]');
+      console.log('[enemyGunner.reset]');
       this.isActive = true;
       this.setTint();
     }
@@ -57,7 +57,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
 
   updateHealth(damage) {
     /** To subtract damage from this enemy's health when player attacks it. */
-    console.log('[enemySoldier.updateHealth]');
+    console.log('[enemyGunner.updateHealth]');
 
     this.health = this.health - damage;
 
@@ -84,20 +84,32 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
       if (this.moveCounter == 0) {
         //walking animation to the right
         this.setFlipX(false);
-        this.anims.play("soldierAnim", true);
+        this.anims.play("gunnerAnim", true);
 
       } else if (this.moveCounter == 100) {
         //shooting animation
-        this.anims.play("soldierShotAnim", true);
+        this.anims.play("gunnerShotAnim", true);
+        this.scene.time.addEvent({
+          delay: 500,
+          callback: this.shoot,
+          callbackScope: this,
+          loop: false
+          });
 
       } else if (this.moveCounter == 130) {
         //shoot bullet at exactly 130
-        this.shoot();
+        this.scene.time.addEvent({
+          delay: 500,
+          callback: this.shoot,
+          callbackScope: this,
+          loop: false
+          });
+
 
       } else if (this.moveCounter == 170) {
         //change to walking animation in opposite direction
         this.setFlipX(true);
-        this.anims.play("soldierAnim", true);
+        this.anims.play("gunnerAnim", true);
       }
 
       //HANDLE MOVEMENT
@@ -123,11 +135,14 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     /*
     function to define behavior of enemy shooting at the player
     */
+
     var bullet = this.bullets.get();
+    console.log("GUnner shot");
+    console.log(this);
     bullet.setAngle(180);
     bullet
       .enableBody(true, this.x, (this.y+5), true, true)
-      .setVelocity(2000,0)
+      .setVelocity(100,0)
 
   }
 
@@ -140,7 +155,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     collides = true (i.e. the bullet hit a wall tile)
     */
     if (worldLayer.collides) {
-      console.log('[enemySoldier.bulletHitWall]');
+      console.log('[gunnerSoldier.bulletHitWall]');
       bullet.disableBody(true, true);
     }
 
@@ -151,7 +166,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     function to handle overlap between player and tank shell
     (i.e. tank shell hit player)
     */
-    console.log('[enemySoldier.bulletHitPlayer]');
+    console.log('[gunnerSoldier.bulletHitPlayer]');
     this.bomb.play();
 
     //disable shell
