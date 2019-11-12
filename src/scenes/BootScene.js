@@ -119,6 +119,14 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 96,
       frameHeight: 64
     });
+    this.load.spritesheet("gunner", "../assets/spriteSheets/gunnerWalk.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("gunnerShot", "../assets/spriteSheets/Gunner_Shot.png", {
+      frameWidth: 96,
+      frameHeight: 64
+    });
 
     //final boss (tank)
     this.load.spritesheet("tankBase", "../assets/spriteSheets/tankBase.png", {
@@ -258,6 +266,18 @@ export default class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "soldierShotAnim",
       frames: this.anims.generateFrameNumbers("soldierShot"),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "gunnerAnim",
+      frames: this.anims.generateFrameNumbers("gunner"),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "gunnerShotAnim",
+      frames: this.anims.generateFrameNumbers("gunnerShot"),
       frameRate: 10,
       repeat: -1
     });
