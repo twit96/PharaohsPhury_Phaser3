@@ -41,13 +41,6 @@ export default class level1 extends Phaser.Scene {
     this.spawnY = 440;
     this.levelName = 1;
 
-    /*
-    // for collecting item @ dyven
-    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
-    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
-    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
-    */
-
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
@@ -88,7 +81,7 @@ export default class level1 extends Phaser.Scene {
     this.enemiesS.enableBody = true;
 
     //arrow trap
-    this.chests = this.physics.add.group({
+    this.arrows = this.physics.add.group({
       defaultKey: "arrow"
     });
 
