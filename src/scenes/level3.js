@@ -68,13 +68,6 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
-    /*
-    // for collecting item @ dyven
-    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
-    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
-    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
-    */
-
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
@@ -183,13 +176,6 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
-    this.physics.add.overlap(
-      this.player,
-      worldLayer,
-      this.playerWallMelee,
-      null,
-      this
-    );
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -454,23 +440,6 @@ export default class level3 extends Phaser.Scene {
     this.player.scrollsCollected++;
     console.log("scrollsC collected:" + this.player.scrollsCollected);
     this.pickupSound.play();
-  }
-
-  playerWallMelee(player, worldLayer) {
-    /*
-    function to prevent player from melee-ing through tilemaps
-    */
-
-    if (worldLayer.collides) {
-      console.log('[level.playerWallMelee]');
-
-      //this.player.x -= 10;
-      //this.player.y -= 10;
-
-      //this.player.body.setVelocityX(-100);
-      //this.player.body.setVelocityY(-100);
-
-    }
   }
 
   playerRanIntoEnemy(player, enemy) {
