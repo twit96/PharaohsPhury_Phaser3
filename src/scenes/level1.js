@@ -87,10 +87,6 @@ export default class level1 extends Phaser.Scene {
       defaultKey: "arrow"
     });
 
-    this.arrow = this.physics.add.sprite(500, 800, "arrow");
-    this.arrow.body.setAllowGravity(false);
-    this.arrow.body.setVelocityY(-100);
-
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
@@ -99,11 +95,13 @@ export default class level1 extends Phaser.Scene {
     this.enemyGCor = this.levelSettingInfo.level1.enemyG;
     this.gemCor = this.levelSettingInfo.level1.gem;
     this.chestCor = this.levelSettingInfo.level1.chest;
+    this.arrowCor = this.levelSettingInfo.level1.arrow;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating enemyS at " + this.enemyGCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
+    console.log("populating arrow at " + this.arrowCor);
 
     // //  Our container - to make enemy health bar
     //     var container = this.add.container(400, 300);
@@ -178,6 +176,16 @@ export default class level1 extends Phaser.Scene {
       chest
         .enableBody(true, x, y, true, true);
     }
+    for (var count in this.arrowCor) {
+      var x = this.arrowCor[count][0];
+      var y = this.arrowCor[count][1];
+
+      var arrow = this.arrows.get();
+      arrow
+        .enableBody(true, x, y, true, true);
+      arrow.body.setAllowGravity(false);
+      arrow.body.setVelocityY(-100);
+    }
 
     //player
     this.player = new Mummy({
@@ -215,9 +223,6 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesS, invisLayer);
     this.physics.add.collider(this.enemiesG, invisLayer);
 
-
-
-
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -239,20 +244,20 @@ export default class level1 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(
-      this.arrow,
-      worldLayer,
-      this.arrowHitWall,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.arrow,
-      this.player,
-      this.arrowHitPlayer,
-      null,
-      this
-    );
+    // this.physics.add.overlap(
+    //   this.arrow,
+    //   worldLayer,
+    //   this.arrowHitWall,
+    //   null,
+    //   this
+    // );
+    // this.physics.add.overlap(
+    //   this.arrow,
+    //   this.player,
+    //   this.arrowHitPlayer,
+    //   null,
+    //   this
+    // );
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
         enemyS.bullets,
