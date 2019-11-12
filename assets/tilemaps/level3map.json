@@ -56,7 +56,7 @@
          "name":"Above Player Change",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":140,
          "x":0,
          "y":0

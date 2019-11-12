@@ -86,21 +86,25 @@ export default class level1 extends Phaser.Scene {
     this.enemiesA.enableBody = true;
     this.enemiesS = this.add.group();
     this.enemiesS.enableBody = true;
+    this.enemiesG = this.add.group();
+    this.enemiesG.enableBody = true;
 
     //arrow trap
     this.arrow = this.physics.add.sprite(500, 800, "arrow");
-    this.arrow.body.setAllowGravity(false)
-    this.arrow.body.setVelocityY(-100)
+    this.arrow.body.setAllowGravity(false);
+    this.arrow.body.setVelocityY(-100);
 
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
     this.enemyACor = this.levelSettingInfo.level1.enemyA;
     this.enemySCor = this.levelSettingInfo.level1.enemyS;
+    this.enemyGCor = this.levelSettingInfo.level1.enemyG;
     this.gemCor = this.levelSettingInfo.level1.gem;
     this.chestCor = this.levelSettingInfo.level1.chest;
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
+    console.log("populating enemyS at " + this.enemyGCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
 
@@ -149,7 +153,21 @@ export default class level1 extends Phaser.Scene {
       this.enemiesS.add(enemy);
       console.log("Created "+this.enemiesS.children);
     }
-
+    for (var count in this.enemyGCor) {
+      var x = this.enemyGCor[count][0];
+      var y = this.enemyGCor[count][1];
+      var enemy = new EnemyGunner({
+        scene: this,
+        key: "soldier",
+        x: x,
+        y: y,
+      });
+      //enemy.play("soldierAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesG.add(enemy);
+      console.log("Created "+this.enemiesG.children);
+    }
     for (var count in this.gemCor) {
       var x = this.gemCor[count][0];
       var y = this.gemCor[count][1];
@@ -190,6 +208,7 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
+    this.physics.add.collider(this.enemiesG, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
     this.physics.add.collider(this.scroll, this.scroll);
@@ -197,6 +216,7 @@ export default class level1 extends Phaser.Scene {
     this.physics.add.collider(this.chests, worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
+    this.physics.add.collider(this.enemiesG, invisLayer);
 
 
 
