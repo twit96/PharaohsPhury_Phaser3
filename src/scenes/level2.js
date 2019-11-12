@@ -541,9 +541,11 @@ export default class level2 extends Phaser.Scene {
       });
     }
   }
+
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
   }
+
   uncoverHiddenCave(player,hiddenCaveLayer){
     if (hiddenCaveLayer.collides) {
       console.log("uncoverHiddenCave");
