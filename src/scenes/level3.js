@@ -68,13 +68,6 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
-    /*
-    // for collecting item @ dyven
-    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
-    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
-    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
-    */
-
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
@@ -157,7 +150,7 @@ export default class level3 extends Phaser.Scene {
     });
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
-
+    this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
     console.log('created map layers and sprites');
 
     //player physics/input
@@ -183,11 +176,18 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
-
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
       this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.overlap(
+      this.player,
+      this.hiddenCaveLayer,
+      this.uncoverHiddenCave,
       null,
       this
     );
@@ -255,11 +255,12 @@ export default class level3 extends Phaser.Scene {
     this.score = 0;
 
     // Generate  text
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+this.levelName).setScrollFactor(0,0);
     this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -288,7 +289,7 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
 
@@ -564,5 +565,11 @@ export default class level3 extends Phaser.Scene {
   }
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+  uncoverHiddenCave(player,hiddenCaveLayer){
+    if (hiddenCaveLayer.collides) {
+      console.log("uncoverHiddenCave");
+      this.hiddenCaveLayer.setAlpha(0);
+    }
   }
 }
