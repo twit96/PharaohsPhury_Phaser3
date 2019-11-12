@@ -90,6 +90,10 @@ export default class level1 extends Phaser.Scene {
     this.enemiesG.enableBody = true;
 
     //arrow trap
+    this.chests = this.physics.add.group({
+      defaultKey: "arrow"
+    });
+
     this.arrow = this.physics.add.sprite(500, 800, "arrow");
     this.arrow.body.setAllowGravity(false);
     this.arrow.body.setVelocityY(-100);

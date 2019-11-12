@@ -68,13 +68,6 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
-    /*
-    // for collecting item @ dyven
-    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
-    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
-    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
-    */
-
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
@@ -183,7 +176,6 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
-
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -259,7 +251,7 @@ export default class level3 extends Phaser.Scene {
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -288,7 +280,7 @@ export default class level3 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
 

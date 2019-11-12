@@ -47,9 +47,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     */
     console.log('[mummy.reset]');
 
-    this.anims.play("mummyCaneIdleAnim", true);
-    this.body.setSize(20, 55, 50, 80);
-
     if (this.scene.scene.key == "level1" || this.scene.scene.key == "level2"){
       this.anims.play("mummyIdleAnim", true);
     } else if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
@@ -205,7 +202,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.isAttacking = true;
 
       //generate a cane attack (or replace mummy sprite with attack sprite)
-      this.body.setSize(64, 64, 50, 50);
+      //this.body.setSize(64, 64, 50, 50);
 
        if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
         this.anims.play("mummyCaneAnim", true);
