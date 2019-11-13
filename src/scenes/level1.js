@@ -180,7 +180,7 @@ export default class level1 extends Phaser.Scene {
     for (var count in this.arrowCor) {
       var x = this.arrowCor[count][0];
       var y = this.arrowCor[count][1];
-      // add the count @ Tyler
+
       var arrow = this.arrows.get();
       arrow
         .enableBody(true, x, y, true, true);
@@ -385,11 +385,13 @@ export default class level1 extends Phaser.Scene {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
 
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[0] = 1;
+      if (this.player.levelCompleted){
+        var newLevelCompletion = this.registry.pop("levelCompletion");
+        newLevelCompletion[0] = 1;
 
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
+        this.registry.set({levelCompletion:newLevelCompletion});
+        console.log(this.registry);
+      }
 
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {

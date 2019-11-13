@@ -303,11 +303,13 @@ export default class level5 extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[4] = 1;
+      if (this.player.levelCompleted){
+        var newLevelCompletion = this.registry.pop("levelCompletion");
+        newLevelCompletion[0] = 1;
 
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
+        this.registry.set({levelCompletion:newLevelCompletion});
+        console.log(this.registry);
+      }
       this.backgroundMusic.stop();
       var newLevelCompletion = this.registry.pop("levelCompletion");
       newLevelCompletion[4] = 1;
