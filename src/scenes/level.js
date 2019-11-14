@@ -57,6 +57,10 @@ export default class levelScene extends Phaser.Scene {
     this.enemiesS = this.add.group();
     this.enemiesS.enableBody = true;
 
+    //arrow traps
+    this.arrows = this.physics.add.group({
+      defaultKey: "arrow"
+    });
 
     //RENDER LEVEL (layers below sprites only)
     //background image
@@ -111,42 +115,49 @@ export default class levelScene extends Phaser.Scene {
       this.enemySCor = this.levelSettingInfo.level1.enemyS;
       this.gemCor = this.levelSettingInfo.level1.gem;
       this.chestCor = this.levelSettingInfo.level1.chest;
+      this.arrowCor = this.levelSettingInfo.level1.arrow;
     } else if (this.levelNum == 2) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level2.enemyA;
       this.enemySCor = this.levelSettingInfo.level2.enemyS;
       this.gemCor = this.levelSettingInfo.level2.gem;
       this.chestCor = this.levelSettingInfo.level2.chest;
+      this.arrowCor = this.levelSettingInfo.level2.arrow;
     } else if (this.levelNum == 3) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level3.enemyA;
       this.enemySCor = this.levelSettingInfo.level3.enemyS;
       this.gemCor = this.levelSettingInfo.level3.gem;
       this.chestCor = this.levelSettingInfo.level3.chest;
+      this.arrowCor = this.levelSettingInfo.level3.arrow;
     } else if (this.levelNum == 4) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level4.enemyA;
       this.enemySCor = this.levelSettingInfo.level4.enemyS;
       this.gemCor = this.levelSettingInfo.level4.gem;
       this.chestCor = this.levelSettingInfo.level4.chest;
+      this.arrowCor = this.levelSettingInfo.level4.arrow;
     } else if (this.levelNum == 5) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level5.enemyA;
       this.enemySCor = this.levelSettingInfo.level5.enemyS;
       this.gemCor = this.levelSettingInfo.level5.gem;
       this.chestCor = this.levelSettingInfo.level5.chest;
+      this.arrowCor = this.levelSettingInfo.level5.arrow;
     } else if (this.levelNum == 6) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level6.enemyA;
       this.enemySCor = this.levelSettingInfo.level6.enemyS;
       this.gemCor = this.levelSettingInfo.level6.gem;
       this.chestCor = this.levelSettingInfo.level6.chest;
+      this.arrowCor = this.levelSettingInfo.level6.arrow;
     } else if (this.levelNum == 7) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level7.enemyA;
       this.enemySCor = this.levelSettingInfo.level7.enemyS;
       this.gemCor = this.levelSettingInfo.level7.gem;
       this.chestCor = this.levelSettingInfo.level7.chest;
+      this.arrowCor = this.levelSettingInfo.level7.arrow;
     }
 
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
@@ -199,6 +210,17 @@ export default class levelScene extends Phaser.Scene {
       var chest = this.chests.get();
       chest
         .enableBody(true, x, y, true, true);
+    }
+    //arrows
+    for (var count in this.arrowCor) {
+      var x = this.arrowCor[count][0];
+      var y = this.arrowCor[count][1];
+
+      var arrow = this.arrows.get();
+      arrow
+        .enableBody(true, x, y, true, true);
+      arrow.body.setAllowGravity(false);
+      arrow.body.setVelocityY(-100);
     }
 
     //player
@@ -315,6 +337,28 @@ export default class levelScene extends Phaser.Scene {
         enemyS.bullets,
         worldLayer,
         enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
+
+    //between arrows and
+    //worldlayer
+    this.arrows.children.each(function(arrow) {
+      this.physics.add.overlap(
+        arrow,
+        worldLayer,
+        this.arrowHitWall,
+        null,
+        this
+      );
+    }, this);
+    //player
+    this.arrows.children.each(function(arrow) {
+      this.physics.add.overlap(
+        arrow,
+        this.player,
+        this.arrowHitPlayer,
         null,
         this
       );
@@ -657,6 +701,31 @@ export default class levelScene extends Phaser.Scene {
       this.player.updateHealth(100);
       this.yell.play({volume: 5});
     }
+  }
+  
+  arrowHitWall(arrow, worldLayer) {
+    /*
+    function to check each worldLayer tile the soldier bullet overlaps with for
+    its collides property. destroys the bullet if it encounters a tile with
+    collides = true (i.e. the bullet hit a wall tile)
+    */
+    if (worldLayer.collides) {
+      console.log('[arrowHitWall]');
+      arrow.disableBody(true, true);
+    }
+  }
+
+  arrowHitPlayer(arrow, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[arrowHitPlayer]');
+    //disable shell
+    arrow.disableBody(true, true);
+
+    //update player stats
+    this.player.updateHealth(50);
   }
 
 
