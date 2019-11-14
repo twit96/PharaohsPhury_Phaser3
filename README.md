@@ -11,20 +11,16 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [Characters](#introduction)
 - [The World](#gameplay-mechanics)
 - [Contributors](#contributors)
-- [Build Process](#build-process)
+- [File Structure](#file-structure)
 - [Acknowledgments](#acknowledgments)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-## Introduction
-<p align="center">
-  Let's Meet the characters.
-</p>
-
+## Characters
 ### Mummy
 100 health, 3 lives per level.
 #### Movement Controls
@@ -43,6 +39,7 @@ M to use.
 ### Gunner
 ### Tank
 
+
 ## The World
 ### The Pyramid
 ### Art
@@ -53,7 +50,7 @@ M to use.
 <!-- This project is brought to you by these [awesome contributors](./CONTRIBUTORS.md). -->
 
 
-## Structure of Files
+## File Structure
 ### BootScene.js
 ### menu.js
 ### levelPicker.js
