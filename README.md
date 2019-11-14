@@ -37,19 +37,11 @@ Fall on your enemies from above to kill them instantly.
 Spacebar to use.
 #### Beam Attack
 M to use.
+
 ### Archaeologist
-
 ### Soldier
-#### Bullet Attacks
-
 ### Gunner
-#### Bullet Attacks
-
 ### Tank
-#### Shell Attacks
-#### Enemy Swarms
-#### Cluster Bombs
-
 
 ## The World
 ### The Pyramid
@@ -65,16 +57,17 @@ M to use.
 ### BootScene.js
 ### menu.js
 ### levelPicker.js
-# level.js
-# gameOverScene.js
-# mummy.js
-# enemyArch.js
-# enemySoldier.js
-# enemyGunner.js
+### level.js
+### gameOverScene.js
+### mummy.js
+### enemyArch.js
+### enemySoldier.js
+### enemyGunner.js
+### tank.js
 ### changeScene.js
 ### userRegister.js
-#### levelSetting.json
-#### users.json
+### levelSetting.json
+### users.json
 ### save.php
 
 
