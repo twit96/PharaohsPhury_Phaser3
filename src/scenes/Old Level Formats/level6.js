@@ -4,21 +4,22 @@ import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
 
-export default class level3 extends Phaser.Scene {
+export default class level6 extends Phaser.Scene {
   constructor () {
-    super('level3');
+    super('level6');
   }
 
   preload() {
-    console.log('\n[LEVEL3]');
+    console.log('\n[level6]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
-    this.load.image('bubble', './assets/images/opaquebubble.png');
-    this.load.image('spacebtn', './assets/images/spacebutton.png');
 
-}
+    this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('mbtn', './assets/images/mbutton.png');
+
+  }
 
   create() {
     console.log('[create]');
@@ -29,12 +30,10 @@ export default class level3 extends Phaser.Scene {
     //background image
     this.add.image(2240,384,'background1');
 
-
     //tutorial
-    this.add.image(180,330, 'bubble').setScale(.4,.4);
-    this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-    this.add.text(155, 280, "Melee");
-
+    this.add.image(180,530, 'bubble').setScale(.4,.4);
+    this.add.image(180,530, 'mbtn').setScale(.3,.3);
+    this.add.text(155, 480, "Shoot");
 
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
@@ -47,16 +46,15 @@ export default class level3 extends Phaser.Scene {
 
     //VARIABLES
     //player
-    this.spawnX = 58;
-    this.spawnY = 320;
-    this.levelName = 3;
+    this.spawnX = 75;
+    this.spawnY = 512;
+    this.levelName = 6;
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
-    const map = this.make.tilemap({ key: "level3map" });
+    const map = this.make.tilemap({ key: "level6map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
@@ -68,6 +66,13 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
+    /*
+    // for collecting item @ dyven
+    const itemTiles = this.map.addTilesetImage﻿(imageKey﻿);
+    const itemLayer = this.map.createDynamicLayer(dynamicLayerName, itemTiles, 0, 0);
+    itemLayer.setTileIndexCallback(tileIndex , this.collectItem, this);
+    */
+
     //diamonds
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
@@ -76,7 +81,6 @@ export default class level3 extends Phaser.Scene {
     this.chests = this.physics.add.group({
       defaultKey: "chest"
     });
-
     //create enemies group
     this.enemiesA = this.add.group();
     this.enemiesA.enableBody = true;
@@ -86,10 +90,10 @@ export default class level3 extends Phaser.Scene {
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level3.enemyA;
-    this.enemySCor = this.levelSettingInfo.level3.enemyS;
-    this.gemCor = this.levelSettingInfo.level3.gem;
-    this.chestCor = this.levelSettingInfo.level3.chest;
+    this.enemyACor = this.levelSettingInfo.level6.enemyA;
+    this.enemySCor = this.levelSettingInfo.level6.enemyS;
+    this.gemCor = this.levelSettingInfo.level6.gem;
+    this.chestCor = this.levelSettingInfo.level6.chest;
 
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
@@ -151,6 +155,7 @@ export default class level3 extends Phaser.Scene {
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
+
     console.log('created map layers and sprites');
 
     //player physics/input
@@ -169,6 +174,7 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, worldLayer);
     this.physics.add.collider(this.enemiesS, worldLayer);
     this.physics.add.collider(this.collectItems, worldLayer);
+    this.physics.add.collider(this.collectItems, this.collectItems);
     this.physics.add.collider(this.collectItems, this.collectItems);
     this.physics.add.collider(this.scroll, this.scroll);
     this.physics.add.collider(this.scroll, worldLayer);
@@ -309,9 +315,8 @@ export default class level3 extends Phaser.Scene {
         console.log(this.registry);
       }
       this.backgroundMusic.stop();
-
       var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[2] = 1;
+      newLevelCompletion[5] = 1;
 
       this.registry.set({levelCompletion:newLevelCompletion});
       console.log(this.registry);
@@ -347,13 +352,6 @@ export default class level3 extends Phaser.Scene {
             b,
             this.enemiesS,
             this.player.beamHitEnemy,
-            null,
-            this
-          );
-          this.physics.add.overlap(
-            b,
-            this.worldLayer,
-            this.player.beamHitWall,
             null,
             this
           );
@@ -452,7 +450,6 @@ export default class level3 extends Phaser.Scene {
     console.log("scrollsC collected:" + this.player.scrollsCollected);
     this.pickupSound.play();
   }
-
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy.
@@ -505,6 +502,7 @@ export default class level3 extends Phaser.Scene {
         //enemy briefly disabled
         enemy.stun();
       }
+
 
       console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
 
@@ -572,7 +570,7 @@ export default class level3 extends Phaser.Scene {
     if (hiddenCaveLayer.collides) {
       console.log("uncoverHiddenCave");
       this.hiddenCaveLayer.setAlpha(0);
-    }else {
+    } else {
       this.hiddenCaveLayer.setAlpha(1);
     }
   }

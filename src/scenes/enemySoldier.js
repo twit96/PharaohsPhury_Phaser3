@@ -163,7 +163,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     bullet.disableBody(true, true);
 
     //update player stats
-    this.player.updateHealth(50);
+    this.player.updateHealth(10);
   }
 
 }

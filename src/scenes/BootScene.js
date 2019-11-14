@@ -50,15 +50,14 @@ export default class BootScene extends Phaser.Scene {
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
-    // ASSETS
+    //ASSETS
     this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
       frameWidth: 48,
       frameHeight: 32
     });
 
-    //levelPicker
-
-    //player (mummy)
+    //PLAYER (mummy)
+    //walking/idle
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -75,7 +74,6 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
-    //Pharaoh mask load
     this.load.spritesheet("pharoahCaneIdle", "../assets/spriteSheets/Sprite_PharoahCane_Idle.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -85,6 +83,7 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 64
     });
 
+    //attacks
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
       frameWidth: 28,
       frameHeight: 7
@@ -102,6 +101,10 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 64
     });
     this.load.spritesheet("pharoahRangeCane", "../assets/spriteSheets/Sprite_PharoahCane_RangeAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/mummyCaneHitbox.png", {
       frameWidth: 64,
       frameHeight: 64
     });
