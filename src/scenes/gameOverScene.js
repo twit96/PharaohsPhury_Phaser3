@@ -15,7 +15,7 @@ export default class gameOverScene extends Phaser.Scene {
         done: this.levelCompleted
       });
     */
-    this.levelName = data.level;
+    this.levelNum = data.level;
     this.diamondCollected = data.diamond;
     this.enemiesKilled = data.killed;
     this.levelCompleted = data.done;
@@ -42,7 +42,7 @@ export default class gameOverScene extends Phaser.Scene {
     this.add.image(400,300,'gameoverbg').setScale(.5,.5);
 
     //create the text that displays on the screen
-    const level = "Level:      " +this.levelName;
+    const level = "Level:      " +this.levelNum;
     const diamond = "Jewels:   " + this.diamondCollected;
     const enemyKilled = "Kills:       " + this.enemiesKilled;
 
@@ -59,7 +59,7 @@ export default class gameOverScene extends Phaser.Scene {
       btnText = "Continue";
     }
 
-    if (this.levelName === "Final Boss" && this.levelCompleted ) {
+    if (this.levelNum === "Final Boss" && this.levelCompleted ) {
       btnText = "You Won! \n You are now free";
     }
 
@@ -67,7 +67,7 @@ export default class gameOverScene extends Phaser.Scene {
     this.nextButton = this.add.text(500, 500, btnText, { font: '24px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 3})
       .setInteractive()
       //.on('pointerdown', () => this.getLevelScene(this.levelCompleted,this.levelNum))
-      .on('pointerdown', () => this.getLevelScene(this.levelCompleted, this.levelName))
+      .on('pointerdown', () => this.getLevelScene(this.levelCompleted, this.levelNum))
       .on('pointerover',() => this.enterButtonHoverState(this.nextButton))﻿
       .on('pointerout',() => this.enterButtonRestState(this.nextButton));
     console.log('generated next button');
@@ -91,7 +91,7 @@ export default class gameOverScene extends Phaser.Scene {
     */
     console.log("[getLevelScene]");
 
-    if (this.levelName == "Final Boss") {
+    if (this.levelNum == "Final Boss") {
       if (levelCompleted) {
         //player finished the level, levelScene string takes player to next level
         levelScene = "levelPicker";
@@ -102,22 +102,17 @@ export default class gameOverScene extends Phaser.Scene {
 
     } else {
       //all other levels
-      //initial string to call next played level
-      var levelScene = "level"
-
       if (levelCompleted) {
         //player finished the level, levelScene string takes player to next level
-        levelNum +=  1;
-        levelScene += levelNum;
-      } else {
-        //player died, levelScene string makes player repeat the same level
-        levelScene += levelNum;
+        this.levelNum +=  1;
       }
     }
 
-    //stop audio, start correct level scene, update variable to exit this scene
+    //stop audio, start correct level scene
     this.backgroundMusic.stop();
-    this.scene.start(levelScene);
+    this.scene.start('levelScene', {
+      level: this.levelNum
+    });
   }
 
   quitGame() {

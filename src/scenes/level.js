@@ -105,12 +105,49 @@ export default class levelScene extends Phaser.Scene {
 
     //parse level sprite data from json, read coordinates into array of [x,y];
     //(need to format level call somehow to avoid if statements)
-    var levelString = 'level' + this.levelNum.toString();
-    this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level1.enemyA;
-    this.enemySCor = this.levelSettingInfo.level1.enemyS;
-    this.gemCor = this.levelSettingInfo.level1.gem;
-    this.chestCor = this.levelSettingInfo.level1.chest;
+    if (this.levelNum == 1) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level1.enemyA;
+      this.enemySCor = this.levelSettingInfo.level1.enemyS;
+      this.gemCor = this.levelSettingInfo.level1.gem;
+      this.chestCor = this.levelSettingInfo.level1.chest;
+    } else if (this.levelNum == 2) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level2.enemyA;
+      this.enemySCor = this.levelSettingInfo.level2.enemyS;
+      this.gemCor = this.levelSettingInfo.level2.gem;
+      this.chestCor = this.levelSettingInfo.level2.chest;
+    } else if (this.levelNum == 3) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level3.enemyA;
+      this.enemySCor = this.levelSettingInfo.level3.enemyS;
+      this.gemCor = this.levelSettingInfo.level3.gem;
+      this.chestCor = this.levelSettingInfo.level3.chest;
+    } else if (this.levelNum == 4) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level4.enemyA;
+      this.enemySCor = this.levelSettingInfo.level4.enemyS;
+      this.gemCor = this.levelSettingInfo.level4.gem;
+      this.chestCor = this.levelSettingInfo.level4.chest;
+    } else if (this.levelNum == 5) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level5.enemyA;
+      this.enemySCor = this.levelSettingInfo.level5.enemyS;
+      this.gemCor = this.levelSettingInfo.level5.gem;
+      this.chestCor = this.levelSettingInfo.level5.chest;
+    } else if (this.levelNum == 6) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level6.enemyA;
+      this.enemySCor = this.levelSettingInfo.level6.enemyS;
+      this.gemCor = this.levelSettingInfo.level6.gem;
+      this.chestCor = this.levelSettingInfo.level6.chest;
+    } else if (this.levelNum == 7) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level7.enemyA;
+      this.enemySCor = this.levelSettingInfo.level7.enemyS;
+      this.gemCor = this.levelSettingInfo.level7.gem;
+      this.chestCor = this.levelSettingInfo.level7.chest;
+    }
 
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     //console.log("populating enemyS at " + this.enemySCor);
@@ -165,7 +202,7 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //player
-    var spawnPoints = [
+    this.spawnPoints = [
       [180, 440], //level1
       [286, 416], //level2
       [58, 320],  //level3
@@ -178,8 +215,8 @@ export default class levelScene extends Phaser.Scene {
     this.player = new Mummy({
       scene: this,
       key: "mummyWalk",
-      x: spawnPoints[this.levelNum - 1][0],
-      y: spawnPoints[this.levelNum - 1][1]
+      x: this.spawnPoints[this.levelNum - 1][0],
+      y: this.spawnPoints[this.levelNum - 1][1]
     });
 
 
@@ -320,6 +357,8 @@ export default class levelScene extends Phaser.Scene {
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
+
+    this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("diedYell");
@@ -482,7 +521,7 @@ export default class levelScene extends Phaser.Scene {
                 this.physics.add.overlap(
                   b,
                   this.player,
-                  this.shellHitPlayer,
+                  enemyS.bulletHitPlayer,
                   null,
                   this
                 );
@@ -620,18 +659,9 @@ export default class levelScene extends Phaser.Scene {
     */
 
     if (player.y > this.boundaryBox) {
-      this.player.x = this.spawnX;
-      this.player.y = this.spawnY;
+      console.log('[level.playerFellOffMap]')
       this.player.updateHealth(100);
       this.yell.play({volume: 5});
-
-      //delay and reset player at spawn, then enable
-      this.time.addEvent({
-        delay: 1000,
-        callback: this.resetPlayer,
-        callbackScope: this,
-        loop: false
-      });
     }
   }
 
