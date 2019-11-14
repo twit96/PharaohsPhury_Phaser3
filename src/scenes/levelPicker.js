@@ -92,7 +92,11 @@ export default class levelPicker extends Phaser.Scene {
     b1.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
-      this.scene.start('level1');
+      //this.scene.start('level1');
+
+      this.scene.start('levelScene', {
+        level: 1
+      });
     }, this
     );
 

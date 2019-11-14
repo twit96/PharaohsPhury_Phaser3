@@ -4,13 +4,23 @@ import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
 
-export default class level3 extends Phaser.Scene {
+export default class levelScene extends Phaser.Scene {
   constructor () {
-    super('level3');
+    super('levelScene');
+  }
+
+  init (data) {
+    /*
+    TO CALL THIS SCENE FROM ANY LEVEL:
+      this.scene.start('levelScene', {
+        level: this.levelNum
+      });
+    */
+    this.levelNum = data.level;
   }
 
   preload() {
-    console.log('\n[LEVEL3]');
+    console.log('\n[LEVEL' + this.levelNum.toString() + ']');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
@@ -26,37 +36,33 @@ export default class level3 extends Phaser.Scene {
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
+
+    //SPRITE GROUPS
+    //scrolls and chests
+    this.collectItems = this.add.group();
+    this.collectItems.enableBody = true;
+    this.scroll = this.add.group();
+    this.scroll.enableBody = true;
+    this.chests = this.physics.add.group({
+      defaultKey: "chest"
+    });
+
+    //enemies
+    this.enemiesA = this.add.group();
+    this.enemiesA.enableBody = true;
+    this.enemiesS = this.add.group();
+    this.enemiesS.enableBody = true;
+
+
+    //RENDER LEVEL (layers below sprites only)
     //background image
     this.add.image(2240,384,'background1');
-
-
-    //tutorial
-    this.add.image(180,330, 'bubble').setScale(.4,.4);
-    this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-    this.add.text(155, 280, "Melee");
-
-
-    //AUDIO
-    this.backgroundMusic = this.sound.add("bg");
-    this.backgroundMusic.play({loop:true});
-    this.shootBeam = this.sound.add("beam");
-    this.meleeSound = this.sound.add("meleeAttack");
-    this.yell = this.sound.add("diedYell");
-    this.cry = this.sound.add("diedCry");
-    this.pickupSound = this.sound.add("pickupSound");
-
-    //VARIABLES
-    //player
-    this.spawnX = 58;
-    this.spawnY = 320;
-    this.levelName = 3;
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
-    const map = this.make.tilemap({ key: "level3map" });
-    const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
+    const map = this.make.tilemap({ key: "level" + this.levelNum.toString() + "map" });
+    const below2Tileset = map.addTilesetImage("inca_back2", "incaBack2Tiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
@@ -68,35 +74,22 @@ export default class level3 extends Phaser.Scene {
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
-    //diamonds
-    this.collectItems = this.add.group();
-    this.collectItems.enableBody = true;
-    this.scroll = this.add.group();
-    this.scroll.enableBody = true;
-    this.chests = this.physics.add.group({
-      defaultKey: "chest"
-    });
 
-    //create enemies group
-    this.enemiesA = this.add.group();
-    this.enemiesA.enableBody = true;
-    this.enemiesS = this.add.group();
-    this.enemiesS.enableBody = true;
-
-    //CREATE LEVEL
-    // level Data parse from json, read cordination into array of [x,y];
+    //SPAWN SPRITES (need to format level call somehow to avoid if statements)
+    //parse level sprite data from json, read coordinates into array of [x,y];
+    var levelString = 'level' + this.levelNum.toString();
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level3.enemyA;
-    this.enemySCor = this.levelSettingInfo.level3.enemyS;
-    this.gemCor = this.levelSettingInfo.level3.gem;
-    this.chestCor = this.levelSettingInfo.level3.chest;
+    this.enemyACor = this.levelSettingInfo.level1.enemyA;
+    this.enemySCor = this.levelSettingInfo.level1.enemyS;
+    this.gemCor = this.levelSettingInfo.level1.gem;
+    this.chestCor = this.levelSettingInfo.level1.chest;
 
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
 
-    // spawn
+    //archaeologists
     for (var count in this.enemyACor) {
       var x = this.enemyACor[count][0];
       var y = this.enemyACor[count][1];
@@ -112,6 +105,7 @@ export default class level3 extends Phaser.Scene {
       this.enemiesA.add(enemy);
       console.log("Created "+this.enemiesA.children);
     }
+    //soldiers
     for (var count in this.enemySCor) {
       var x = this.enemySCor[count][0];
       var y = this.enemySCor[count][1];
@@ -128,11 +122,13 @@ export default class level3 extends Phaser.Scene {
       console.log("Created "+this.enemiesS.children);
     }
 
+    //diamonds (gems)
     for (var count in this.gemCor) {
       var x = this.gemCor[count][0];
       var y = this.gemCor[count][1];
       this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
     }
+    //chests
     for (var count in this.chestCor) {
       var x = this.chestCor[count][0];
       var y = this.chestCor[count][1];
@@ -143,28 +139,43 @@ export default class level3 extends Phaser.Scene {
     }
 
     //player
+    var spawnPoints = [
+      [180, 440], //level1
+      [286, 416], //level2
+      [58, 320],  //level3
+      [94, 630],  //level4
+      [173, 320], //level5
+      [75, 512],  //level6
+      [94, 192],  //level7
+      [50, 100]   //level8
+    ];
     this.player = new Mummy({
       scene: this,
       key: "mummyWalk",
-      x: this.spawnX,
-      y: this.spawnY
+      x: spawnPoints[this.levelNum - 1][0],
+      y: spawnPoints[this.levelNum - 1][1]
     });
 
+
+    //RENDER LEVEL (layers above sprites only)
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
     this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
     console.log('created map layers and sprites');
 
-    //player physics/input
-    this.player.body.setCollideWorldBounds(true);
-    this.cursors = this.input.keyboard.createCursorKeys();
 
+    //LEVEL MECHANICS
     //world/camera bounds
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(this.player);
 
-    //configure sprite collisions
+    //player physics and input
+    this.player.body.setCollideWorldBounds(true);
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+
+    //SPRITE COLLISIONS
     this.boundaryBox = map.heightInPixels - this.player.body.height;
 
     this.physics.add.collider(this.player, worldLayer);
@@ -178,7 +189,9 @@ export default class level3 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
-    //overlaps between player and:
+
+    //SPRITE OVERLAPS:
+    //between player and:
     //hidden caves
     this.physics.add.overlap(
       this.player,
@@ -224,7 +237,7 @@ export default class level3 extends Phaser.Scene {
       null,
       this
     );
-    //overlaps between player beams and worldLayer
+    //between player beams and worldLayer
     this.physics.add.overlap(
       this.player.beams,
       worldLayer,
@@ -233,7 +246,7 @@ export default class level3 extends Phaser.Scene {
       this
     );
 
-    //overlaps between enemy projectiles and player
+    //between enemy bullets and player
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
         enemyS.bullets,
@@ -248,6 +261,29 @@ export default class level3 extends Phaser.Scene {
 
 
     //USER INTERFACE
+    //tutorial images
+    if (this.levelNum == 1) {
+      //jump
+      this.add.image(180,530, 'bubble').setScale(.4,.4);
+      this.add.image(180,530, 'awdbtn').setScale(.3,.3);
+      this.add.text(125,570, "Left   Right");
+      this.add.text(162, 475, "Jump");
+      //gumba
+      this.add.image(685, 510, 'bubble').setScale(.4, .4);
+      this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
+    }
+    if (this.levelNum == 3) {
+      //melee
+      this.add.image(180,330, 'bubble').setScale(.4,.4);
+      this.add.image(180,330, 'spacebtn').setScale(.3,.3);
+      this.add.text(155, 280, "Melee");
+    } else if (this.levelNum == 6) {
+      //shoot beam
+      this.add.image(180,530, 'bubble').setScale(.4,.4);
+      this.add.image(180,530, 'mbtn').setScale(.3,.3);
+      this.add.text(155, 480, "Shoot");
+    }
+
     //timer
     this.startTime = new Date();
     this.endTime = new Date();
@@ -257,7 +293,7 @@ export default class level3 extends Phaser.Scene {
     this.score = 0;
 
     //text
-    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+this.levelName).setScrollFactor(0,0);
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+ this.levelNum).setScrollFactor(0,0);
     this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
@@ -277,10 +313,50 @@ export default class level3 extends Phaser.Scene {
     this.healthBarOrgHeight = this.healthBarFill.width;
 
     console.log("configured on-screen display");
+
+    //AUDIO
+    this.backgroundMusic = this.sound.add("bg");
+    this.backgroundMusic.play({loop:true});
+    this.shootBeam = this.sound.add("beam");
+    this.meleeSound = this.sound.add("meleeAttack");
+    this.yell = this.sound.add("diedYell");
+    this.cry = this.sound.add("diedCry");
+    this.pickupSound = this.sound.add("pickupSound");
+    console.log('configured audio');
+
     console.log('completed create function');
   }
 
   update() {
+
+    //CHECK/HANDLE END OF LEVEL
+    if (this.player.gameOver || this.player.levelCompleted) {
+      console.log('end of level triggered');
+      console.log('[LEVEL ENDING]');
+      var newLevelCompletion = this.registry.pop("levelCompletion");
+      newLevelCompletion[2] = 1;
+
+      this.registry.set({levelCompletion:newLevelCompletion});
+      console.log(this.registry);
+      this.backgroundMusic.stop();
+
+      var newLevelCompletion = this.registry.pop("levelCompletion");
+      newLevelCompletion[2] = 1;
+
+      this.registry.set({levelCompletion:newLevelCompletion});
+      console.log(this.registry);
+
+      this.scene.start('gameOverScene', {
+        level: this.levelNum,
+        diamond: this.player.diamondsCollected,
+        killed: this.player.enemiesKilled,
+        done: this.player.levelCompleted
+      });
+      return;
+    }
+
+
+    //USER INTERFACE
     //duration and score
     this.endTime = new Date();
     this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
@@ -299,40 +375,24 @@ export default class level3 extends Phaser.Scene {
     if (this.player.lives != this.hearts.countActive()) {
       this.hearts.killAndHide(this.hearts.getFirstAlive());
     }
-    //check for and handle gameOver or levelCompleted
-    if (this.player.gameOver || this.player.levelCompleted) {
-      console.log('end of level triggered');
-      console.log('[LEVEL ENDING]');
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[2] = 1;
 
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
-      this.backgroundMusic.stop();
 
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[2] = 1;
-
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
-
-      this.scene.start('gameOverScene', {
-        level: this.levelName,
-        diamond: this.player.diamondsCollected,
-        killed: this.player.enemiesKilled,
-        done: this.player.levelCompleted
-      });
-      return;
-    }
-
+    //SPRITE MOVEMENT
     //player motion
     this.player.move();
-
-
     //check if player on map
     this.playerFellOffMap(this.player);
 
+    //enemy movement
+    this.enemiesA.children.each(function(enemyA) {
+      enemyA.move();
+    }, this);
+    this.enemiesS.children.each(function(enemyS) {
+      enemyS.move();
+    }, this);
 
+
+    //SPRITE INTERACTIONS
     //configure overlaps for active player attacks
     //canes
     this.player.canes.children.each(
@@ -408,16 +468,8 @@ export default class level3 extends Phaser.Scene {
             b.setActive(false)
           }
         }
-      }.bind(this)  //binds the function to each of the children. scope of function
+      }.bind(this)
     );
-
-    //enemy movement
-    this.enemiesA.children.each(function(enemyA) {
-      enemyA.move();
-    }, this);
-    this.enemiesS.children.each(function(enemyS) {
-      enemyS.move();
-    }, this);
 
     //configure overlaps for active enemy bullets
     this.enemiesS.children.each(function(enemyS) {
@@ -443,11 +495,13 @@ export default class level3 extends Phaser.Scene {
                   b.setActive(false)
                 }
               }
-            }.bind(this)  //binds the function to each of the children. scope of function
+            }.bind(this)
           )
         }, this);
-      }
+  }
 
+
+  //SPRITE COLLISION HELPER FUNCTIONS
   hitExit() {
     /**
     function to update levelCompleted to true when player reaches the exit
@@ -456,27 +510,13 @@ export default class level3 extends Phaser.Scene {
     this.player.levelCompleted = true;
   }
 
-  shellHitPlayer(shell, player) {
-    /*
-    function to handle overlap between player and tank shell
-    (i.e. tank shell hit player)
-    */
-    console.log('[level.shellHitPlayer]');
-
-
-    //disable shell
-    shell.disableBody(true, true);
-
-    //update player stats
-    player.updateHealth(20);
-  }
-
   pickup(player,item) {
     item.destroy();
     this.player.diamondsCollected++;
     console.log("diamonds collected:" + this.player.diamondsCollected);
     this.pickupSound.play();
   }
+
   pickupChests(player,chest) {
     chest.play("chestOpen");
     this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
@@ -592,7 +632,9 @@ export default class level3 extends Phaser.Scene {
     }
   }
 
-  updateHealthBar(){
+
+  //USER INTERFACE HELPER FUNCTIONS
+  updateHealthBar() {
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
   }
 

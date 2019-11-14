@@ -3,11 +3,23 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
+    //MUMMY
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
-
     this.body.setSize(20, 55, 50, 80);
     this.body.setBounce(0.2);
+
+    //short range attacks
+    this.canes = this.scene.physics.add.group({
+      defaultKey: "caneHitbox",
+      allowGravity: false
+    });
+
+    //long range attacks
+    this.beams = this.scene.physics.add.group({
+      defaultKey: "mummyBeam",
+      allowGravity: false
+    });
 
     //variables
     this.lives = 3;
@@ -33,11 +45,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       m:Phaser.Input.Keyboard.KeyCodes.M
     });
 
-    //long range attacks
-    this.beams = this.scene.physics.add.group({
-      defaultKey: "mummyBeam",
-      allowGravity: false
-    });
   }
 
   reset() {
@@ -111,6 +118,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.flipX = true;
       this.beamDirection = 1;
       this.body.setVelocityX(-220);
+
       if (this.canAttack) {
         //animations only play while player is not attacking
         //animation dependent on level
@@ -148,7 +156,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.beamSpeed = 750;
 
     //idle
-  } else {
+    } else {
       this.body.setVelocityX(0);
       if (this.canAttack) {
         //animations only play while player is not attacking
@@ -189,6 +197,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     }
   }
 
+
+  //PLAYER CANE ATTACK HELPER FUNCTIONS
   shortRangeAttack() {
     /*
     function to define behavior of player using melee (short-range) attacks
@@ -201,8 +211,10 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.canAttack = false;
       this.isAttacking = true;
 
-      //generate a cane attack (or replace mummy sprite with attack sprite)
-      //this.body.setSize(64, 64, 50, 50);
+      //generate a beam attack sprite
+      var cane = this.canes.get();
+      cane
+        .enableBody(true, this.x, this.y, true, true)
 
        if (this.scene.scene.key == "level3" || this.scene.scene.key == "level4" || this.scene.scene.key == "level5"){
         this.anims.play("mummyCaneAnim", true);
@@ -224,7 +236,60 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     }
   }
 
+  caneHitTank(cane, tank) {
+    /*
+    function to handle overlap between player cane and tank
+    (i.e. player beam hit tank)
+    */
+    console.log('[mummy.caneHitTank]');
 
+    //disable cane
+    cane.disableBody(true, true);
+
+    //knock player back
+    this.body.setVelocityY(-50);
+    this.body.setVelocityX(-50);
+
+    //update tank stats
+    this.tank.updateHealth(5);
+  }
+
+  caneHitEnemy(cane, enemy) {
+    /*
+    function to handle overlap between player cane and enemy
+    (i.e. player beam hit enemy)
+    */
+    console.log('[mummy.caneHitEnemy]');
+
+    //disable beam
+    cane.disableBody(true, true);
+
+    //update player stats
+    enemy.updateHealth(20);
+    enemy.stun();
+
+    //generate random number of diamonds to burst from dead enemy when it dies
+    if (enemy.health < 0) {
+      var randAmount = Math.floor(Math.random() * Math.floor(10));
+      var x;
+      for (x = 0; x < randAmount; x++) {
+        //within 75 pixels left or right from the enemy
+        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+
+        //up to 75 pixels above the enemy
+        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+        //spawn diamond
+        var diamondX = enemy.x + randomShiftX;
+        var diamondY = enemy.y - randomShiftY;
+        this.spawnDiamond(diamondX, diamondY);
+      }
+    }
+
+  }
+
+
+  //PLAYER BEAMS HELPER FUNCTIONS
   shoot() {
     /*
     function to define behavior of player shooting long range attacks
@@ -237,7 +302,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //generate a beam attack sprite
     var beam = this.beams.get();
-    
+
     beam.setAngle(this.beamAngle);
 
     if (this.beamDirection == 1){
@@ -263,7 +328,6 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     });
   }
 
-  //PLAYER BEAMS HELPER FUNCTIONS
   beamHitWall(beam, worldLayer) {
     /*
     function to check each worldLayer tile the player beam overlaps with for
@@ -308,6 +372,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //update player stats
     enemy.updateHealth(20);
     enemy.isActive = false;
-  }
 
+    //spawn diamond from enemy
+    this.spawnDiamond(enemy.x, enemy.y);
+    }
 }
