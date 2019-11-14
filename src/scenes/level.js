@@ -419,12 +419,12 @@ export default class levelScene extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[this.levelNum - 1] = 1;
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
-
+      if (this.player.levelCompleted) {
+        var newLevelCompletion = this.registry.pop("levelCompletion");
+        newLevelCompletion[this.levelNum - 1] = 1;
+        this.registry.set({levelCompletion:newLevelCompletion});
+        console.log(this.registry);
+      }
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
         level: this.levelNum,
@@ -702,7 +702,7 @@ export default class levelScene extends Phaser.Scene {
       this.yell.play({volume: 5});
     }
   }
-  
+
   arrowHitWall(arrow, worldLayer) {
     /*
     function to check each worldLayer tile the soldier bullet overlaps with for
