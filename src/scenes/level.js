@@ -84,10 +84,10 @@ export default class levelScene extends Phaser.Scene {
     this.gemCor = this.levelSettingInfo.level1.gem;
     this.chestCor = this.levelSettingInfo.level1.chest;
 
-    console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
-    console.log("populating enemyS at " + this.enemySCor);
-    console.log("populating gem at " + this.gemCor);
-    console.log("populating chest at " + this.chestCor);
+    //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
+    //console.log("populating enemyS at " + this.enemySCor);
+    //console.log("populating gem at " + this.gemCor);
+    //console.log("populating chest at " + this.chestCor);
 
     //archaeologists
     for (var count in this.enemyACor) {
@@ -103,7 +103,6 @@ export default class levelScene extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesA.add(enemy);
-      console.log("Created "+this.enemiesA.children);
     }
     //soldiers
     for (var count in this.enemySCor) {
@@ -119,7 +118,6 @@ export default class levelScene extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesS.add(enemy);
-      console.log("Created "+this.enemiesS.children);
     }
 
     //diamonds (gems)
