@@ -55,7 +55,6 @@ export default class level6 extends Phaser.Scene {
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map = this.make.tilemap({ key: "level6map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order

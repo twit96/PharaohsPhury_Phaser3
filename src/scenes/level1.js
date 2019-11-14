@@ -57,6 +57,7 @@ export default class level1 extends Phaser.Scene {
     invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
+
     //tutorial
     this.add.image(180,530, 'bubble').setScale(.4,.4);
     this.add.image(180,530, 'awdbtn').setScale(.3,.3);

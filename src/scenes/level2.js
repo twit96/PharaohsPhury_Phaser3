@@ -141,8 +141,6 @@ export default class level2 extends Phaser.Scene {
     });
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
-
-
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
     console.log('created map layers and sprites');
 

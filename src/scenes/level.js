@@ -22,11 +22,15 @@ export default class levelScene extends Phaser.Scene {
   preload() {
     console.log('\n[LEVEL' + this.levelNum.toString() + ']');
     console.log('[preload]')
+
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
+    //tutorial images
     this.load.image('bubble', './assets/images/opaquebubble.png');
+    this.load.image('awdbtn', './assets/images/awdbuttons.png');
     this.load.image('spacebtn', './assets/images/spacebutton.png');
+    this.load.image('mbtn', './assets/images/mbutton.png');
 
 }
 
@@ -75,8 +79,32 @@ export default class levelScene extends Phaser.Scene {
     invisLayer.setAlpha(0);
 
 
-    //SPAWN SPRITES (need to format level call somehow to avoid if statements)
+    //SPAWN SPRITES
+    //tutorial images
+    if (this.levelNum == 1) {
+      //jump
+      this.add.image(180,530, 'bubble').setScale(.4,.4);
+      this.add.image(180,530, 'awdbtn').setScale(.3,.3);
+      this.add.text(125,570, "Left   Right");
+      this.add.text(162, 475, "Jump");
+      //gumba
+      this.add.image(685, 510, 'bubble').setScale(.4, .4);
+      this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
+    }
+    if (this.levelNum == 3) {
+      //melee
+      this.add.image(180,330, 'bubble').setScale(.4,.4);
+      this.add.image(180,330, 'spacebtn').setScale(.3,.3);
+      this.add.text(155, 280, "Melee");
+    } else if (this.levelNum == 6) {
+      //shoot beam
+      this.add.image(180,530, 'bubble').setScale(.4,.4);
+      this.add.image(180,530, 'mbtn').setScale(.3,.3);
+      this.add.text(155, 480, "Shoot");
+    }
+
     //parse level sprite data from json, read coordinates into array of [x,y];
+    //(need to format level call somehow to avoid if statements)
     var levelString = 'level' + this.levelNum.toString();
     this.levelSettingInfo = this.cache.json.get('levelSetting');
     this.enemyACor = this.levelSettingInfo.level1.enemyA;
@@ -259,29 +287,6 @@ export default class levelScene extends Phaser.Scene {
 
 
     //USER INTERFACE
-    //tutorial images
-    if (this.levelNum == 1) {
-      //jump
-      this.add.image(180,530, 'bubble').setScale(.4,.4);
-      this.add.image(180,530, 'awdbtn').setScale(.3,.3);
-      this.add.text(125,570, "Left   Right");
-      this.add.text(162, 475, "Jump");
-      //gumba
-      this.add.image(685, 510, 'bubble').setScale(.4, .4);
-      this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
-    }
-    if (this.levelNum == 3) {
-      //melee
-      this.add.image(180,330, 'bubble').setScale(.4,.4);
-      this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-      this.add.text(155, 280, "Melee");
-    } else if (this.levelNum == 6) {
-      //shoot beam
-      this.add.image(180,530, 'bubble').setScale(.4,.4);
-      this.add.image(180,530, 'mbtn').setScale(.3,.3);
-      this.add.text(155, 480, "Shoot");
-    }
-
     //timer
     this.startTime = new Date();
     this.endTime = new Date();
