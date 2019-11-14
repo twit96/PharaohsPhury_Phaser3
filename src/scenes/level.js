@@ -486,7 +486,7 @@ export default class levelScene extends Phaser.Scene {
           );
           this.physics.add.overlap(
             c,
-            this.this.worldLayer,
+            this.worldLayer,
             this.player.caneHitWall,
             null,
             this
@@ -523,7 +523,7 @@ export default class levelScene extends Phaser.Scene {
           );
           this.physics.add.overlap(
             b,
-            this.this.worldLayer,
+            this.worldLayer,
             this.player.beamHitWall,
             null,
             this
