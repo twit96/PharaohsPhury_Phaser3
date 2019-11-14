@@ -61,6 +61,7 @@ export default class levelScene extends Phaser.Scene {
     this.arrows = this.physics.add.group({
       defaultKey: "arrow"
     });
+    this.arrowTimer = 0;
 
     //RENDER LEVEL (layers below sprites only)
     //background image
@@ -76,10 +77,10 @@ export default class levelScene extends Phaser.Scene {
     //render map/player/enemies in specific order
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
-    const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
-    worldLayer.setCollisionByProperty({ collides: true });
+    this.worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
+    this.worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
-    worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    this.worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
 
@@ -211,17 +212,6 @@ export default class levelScene extends Phaser.Scene {
       chest
         .enableBody(true, x, y, true, true);
     }
-    //arrows
-    for (var count in this.arrowCor) {
-      var x = this.arrowCor[count][0];
-      var y = this.arrowCor[count][1];
-
-      var arrow = this.arrows.get();
-      arrow
-        .enableBody(true, x, y, true, true);
-      arrow.body.setAllowGravity(false);
-      arrow.body.setVelocityY(-100);
-    }
 
     //player
     this.spawnPoints = [
@@ -263,17 +253,16 @@ export default class levelScene extends Phaser.Scene {
     //SPRITE COLLISIONS
     this.boundaryBox = map.heightInPixels - this.player.body.height;
 
-    this.physics.add.collider(this.player, worldLayer);
-    this.physics.add.collider(this.enemiesA, worldLayer);
-    this.physics.add.collider(this.enemiesS, worldLayer);
-    this.physics.add.collider(this.collectItems, worldLayer);
+    this.physics.add.collider(this.player, this.worldLayer);
+    this.physics.add.collider(this.enemiesA, this.worldLayer);
+    this.physics.add.collider(this.enemiesS, this.worldLayer);
+    this.physics.add.collider(this.collectItems, this.worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
     this.physics.add.collider(this.scroll, this.scroll);
-    this.physics.add.collider(this.scroll, worldLayer);
-    this.physics.add.collider(this.chests, worldLayer);
+    this.physics.add.collider(this.scroll, this.worldLayer);
+    this.physics.add.collider(this.chests, this.worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
-
 
     //SPRITE OVERLAPS:
     //between player and:
@@ -325,7 +314,7 @@ export default class levelScene extends Phaser.Scene {
     //between player beams and worldLayer
     this.physics.add.overlap(
       this.player.beams,
-      worldLayer,
+      this.worldLayer,
       this.player.beamHitWall,
       null,
       this
@@ -335,37 +324,14 @@ export default class levelScene extends Phaser.Scene {
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
         enemyS.bullets,
-        worldLayer,
+        this.worldLayer,
         enemyS.bulletHitWall,
         null,
         this
       );
     }, this);
 
-    //between arrows and
-    //worldlayer
-    this.arrows.children.each(function(arrow) {
-      this.physics.add.overlap(
-        arrow,
-        worldLayer,
-        this.arrowHitWall,
-        null,
-        this
-      );
-    }, this);
-    //player
-    this.arrows.children.each(function(arrow) {
-      this.physics.add.overlap(
-        arrow,
-        this.player,
-        this.arrowHitPlayer,
-        null,
-        this
-      );
-    }, this);
-
     console.log('configured sprites and physics');
-
 
     //USER INTERFACE
     //timer
@@ -414,7 +380,28 @@ export default class levelScene extends Phaser.Scene {
   }
 
   update() {
+    //between arrows and
+    //worldlayer
+    this.arrows.children.each(function(arrow) {
+      this.physics.add.overlap(
+        arrow,
+        this.worldLayer,
+        this.arrowHitWall,
+        null,
+        this
+      );
+    }, this);
 
+    //player
+    this.arrows.children.each(function(arrow) {
+      this.physics.add.overlap(
+        arrow,
+        this.player,
+        this.arrowHitPlayer,
+        null,
+        this
+      );
+    }, this);
     //CHECK/HANDLE END OF LEVEL
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
@@ -434,7 +421,12 @@ export default class levelScene extends Phaser.Scene {
       });
       return;
     }
-
+    // Arrow timer
+    this.arrowTimer ++;
+    if (this.arrowTimer > 100){
+      this.arrowTimer = 0;
+      this.spawnArrow();
+    }
 
     //USER INTERFACE
     //duration and score
@@ -494,7 +486,7 @@ export default class levelScene extends Phaser.Scene {
           );
           this.physics.add.overlap(
             c,
-            this.worldLayer,
+            this.this.worldLayer,
             this.player.caneHitWall,
             null,
             this
@@ -531,7 +523,7 @@ export default class levelScene extends Phaser.Scene {
           );
           this.physics.add.overlap(
             b,
-            this.worldLayer,
+            this.this.worldLayer,
             this.player.beamHitWall,
             null,
             this
@@ -725,7 +717,7 @@ export default class levelScene extends Phaser.Scene {
     arrow.disableBody(true, true);
 
     //update player stats
-    this.player.updateHealth(50);
+    this.player.updateHealth(10);
   }
 
 
@@ -739,6 +731,22 @@ export default class levelScene extends Phaser.Scene {
       this.hiddenCaveLayer.setAlpha(0);
     } else {
       this.hiddenCaveLayer.setAlpha(1);
+    }
+  }
+
+  spawnArrow(){
+    for (var count in this.arrowCor) {
+      var x = this.arrowCor[count][0];
+      var y = this.arrowCor[count][1];
+      for (var i = 0; i < 3; i++) {
+        var num = Math.floor(Math.random()*19) + 1;
+        num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+        var arrow = this.arrows.get();
+        arrow
+          .enableBody(true, x+num, y, true, true);
+        arrow.body.setAllowGravity(false);
+        arrow.body.setVelocityY(-1000);
+      }
     }
   }
 }
