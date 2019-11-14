@@ -104,7 +104,7 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //parse level sprite data from json, read coordinates into array of [x,y];
-    //(need to format level call somehow to avoid if statements)
+    //(need to format levelN info call somehow to avoid if statements)
     if (this.levelNum == 1) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level1.enemyA;
@@ -334,21 +334,21 @@ export default class levelScene extends Phaser.Scene {
 
     //text
     this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+ this.levelNum).setScrollFactor(0,0);
-    this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
-    this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(10,40, "Life Left: " + this.player.lives).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(10,60, "Health: " + this.player.health).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(10,80, "Timer: "+ this.duration).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(10,100, "Score: "+ this.score).setScrollFactor(0,0);
+    this.location = this.add.text(10,120, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     //life hearts
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
       var xLocation = 150 + h*20 ;
-      this.hearts.add(this.add.image(xLocation,28, "heart").setScrollFactor(0,0).setScale(0.03));
+      this.hearts.add(this.add.image(xLocation,48, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(120,38,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(120,38,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(120,58,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(120,58,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -375,19 +375,13 @@ export default class levelScene extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[2] = 1;
 
+      var newLevelCompletion = this.registry.pop("levelCompletion");
+      newLevelCompletion[this.levelNum - 1] = 1;
       this.registry.set({levelCompletion:newLevelCompletion});
       console.log(this.registry);
+
       this.backgroundMusic.stop();
-
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[2] = 1;
-
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
-
       this.scene.start('gameOverScene', {
         level: this.levelNum,
         diamond: this.player.diamondsCollected,
