@@ -4,9 +4,7 @@ import BootScene from './scenes/BootScene.js';
 import menu from './scenes/menu.js';
 import userScene from './scenes/userRegister.js';
 import levelPicker from './scenes/levelPicker.js';
-
 import levelScene from './scenes/level.js';
-
 import finalBossLevel from './scenes/finalBossLevel.js';
 import gameOverScene from './scenes/gameOverScene.js';
 

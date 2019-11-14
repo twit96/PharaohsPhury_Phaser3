@@ -104,7 +104,7 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //parse level sprite data from json, read coordinates into array of [x,y];
-    //(need to format levelN info call somehow to avoid if statements)
+    //(need to format levelN callback somehow to avoid repetitive if statements)
     if (this.levelNum == 1) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level1.enemyA;
