@@ -3,6 +3,7 @@ import * as ChangeScene from './ChangeScene.js';
 import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
+//import EnemyGunner from '';
 
 export default class levelScene extends Phaser.Scene {
   constructor () {
@@ -11,7 +12,7 @@ export default class levelScene extends Phaser.Scene {
 
   init (data) {
     /*
-    TO CALL THIS SCENE FROM ANY LEVEL:
+    TO CALL THIS SCENE FROM LevelPicker:
       this.scene.start('levelScene', {
         level: this.levelNum
       });
@@ -23,15 +24,18 @@ export default class levelScene extends Phaser.Scene {
     console.log('\n[LEVEL' + this.levelNum.toString() + ']');
     console.log('[preload]')
 
+    //backend data for sprite coordinates
     this.load.json("levelSetting","./src/data/levelSetting.json");
+
+    //background images
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
+    this.load.image('bossbackground', './assets/images/bossbackground.jpg');
 
     //tutorial images
     this.load.image('bubble', './assets/images/opaquebubble.png');
     this.load.image('awdbtn', './assets/images/awdbuttons.png');
     this.load.image('spacebtn', './assets/images/spacebutton.png');
     this.load.image('mbtn', './assets/images/mbutton.png');
-
 }
 
   create() {
@@ -42,18 +46,24 @@ export default class levelScene extends Phaser.Scene {
 
 
     //SPRITE GROUPS
-    //scrolls and chests
+    //gems (diamonds)
     this.collectItems = this.add.group();
     this.collectItems.enableBody = true;
+
+    //scrolls
     this.scroll = this.add.group();
     this.scroll.enableBody = true;
+
+    //chests
     this.chests = this.physics.add.group({
       defaultKey: "chest"
     });
 
-    //enemies
+    //enemy archaeologists
     this.enemiesA = this.add.group();
     this.enemiesA.enableBody = true;
+
+    //enemy soldiers
     this.enemiesS = this.add.group();
     this.enemiesS.enableBody = true;
 
@@ -63,7 +73,10 @@ export default class levelScene extends Phaser.Scene {
     });
     this.arrowTimer = 0;
 
-    //RENDER LEVEL (layers below sprites only)
+    console.log('sprite groups created');
+
+
+    //RENDER LEVEL MAP (layers below sprites only)
     //background image
     this.add.image(2240,384,'background1');
 
@@ -74,7 +87,7 @@ export default class levelScene extends Phaser.Scene {
     const below2Tileset = map.addTilesetImage("inca_back2", "incaBack2Tiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
-    //render map/player/enemies in specific order
+    //render lower map layers
     const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
     this.worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
@@ -83,26 +96,27 @@ export default class levelScene extends Phaser.Scene {
     this.worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
+    console.log('created level map layers below sprites');
 
     //SPAWN SPRITES
     //tutorial images
     if (this.levelNum == 1) {
-      //jump
+      //for controls
       this.add.image(180,530, 'bubble').setScale(.4,.4);
       this.add.image(180,530, 'awdbtn').setScale(.3,.3);
       this.add.text(125,570, "Left   Right");
       this.add.text(162, 475, "Jump");
-      //gumba
+      //for gumba jump
       this.add.image(685, 510, 'bubble').setScale(.4, .4);
       this.add.text(625, 475, "Jump on top\n\nof enemies\n\nto kill them.");
     }
     if (this.levelNum == 3) {
-      //melee
+      //for melee
       this.add.image(180,330, 'bubble').setScale(.4,.4);
       this.add.image(180,330, 'spacebtn').setScale(.3,.3);
       this.add.text(155, 280, "Melee");
     } else if (this.levelNum == 6) {
-      //shoot beam
+      //for shooting beam
       this.add.image(180,530, 'bubble').setScale(.4,.4);
       this.add.image(180,530, 'mbtn').setScale(.3,.3);
       this.add.text(155, 480, "Shoot");
@@ -160,7 +174,6 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level7.chest;
       this.arrowCor = this.levelSettingInfo.level7.arrow;
     }
-
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     //console.log("populating enemyS at " + this.enemySCor);
     //console.log("populating gem at " + this.gemCor);
@@ -181,6 +194,7 @@ export default class levelScene extends Phaser.Scene {
       enemy.setInteractive();
       this.enemiesA.add(enemy);
     }
+
     //soldiers
     for (var count in this.enemySCor) {
       var x = this.enemySCor[count][0];
@@ -203,6 +217,7 @@ export default class levelScene extends Phaser.Scene {
       var y = this.gemCor[count][1];
       this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
     }
+
     //chests
     for (var count in this.chestCor) {
       var x = this.chestCor[count][0];
@@ -231,12 +246,15 @@ export default class levelScene extends Phaser.Scene {
       y: this.spawnPoints[this.levelNum - 1][1]
     });
 
+    console.log('created sprites');
 
-    //RENDER LEVEL (layers above sprites only)
+
+    //RENDER LEVEL MAP (layers above sprites only)
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
     this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
-    console.log('created map layers and sprites');
+
+    console.log('created level map layers above sprites');
 
 
     //LEVEL MECHANICS
@@ -250,7 +268,7 @@ export default class levelScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
 
-    //SPRITE COLLISIONS
+    //sprite collisions
     this.boundaryBox = map.heightInPixels - this.player.body.height;
 
     this.physics.add.collider(this.player, this.worldLayer);
@@ -264,9 +282,8 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
-    //SPRITE OVERLAPS:
-    //between player and:
-    //hidden caves
+    //sprite overlaps:
+    //between player and hidden caves
     this.physics.add.overlap(
       this.player,
       this.hiddenCaveLayer,
@@ -274,7 +291,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
-    //enemies
+    //between player and enemy archaeologists
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
@@ -282,6 +299,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
+    //between player and soldiers
     this.physics.add.overlap(
       this.player,
       this.enemiesS,
@@ -289,7 +307,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
-    //special items
+    //between player and gems (diamonds)
     this.physics.add.overlap(
       this.player,
       this.collectItems,
@@ -297,6 +315,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
+    //between player and scrolls
     this.physics.add.overlap(
       this.player,
       this.scroll,
@@ -304,6 +323,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
+    //between player and chests
     this.physics.add.overlap(
       this.player,
       this.chests,
@@ -319,7 +339,6 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
-
     //between enemy bullets and player
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
@@ -331,7 +350,8 @@ export default class levelScene extends Phaser.Scene {
       );
     }, this);
 
-    console.log('configured sprites and physics');
+    console.log('configured physics and sprite interactions');
+
 
     //USER INTERFACE
     //timer
@@ -364,6 +384,7 @@ export default class levelScene extends Phaser.Scene {
 
     console.log("configured on-screen display");
 
+
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
@@ -380,28 +401,7 @@ export default class levelScene extends Phaser.Scene {
   }
 
   update() {
-    //between arrows and
-    //worldlayer
-    this.arrows.children.each(function(arrow) {
-      this.physics.add.overlap(
-        arrow,
-        this.worldLayer,
-        this.arrowHitWall,
-        null,
-        this
-      );
-    }, this);
 
-    //player
-    this.arrows.children.each(function(arrow) {
-      this.physics.add.overlap(
-        arrow,
-        this.player,
-        this.arrowHitPlayer,
-        null,
-        this
-      );
-    }, this);
     //CHECK/HANDLE END OF LEVEL
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
@@ -421,6 +421,7 @@ export default class levelScene extends Phaser.Scene {
       });
       return;
     }
+
     // Arrow timer
     this.arrowTimer ++;
     if (this.arrowTimer > 100){
@@ -470,6 +471,7 @@ export default class levelScene extends Phaser.Scene {
     this.player.canes.children.each(
       function (c) {
         if (c.active) {
+          //between canes and enemy archaeologists
           this.physics.add.overlap(
             c,
             this.enemiesA,
@@ -477,6 +479,7 @@ export default class levelScene extends Phaser.Scene {
             null,
             this
           );
+          //between canes and enemy soldiers
           this.physics.add.overlap(
             c,
             this.enemiesS,
@@ -484,6 +487,7 @@ export default class levelScene extends Phaser.Scene {
             null,
             this
           );
+          //between canes and worldLayer
           this.physics.add.overlap(
             c,
             this.worldLayer,
@@ -507,6 +511,7 @@ export default class levelScene extends Phaser.Scene {
     this.player.beams.children.each(
       function (b) {
         if (b.active) {
+          //between beams and enemy archaeologists
           this.physics.add.overlap(
             b,
             this.enemiesA,
@@ -514,6 +519,7 @@ export default class levelScene extends Phaser.Scene {
             null,
             this
           );
+          //between beams and enemy soldiers
           this.physics.add.overlap(
             b,
             this.enemiesS,
@@ -521,6 +527,7 @@ export default class levelScene extends Phaser.Scene {
             null,
             this
           );
+          //between beams and worldLayer
           this.physics.add.overlap(
             b,
             this.worldLayer,
@@ -531,13 +538,18 @@ export default class levelScene extends Phaser.Scene {
 
           //deactivate beams once they leave the screen
           if (b.y < 0) {
-            b.setActive(false)
+            b.setActive(false);
           } else if (b.y > this.cameras.main.height) {
-            b.setActive(false)
+            b.setActive(false);
           } else if (b.x < 0) {
-            b.setActive(false)
+            b.setActive(false);
           } else if (b.x > this.cameras.main.width) {
-            b.setActive(false)
+            b.setActive(false);
+          }
+
+          //deactivate beams at a set distance from player
+          if (Math.abs(b.x - this.player.x) > 100) {
+            b.setActive(false);
           }
         }
       }.bind(this)
@@ -548,6 +560,7 @@ export default class levelScene extends Phaser.Scene {
           enemyS.bullets.children.each(
             function (b) {
               if (b.active) {
+                //between bullets and player
                 this.physics.add.overlap(
                   b,
                   this.player,
@@ -566,10 +579,38 @@ export default class levelScene extends Phaser.Scene {
                 } else if (b.x > this.cameras.main.width) {
                   b.setActive(false)
                 }
+
+                //deactivate bullets at a set distance from enemy
+                if (Math.abs(b.x - enemyS.x) > 100) {
+                  b.setActive(false);
+                }
               }
             }.bind(this)
           )
         }, this);
+
+      //configure overlaps for active arrow traps
+      //between arrows and worldLayer
+      this.arrows.children.each(function(arrow) {
+        this.physics.add.overlap(
+          arrow,
+          this.worldLayer,
+          this.arrowHitWall,
+          null,
+          this
+        );
+      }, this);
+
+      //between arrows and player
+      this.arrows.children.each(function(arrow) {
+        this.physics.add.overlap(
+          arrow,
+          this.player,
+          this.arrowHitPlayer,
+          null,
+          this
+        );
+      }, this);
   }
 
 
@@ -583,6 +624,9 @@ export default class levelScene extends Phaser.Scene {
   }
 
   pickup(player,item) {
+    /**
+    function to handle player picking up diamonds in the level
+    */
     item.destroy();
     this.player.diamondsCollected++;
     console.log("diamonds collected:" + this.player.diamondsCollected);
@@ -590,6 +634,9 @@ export default class levelScene extends Phaser.Scene {
   }
 
   pickupChests(player,chest) {
+    /**
+    function to handle player picking up chests in the level
+    */
     chest.play("chestOpen");
     this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
     chest.setFrame(2);
@@ -598,6 +645,9 @@ export default class levelScene extends Phaser.Scene {
   }
 
   pickUpScroll() {
+    /**
+    function to handle player picking up scrolls in the level
+    */
     item.destroy();
     this.player.scrollsCollected++;
     console.log("scrollsC collected:" + this.player.scrollsCollected);
@@ -607,8 +657,8 @@ export default class levelScene extends Phaser.Scene {
   playerRanIntoEnemy(player, enemy) {
     /*
     function to handle the case of player colliding with an enemy when not
-    attacking. Gumba jump kills enemy, and side jumps disable enemies and
-    knock the player back.
+    attacking. Top collision kills enemy, and side collisions disable enemies
+    and knocks the player back.
     */
     console.log('[level.playerRanIntoEnemy]');
 
@@ -680,6 +730,9 @@ export default class levelScene extends Phaser.Scene {
   }
 
   spawnDiamond(diamondX, diamondY){
+    /**
+    function to spawn a diamond sprite at a set coordinate
+    */
     this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
   }
 
@@ -723,10 +776,17 @@ export default class levelScene extends Phaser.Scene {
 
   //USER INTERFACE HELPER FUNCTIONS
   updateHealthBar() {
+    /**
+    function to display changes to player health in a visual UI bar
+    */
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
   }
 
   uncoverHiddenCave(player,hiddenCaveLayer){
+    /**
+    function to handle player colliding with special cave tiles, which
+    will then disappear and uncover hidden parts of the level map
+    */
     if (hiddenCaveLayer.collides) {
       this.hiddenCaveLayer.setAlpha(0);
     } else {
@@ -735,6 +795,9 @@ export default class levelScene extends Phaser.Scene {
   }
 
   spawnArrow(){
+    /**
+    function defining spawning behavior of arrow traps in the levels
+    */
     for (var count in this.arrowCor) {
       var x = this.arrowCor[count][0];
       var y = this.arrowCor[count][1];
