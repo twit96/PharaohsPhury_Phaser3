@@ -55,9 +55,11 @@ export default class menu extends Phaser.Scene {
       sound.play('low');
       this.setScale(1.2);
       this.x -= 25;
+      this.y -= 10;
     }).on("pointerout", function () {
       this.setScale(1.0);
       this.x += 25;
+      this.y += 10;
     }).on("pointerup", function () {
       sound.play('high');
 
