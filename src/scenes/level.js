@@ -4,6 +4,7 @@ import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
 //import EnemyGunner from '';
+import Tank from "./tank.js";
 
 export default class levelScene extends Phaser.Scene {
   constructor () {
@@ -28,8 +29,8 @@ export default class levelScene extends Phaser.Scene {
     this.load.json("levelSetting","./src/data/levelSetting.json");
 
     //background images
-    this.load.image('background1', './assets/images/egyptianbackground.jpg');
-    this.load.image('bossbackground', './assets/images/bossbackground.jpg');
+    this.load.image('levelBackground', './assets/images/egyptianbackground.jpg');
+    this.load.image('bossBackground', './assets/images/bossbackground.jpg');
 
     //tutorial images
     this.load.image('bubble', './assets/images/opaquebubble.png');
@@ -78,7 +79,13 @@ export default class levelScene extends Phaser.Scene {
 
     //RENDER LEVEL MAP (layers below sprites only)
     //background image
-    this.add.image(2240,384,'background1');
+    if (this.levelNum == 0) {
+      //final boss level
+      this.add.image(2240,384,'bossBackground');
+    } else {
+      //all other levels
+      this.add.image(2240,384,'levelBackground');
+    }
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
@@ -124,13 +131,21 @@ export default class levelScene extends Phaser.Scene {
 
     //parse level sprite data from json, read coordinates into array of [x,y];
     //(need to format levelN callback somehow to avoid repetitive if statements)
-    if (this.levelNum == 1) {
+    if (this.levelNum == 0) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level0.enemyA;
+      this.enemySCor = this.levelSettingInfo.level0.enemyS;
+      this.gemCor = this.levelSettingInfo.level0.gem;
+      this.chestCor = this.levelSettingInfo.level0.chest;
+      this.tankCor = this.levelSettingInfo.level0.tank;
+    } else if (this.levelNum == 1) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level1.enemyA;
       this.enemySCor = this.levelSettingInfo.level1.enemyS;
       this.gemCor = this.levelSettingInfo.level1.gem;
       this.chestCor = this.levelSettingInfo.level1.chest;
       this.arrowCor = this.levelSettingInfo.level1.arrow;
+      this.tankCor = this.levelSettingInfo.level1.tank;
     } else if (this.levelNum == 2) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level2.enemyA;
@@ -138,6 +153,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level2.gem;
       this.chestCor = this.levelSettingInfo.level2.chest;
       this.arrowCor = this.levelSettingInfo.level2.arrow;
+      this.tankCor = this.levelSettingInfo.level2.tank;
     } else if (this.levelNum == 3) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level3.enemyA;
@@ -145,6 +161,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level3.gem;
       this.chestCor = this.levelSettingInfo.level3.chest;
       this.arrowCor = this.levelSettingInfo.level3.arrow;
+      this.tankCor = this.levelSettingInfo.level3.tank;
     } else if (this.levelNum == 4) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level4.enemyA;
@@ -152,6 +169,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level4.gem;
       this.chestCor = this.levelSettingInfo.level4.chest;
       this.arrowCor = this.levelSettingInfo.level4.arrow;
+      this.tankCor = this.levelSettingInfo.level4.tank;
     } else if (this.levelNum == 5) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level5.enemyA;
@@ -159,6 +177,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level5.gem;
       this.chestCor = this.levelSettingInfo.level5.chest;
       this.arrowCor = this.levelSettingInfo.level5.arrow;
+      this.tankCor = this.levelSettingInfo.level5.tank;
     } else if (this.levelNum == 6) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level6.enemyA;
@@ -166,6 +185,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level6.gem;
       this.chestCor = this.levelSettingInfo.level6.chest;
       this.arrowCor = this.levelSettingInfo.level6.arrow;
+      this.tankCor = this.levelSettingInfo.level6.tank;
     } else if (this.levelNum == 7) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level7.enemyA;
@@ -173,6 +193,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level7.gem;
       this.chestCor = this.levelSettingInfo.level7.chest;
       this.arrowCor = this.levelSettingInfo.level7.arrow;
+      this.tankCor = this.levelSettingInfo.level7.tank;
     }
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     //console.log("populating enemyS at " + this.enemySCor);
@@ -211,6 +232,20 @@ export default class levelScene extends Phaser.Scene {
       this.enemiesS.add(enemy);
     }
 
+    //tank
+    this.tank;
+    for (var count in this.tankCor) {
+      this.tank = new Tank({
+        scene: this,
+        key: "tankBase",
+        x: this.tankCor[count][0],
+        y: this.tankCor[count][1]
+      });
+      //tank physics
+      this.tank.body.setCollideWorldBounds(true);
+      this.tank.setInteractive();
+    }
+
     //diamonds (gems)
     for (var count in this.gemCor) {
       var x = this.gemCor[count][0];
@@ -230,20 +265,21 @@ export default class levelScene extends Phaser.Scene {
 
     //player
     this.spawnPoints = [
-      [180, 440], //level1
-      [286, 416], //level2
-      [58, 320],  //level3
+      [25, 450],     //final boss
+      [180, 550], //level1
+      [286, 500], //level2
+      [58, 400],  //level3
       [94, 630],  //level4
-      [173, 320], //level5
-      [75, 512],  //level6
-      [94, 192],  //level7
+      [173, 375], //level5
+      [75, 550],  //level6
+      [94, 250],  //level7
       [50, 100]   //level8
     ];
     this.player = new Mummy({
       scene: this,
       key: "mummyWalk",
-      x: this.spawnPoints[this.levelNum - 1][0],
-      y: this.spawnPoints[this.levelNum - 1][1]
+      x: this.spawnPoints[this.levelNum][0],
+      y: this.spawnPoints[this.levelNum][1]
     });
 
     console.log('created sprites');
@@ -269,7 +305,7 @@ export default class levelScene extends Phaser.Scene {
 
 
     //sprite collisions
-    this.boundaryBox = map.heightInPixels - this.player.body.height;
+    this.boundaryBox = map.heightInPixels - (this.player.body.height/2) - 2;
 
     this.physics.add.collider(this.player, this.worldLayer);
     this.physics.add.collider(this.enemiesA, this.worldLayer);
@@ -281,6 +317,10 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.chests, this.worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
+
+    if (this.levelNum == 0) {
+      this.physics.add.collider(this.tank, this.worldLayer);
+    }
 
     //sprite overlaps:
     //between player and hidden caves
@@ -350,6 +390,33 @@ export default class levelScene extends Phaser.Scene {
       );
     }, this);
 
+    if (this.levelNum == 0) {
+      //final boss overlaps
+      this.physics.add.overlap(
+        this.player,
+        this.tank,
+        this.playerRanIntoTank,
+        null,
+        this
+      );
+
+      //for tank projectiles
+      this.physics.add.overlap(
+        this.tank.shells,
+        this.worldLayer,
+        this.tank.shellHitWall,
+        null,
+        this
+      );
+      this.physics.add.overlap(
+        this.tank.bombs,
+        this.worldLayer,
+        this.tank.shellHitWall,
+        null,
+        this
+      );
+    }
+
     console.log('configured physics and sprite interactions');
 
 
@@ -382,6 +449,17 @@ export default class levelScene extends Phaser.Scene {
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
+    //final boss health bar
+    if (this.levelNum == 0) {
+      this.enemyHealth = this.add.container(400, 450);
+      this.EhealthBar = this.add.sprite(0,0,"healthBarFrame").setOrigin(0,0).setScale(0.1);
+      this.EhealthBarFill = this.add.sprite(0,0,"healthBarFill").setOrigin(0,0).setScale(0.1);
+      this.EhealthBarOrgWidth = this.EhealthBarFill.width;
+      this.EhealthBarOrgHeight = this.EhealthBarFill.width;
+      this.enemyHealth.add(this.EhealthBar);
+      this.enemyHealth.add(this.EhealthBarFill);
+    }
+
     console.log("configured on-screen display");
 
 
@@ -403,15 +481,21 @@ export default class levelScene extends Phaser.Scene {
   update() {
 
     //CHECK/HANDLE END OF LEVEL
+    //detect if tank died on final level
+    if ((this.levelNum == 0) && (this.tank.health <= 0)) {
+      this.player.levelCompleted = true;
+    }
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
+
       if (this.player.levelCompleted) {
         var newLevelCompletion = this.registry.pop("levelCompletion");
         newLevelCompletion[this.levelNum - 1] = 1;
         this.registry.set({levelCompletion:newLevelCompletion});
         console.log(this.registry);
       }
+
       this.backgroundMusic.stop();
       this.scene.start('gameOverScene', {
         level: this.levelNum,
@@ -443,6 +527,10 @@ export default class levelScene extends Phaser.Scene {
     this.location.setText("Location: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
+    if (this.levelNum == 0) {
+      this.updateEHealthBar();
+      this.enemyHealth.x = this.tank.x - 60;
+    }
 
     // player heart update - if hearts isn't equal to the player lifes, delete one heart
     if (this.player.lives != this.hearts.countActive()) {
@@ -464,6 +552,9 @@ export default class levelScene extends Phaser.Scene {
       enemyS.move();
     }, this);
 
+    if (this.levelNum == 0) {
+      this.tank.move();
+    }
 
     //SPRITE INTERACTIONS
     //configure overlaps for active player attacks
@@ -589,6 +680,87 @@ export default class levelScene extends Phaser.Scene {
           )
         }, this);
 
+      if (this.levelNum == 0) {
+        //configure overlaps for active player beams
+        this.player.beams.children.each(
+          function (b) {
+            if (b.active) {
+              this.physics.add.overlap(
+                b,
+                this.tank,
+                this.player.beamHitTank,
+                null,
+                this
+              );
+
+              //deactivate beams once they leave the screen
+              if (b.y < 0) {
+                b.setActive(false)
+              } else if (b.y > this.cameras.main.height) {
+                b.setActive(false)
+              } else if (b.x < 0) {
+                b.setActive(false)
+              } else if (b.x > this.cameras.main.width) {
+                b.setActive(false)
+              }
+            }
+          }.bind(this)  //binds the function to each of the children. scope of function
+        );
+
+        //configure overlaps for active tank shells
+        this.tank.shells.children.each(
+          function (s) {
+            if (s.active) {
+              this.physics.add.overlap(
+                s,
+                this.player,
+                this.tank.shellHitPlayer,
+                null,
+                this
+              );
+
+              //deactivate shells once they leave the screen
+              if (s.y < 0) {
+                s.setActive(false)
+              } else if (s.y > this.cameras.main.height) {
+                s.setActive(false)
+              } else if (s.x < 0) {
+                s.setActive(false)
+              } else if (s.x > this.cameras.main.width) {
+                s.setActive(false)
+              }
+            }
+          }.bind(this)  //binds the function to each of the children. scope of function
+        );
+
+        //configure overlaps for active tank bombs
+        this.tank.bombs.children.each(
+          function (b) {
+            if (b.active) {
+              this.physics.add.overlap(
+                b,
+                this.player,
+                this.tank.shellHitPlayer,
+                null,
+                this
+              );
+
+              //deactivate shells once they leave the screen
+              if (b.y < 0) {
+                b.setActive(false)
+              } else if (b.y > this.cameras.main.height) {
+                b.setActive(false)
+              } else if (b.x < 0) {
+                b.setActive(false)
+              } else if (b.x > this.cameras.main.width) {
+                b.setActive(false)
+              }
+            }
+          }.bind(this)  //binds the function to each of the children. scope of function
+        );
+
+      }
+
       //configure overlaps for active arrow traps
       //between arrows and worldLayer
       this.arrows.children.each(function(arrow) {
@@ -652,6 +824,57 @@ export default class levelScene extends Phaser.Scene {
     this.player.scrollsCollected++;
     console.log("scrollsC collected:" + this.player.scrollsCollected);
     this.pickupSound.play();
+  }
+
+  playerRanIntoTank(player, tank) {
+    /*
+    function to handle special case of player taking damage: running into tank.
+    player loses one life and then respawns away from the tank so this function
+    won't get called over and over.
+    */
+    console.log('[playerRanIntoTank]')
+
+    //disable enemy, update player health
+    this.tank.isActive = false;
+    this.player.updateHealth(100); //i.e. player loses 1 life
+    this.player.setTint(0xff0000);
+    this.player.setVelocity = 0;
+
+    //MOVE PLAYER SPRITE
+    //variables to adjust x value
+    var tankHalfWidth = tank.width / 2;
+    var tankRightX = tank.x + tankHalfWidth;
+    var tankLeftX = tank.x - tankHalfWidth;
+
+    //variables to adjust y value
+    var playerHalfHeight = this.player.height / 2;
+    var tankHalfHeight = tank.height / 2;
+    var tankBottomY = tank.y + tankHalfHeight;
+
+    //adjust player x
+    if (this.player.body.touching.right) {
+      //collision on left side of enemy
+      this.player.x = tankLeftX - this.player.width;
+    } else if (this.player.body.touching.left) {
+      //collision on right side of enemy
+      this.player.x = tankRightX + this.player.width;
+    } else {
+      //collision on top or bottom of enemy
+      this.player.x = tankLeftX - this.player.width;
+    }
+
+    //adjust player y
+    this.player.y = tankBottomY - playerHalfHeight;
+
+    console.log("adjusted player coordinates: (" + player.x + ", " + player.y + ")");
+
+    //disabled tank set to respawn with a longer delay than player sprite
+    this.time.addEvent({
+      delay: 2500,
+      callback: this.tank.reset,
+      callbackScope: this,
+      loop: false
+    });
   }
 
   playerRanIntoEnemy(player, enemy) {
@@ -773,6 +996,21 @@ export default class levelScene extends Phaser.Scene {
     this.player.updateHealth(10);
   }
 
+  shellHitPlayer(shell, player) {
+    /*
+    function to handle overlap between player and tank shell
+    (i.e. tank shell hit player)
+    */
+    console.log('[level.shellHitPlayer]');
+
+
+    //disable shell
+    shell.disableBody(true, true);
+
+    //update player stats
+    player.updateHealth(20);
+  }
+
 
   //USER INTERFACE HELPER FUNCTIONS
   updateHealthBar() {
@@ -780,6 +1018,11 @@ export default class levelScene extends Phaser.Scene {
     function to display changes to player health in a visual UI bar
     */
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+
+  updateEHealthBar(){
+    this.EhealthBarFill.setCrop(0,0,this.EhealthBarOrgWidth*this.tank.health /100,this.EhealthBarOrgHeight);
+    //console.log("Update player health bar fill");
   }
 
   uncoverHiddenCave(player,hiddenCaveLayer){

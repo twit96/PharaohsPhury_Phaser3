@@ -42,7 +42,12 @@ export default class gameOverScene extends Phaser.Scene {
     this.add.image(400,300,'gameoverbg').setScale(.5,.5);
 
     //create the text that displays on the screen
-    const level = "Level:      " +this.levelNum;
+    var level;
+    if (this.levelNum == 0) {
+      level = "Final Boss";
+    } else {
+      level = "Level:      " +this.levelNum;
+    }
     const diamond = "Jewels:   " + this.diamondCollected;
     const enemyKilled = "Kills:       " + this.enemiesKilled;
 
@@ -59,7 +64,7 @@ export default class gameOverScene extends Phaser.Scene {
       btnText = "Continue";
     }
 
-    if (this.levelNum === "Final Boss" && this.levelCompleted ) {
+    if (this.levelNum == "0" && this.levelCompleted ) {
       btnText = "You Won! \n You are now free";
     }
 
