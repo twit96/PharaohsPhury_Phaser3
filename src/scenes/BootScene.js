@@ -47,6 +47,11 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
+    this.load.image("manaFill", "../assets/images/manaBarFilled.png");
+    this.load.image("manaFrame", "../assets/images/manaBarFrame.png");
+    this.load.image("scroll_BG", "../assets/images/Scroll_1.png");
+
+
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS

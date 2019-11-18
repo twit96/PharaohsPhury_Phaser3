@@ -292,7 +292,6 @@ export default class levelScene extends Phaser.Scene {
 
     console.log('created level map layers above sprites');
 
-
     //LEVEL MECHANICS
     //world/camera bounds
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -302,7 +301,6 @@ export default class levelScene extends Phaser.Scene {
     //player physics and input
     this.player.body.setCollideWorldBounds(true);
     this.cursors = this.input.keyboard.createCursorKeys();
-
 
     //sprite collisions
     this.boundaryBox = map.heightInPixels - (this.player.body.height/2) - 2;
@@ -359,7 +357,7 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.scroll,
-      this.pickup,
+      this.pickUpScroll,
       null,
       this
     );
@@ -429,23 +427,56 @@ export default class levelScene extends Phaser.Scene {
     //score
     this.score = 0;
 
-    //text
-    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+ this.levelNum).setScrollFactor(0,0);
-    this.LifeDisplay = this.add.text(10,40, "Life Left: " + this.player.lives).setScrollFactor(0,0);
-    this.HealthDisplay = this.add.text(10,60, "Health: " + this.player.health).setScrollFactor(0,0);
-    this.timerDisplay = this.add.text(10,80, "Timer: "+ this.duration).setScrollFactor(0,0);
-    this.ScoreDisplay = this.add.text(10,100, "Score: "+ this.score).setScrollFactor(0,0);
-    this.location = this.add.text(10,120, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.add.image(-5,-5,"scroll_BG").setOrigin(0,0).setScale(.27).setScrollFactor(0,0);
 
-    //life hearts
+    //text
+    this.UserLevel = this.add.text(20,30, this.registry.get("userName")+" at Level "+ this.levelNum, {
+      color: '#fcba03',
+      stroke: '#000000',
+      strokeThickness: 7
+       }).setScrollFactor(0,0);
+    this.LifeDisplay = this.add.text(14,55, "LIFE(s): " + this.player.lives, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+    this.HealthDisplay = this.add.text(14,75, "HP: " + this.player.health, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+    this.MPDisplay = this.add.text(14,95, "MP: " + this.player.MP, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+    this.timerDisplay = this.add.text(14,115, "TIMER: "+ this.duration, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+    this.ScoreDisplay = this.add.text(14,135, "SCORE: "+ this.score, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+    this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
+
+    //life & hearts
     var h;
     this.hearts = this.add.group();
     for (h = 0; h < this.player.lives; h++) {
-      var xLocation = 150 + h*20 ;
-      this.hearts.add(this.add.image(xLocation,48, "heart").setScrollFactor(0,0).setScale(0.03));
+      var xLocation = 130 + h*20 ;
+      this.hearts.add(this.add.image(xLocation,63, "heart").setScrollFactor(0,0).setScale(0.03));
     }
-    this.healthBar = this.add.image(120,58,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
-    this.healthBarFill = this.add.image(120,58,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBar = this.add.image(90,75,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.healthBarFill = this.add.image(90,75,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.manaBar = this.add.image(90,95,"manaFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
+    this.manaBarFill = this.add.image(90,95,"manaFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarOrgWidth = this.healthBarFill.width;
     this.healthBarOrgHeight = this.healthBarFill.width;
 
@@ -462,7 +493,10 @@ export default class levelScene extends Phaser.Scene {
 
     console.log("configured on-screen display");
 
-
+    // provide player an initial MP at level 6 when introduce the shooting
+    if (this.levelNum == 6) {
+      this.player.MP = 5;
+    }
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
@@ -474,7 +508,7 @@ export default class levelScene extends Phaser.Scene {
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
     console.log('configured audio');
-
+    // call once to reset the mana to 0;
     console.log('completed create function');
   }
 
@@ -520,13 +554,15 @@ export default class levelScene extends Phaser.Scene {
     this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
 
     //display
-    this.timerDisplay.setText("Timer: "+ this.duration);
-    this.ScoreDisplay.setText("Score: "+ this.score);
-    this.HealthDisplay.setText("Health: " + this.player.health);
-    this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+    this.timerDisplay.setText("TIMER: "+ this.duration);
+    this.ScoreDisplay.setText("SCORE: "+ this.score);
+    this.HealthDisplay.setText("HP: " + this.player.health);
+    this.MPDisplay.setText("MP: "+this.player.MP);
+    this.LifeDisplay.setText("LIFE(s): " + this.player.lives);
+    this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
+    this.updateMPBar();
     if (this.levelNum == 0) {
       this.updateEHealthBar();
       this.enemyHealth.x = this.tank.x - 60;
@@ -816,13 +852,15 @@ export default class levelScene extends Phaser.Scene {
     this.pickupSound.play();
   }
 
-  pickUpScroll() {
+  pickUpScroll(player,item) {
     /**
     function to handle player picking up scrolls in the level
     */
     item.destroy();
-    this.player.scrollsCollected++;
-    console.log("scrollsC collected:" + this.player.scrollsCollected);
+    if (this.player.MP < 5){
+      this.player.MP++;
+    }
+    console.log("scrolls Collected");
     this.pickupSound.play();
   }
 
@@ -915,7 +953,23 @@ export default class levelScene extends Phaser.Scene {
         var diamondY = enemy.y - randomShiftY;
         this.spawnDiamond(diamondX, diamondY);
       }
+      if (this.levelNum >= 6 || this.levelNum == 0){
+        var scrollRandAmount = Math.floor(Math.random() * Math.floor(10)+1);
+        if (scrollRandAmount > 6.5){
+          for (x = 0; x < randAmount; x++) {
+            //within 75 pixels left or right from the enemy
+            var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
 
+            //up to 75 pixels above the enemy
+            var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+            //spawn diamond
+            var diamondX = enemy.x + randomShiftX;
+            var diamondY = enemy.y - randomShiftY;
+            this.spawnScroll(diamondX, diamondY);
+          }
+        }
+      }
       //"kill" enemy
       enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
       enemy.isActive = false;
@@ -935,7 +989,7 @@ export default class levelScene extends Phaser.Scene {
       enemy.stun();
 
       //player takes damage
-      player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+      player.updateHealth(5);  //5 ARBITRARILY CHOSEN
 
     }  else if (this.player.body.touching.left) {
       //collision on right side of enemy
@@ -947,7 +1001,7 @@ export default class levelScene extends Phaser.Scene {
       enemy.stun();
 
       //player takes damage
-      player.updateHealth(25);  //25 ARBITRARILY CHOSEN
+      player.updateHealth(5);  //5 ARBITRARILY CHOSEN
     }
 
   }
@@ -958,7 +1012,9 @@ export default class levelScene extends Phaser.Scene {
     */
     this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
   }
-
+  spawnScroll(diamondX, diamondY){
+    this.scroll.add(this.physics.add.sprite(diamondX,diamondY,"scroll"));
+  }
   playerFellOffMap(player) {
     /*
     function to handle player colliding with bottom world bound
@@ -979,7 +1035,7 @@ export default class levelScene extends Phaser.Scene {
     */
     if (worldLayer.collides) {
       console.log('[arrowHitWall]');
-      arrow.disableBody(true, true);
+      arrow.destroy();
     }
   }
 
@@ -990,7 +1046,7 @@ export default class levelScene extends Phaser.Scene {
     */
     console.log('[arrowHitPlayer]');
     //disable shell
-    arrow.disableBody(true, true);
+    arrow.destroy();
 
     //update player stats
     this.player.updateHealth(10);
@@ -1018,6 +1074,13 @@ export default class levelScene extends Phaser.Scene {
     function to display changes to player health in a visual UI bar
     */
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+
+  updateMPBar() {
+    /**
+    function to display changes to player MP in a visual UI bar
+    */
+    this.manaBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.MP/5,this.healthBarOrgHeight);
   }
 
   updateEHealthBar(){

@@ -18,7 +18,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //long range attacks
     this.beams = this.scene.physics.add.group({
       defaultKey: "mummyBeam",
-      allowGravity: false
+      allowGravity: false,
+      setScale: { x: 2, y: 2}
     });
 
     //variables
@@ -29,9 +30,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.beamSpeed = 750;
     this.beamAngle;
     this.beamDirection = 0;
-
+    this.MP = 0;
     this.diamondsCollected = 0;
-    this.scrollsCollected = 0;
     this.enemiesKilled = 0;
     this.gameOver = false;
     this.levelCompleted = false;
@@ -305,37 +305,38 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     function to define behavior of player shooting long range attacks
     */
     console.log('[mummy.shoot]');
+    if (this.MP > 0) {
+      //temporarily disable more attacks
+      this.canAttack = false;
 
+      //generate a beam attack sprite
+      var beam = this.beams.get();
 
-    //temporarily disable more attacks
-    this.canAttack = false;
+      beam.setAngle(this.beamAngle);
 
-    //generate a beam attack sprite
-    var beam = this.beams.get();
+      if (this.beamDirection == 1){
+        beam.flipX = true;
+      } else {
+        beam.flipX = false;
+      }
 
-    beam.setAngle(this.beamAngle);
+      beam
+        .enableBody(true, this.x, this.y - 15, true, true)
+        .setVelocity(this.beamSpeed, 0)
+        .setScale(2.5)
 
-    if (this.beamDirection == 1){
-      beam.flipX = true;
-    } else {
-      beam.flipX = false;
+      // AUDIO
+      this.scene.shootBeam.play({volume: 1});
+
+      //enable player attacks again after a delay
+      this.scene.time.addEvent({
+        delay: 500,
+        callback: this.reset,
+        callbackScope: this,
+        loop: false
+      });
+      this.MP --;
     }
-
-    beam
-      .enableBody(true, this.x, this.y - 15, true, true)
-      .setVelocity(this.beamSpeed, 0)
-      .setScale(2.5)
-
-    // AUDIO
-    this.scene.shootBeam.play({volume: 1});
-
-    //enable player attacks again after a delay
-    this.scene.time.addEvent({
-      delay: 500,
-      callback: this.reset,
-      callbackScope: this,
-      loop: false
-    });
   }
 
   beamHitWall(beam, worldLayer) {
