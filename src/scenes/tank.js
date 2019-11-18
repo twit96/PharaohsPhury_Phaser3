@@ -47,8 +47,17 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       1900, 1920, 1940
     ];
 
-    //count values where tank does triple shot attacks
-    this.enemySwarmCounts = [750, 1000, 1500];
+    //count values where tank spawns new enemies
+    this.archeologistSwarmCounts = [
+      725, 750, 775,
+      1025, 1050, 1075,
+      1525, 1550, 1575
+    ];
+    this.soldierSwarmCounts = [
+      700, 800,
+      1000, 1100,
+      1500, 1600
+    ];
 
     //to store shoot angles
     this.turretAngleRAD;
@@ -146,8 +155,11 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       }
 
       //ENEMY SWARMS
-      if (this.enemySwarmCounts.includes(this.moveCounter)) {
-        this.enemySwarm();
+      if (this.archeologistSwarmCounts.includes(this.moveCounter)) {
+        this.archeologistSwarm();
+      }
+      if (this.soldierSwarmCounts.includes(this.moveCounter)) {
+        this.soldierSwarm();
       }
 
       //UPDATE AND REPEAT BEHAVIOR LOOP
@@ -306,40 +318,36 @@ export default class Tank extends Phaser.GameObjects.Sprite {
   }
 
 
-  enemySwarm() {
+  archeologistSwarm() {
     /*
     function called to spawn a swarm of enemies around the tank
     */
-    var rand1 = Math.floor(Math.random() * Math.floor(5));
-    var rand2 = Math.floor(Math.random() * Math.floor(3));
+    var enemy = new EnemyArch({
+      scene: this.scene,
+      key: "archeologist",
+      x: this.x,
+      y: this.y
+    });
+    enemy.play("archeologistAnim");
+    enemy.body.setCollideWorldBounds(true);
+    enemy.setInteractive();
+    this.scene.enemiesA.add(enemy);
+  }
 
-    var x;
-    for (x = 0; x < rand1; x++) {
-      var enemy = new EnemyArch({
-        scene: this.scene,
-        key: "archeologist",
-        x: this.x,
-        y: this.y
-      });
-      enemy.play("archeologistAnim");
-      enemy.body.setCollideWorldBounds(true);
-      enemy.setInteractive();
-      this.scene.enemiesA.add(enemy);
-    }
-
-    var y;
-    for (y = 0; y < rand2; y++) {
-      var enemy = new EnemySoldier({
-        scene: this.scene,
-        key: "soldier",
-        x: this.x,
-        y: this.y
-      });
-      enemy.play("soldierAnim");
-      enemy.body.setCollideWorldBounds(true);
-      enemy.setInteractive();
-      this.scene.enemiesS.add(enemy);
-    }
+  soldierSwarm() {
+    /*
+    function called to spawn a swarm of enemies around the tank
+    */
+    var enemy = new EnemySoldier({
+      scene: this.scene,
+      key: "soldier",
+      x: this.x,
+      y: this.y
+    });
+    enemy.play("soldierAnim");
+    enemy.body.setCollideWorldBounds(true);
+    enemy.setInteractive();
+    this.scene.enemiesS.add(enemy);
   }
 
 
