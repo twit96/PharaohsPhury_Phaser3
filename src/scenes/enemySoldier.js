@@ -125,9 +125,14 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     */
     var bullet = this.bullets.get();
     bullet.setAngle(180);
-    bullet
-      .enableBody(true, this.x, (this.y+5), true, true)
-      .setVelocity(2000,0)
+    bullet.enableBody(true, this.x, (this.y+5), true, true);
+    if (this.scene.player.x > this.x) {
+      bullet.setVelocity(2000,0);
+    } else {
+      this.setFlipX(true);
+      bullet.setVelocity(-2000,0);
+    }
+
 
   }
 
@@ -158,7 +163,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
     bullet.disableBody(true, true);
 
     //update player stats
-    this.player.updateHealth(50);
+    this.player.updateHealth(10);
   }
 
 }

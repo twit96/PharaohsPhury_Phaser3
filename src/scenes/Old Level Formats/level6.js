@@ -55,7 +55,6 @@ export default class level6 extends Phaser.Scene {
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map = this.make.tilemap({ key: "level6map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
-    //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
 
     //render map/player/enemies in specific order
@@ -308,11 +307,13 @@ export default class level6 extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[5] = 1;
+      if (this.player.levelCompleted){
+        var newLevelCompletion = this.registry.pop("levelCompletion");
+        newLevelCompletion[0] = 1;
 
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
+        this.registry.set({levelCompletion:newLevelCompletion});
+        console.log(this.registry);
+      }
       this.backgroundMusic.stop();
       var newLevelCompletion = this.registry.pop("levelCompletion");
       newLevelCompletion[5] = 1;
@@ -569,6 +570,8 @@ export default class level6 extends Phaser.Scene {
     if (hiddenCaveLayer.collides) {
       console.log("uncoverHiddenCave");
       this.hiddenCaveLayer.setAlpha(0);
+    } else {
+      this.hiddenCaveLayer.setAlpha(1);
     }
   }
 }

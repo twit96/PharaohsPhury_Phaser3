@@ -35,7 +35,7 @@ export default class levelPicker extends Phaser.Scene {
 
     console.log('[create]');
     this.add.image(400,300,'background').setScale(.5,.5);
-    var saveLeaveBtn = this.add.sprite(this.centerX - 200,550,"exit").setScale(.15,.15);
+    var saveLeaveBtn = this.add.sprite(this.centerX - 180,555,"exit").setScale(.15,.15).setFlipX(true);
     // var saveLeaveBtn = this.add.text(
     //   this.centerX - 200,
     //   500,
@@ -51,10 +51,10 @@ export default class levelPicker extends Phaser.Scene {
     saveLeaveBtn.setInteractive().on("pointerover", function() {
       sound.play('low');
       this.setScale(.2);
-      this.x -= 25;
+      //this.x += 25;
     }).on("pointerout", function () {
       this.setScale(.15);
-      this.x += 25;
+      //this.x -= 25;
     }).on("pointerup", function () {
       sound.play('high');
       this.saveANDLeave();
@@ -92,7 +92,9 @@ export default class levelPicker extends Phaser.Scene {
     b1.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
-      this.scene.start('level1');
+      this.scene.start('levelScene', {
+        level: 1
+      });
     }, this
     );
 
@@ -110,7 +112,9 @@ export default class levelPicker extends Phaser.Scene {
       b2.on("pointerup", function () {
         sound.play('high');
         this.backgroundMusic.stop();
-        this.scene.start('level2');
+        this.scene.start('levelScene', {
+          level: 2
+        });
       }, this
       );
     }
@@ -129,7 +133,9 @@ export default class levelPicker extends Phaser.Scene {
     b3.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
-      this.scene.start('level3');
+      this.scene.start('levelScene', {
+        level: 3
+      });
     }, this   // scope so above line works
     );
   }
@@ -148,7 +154,9 @@ export default class levelPicker extends Phaser.Scene {
       b4.on("pointerup", function () {
         sound.play('high');
         this.backgroundMusic.stop();
-        this.scene.start('level4');
+        this.scene.start('levelScene', {
+          level: 4
+        });
         }, this
       );
     }
@@ -167,7 +175,9 @@ export default class levelPicker extends Phaser.Scene {
       b5.on("pointerup", function () {
         sound.play('high');
         this.backgroundMusic.stop();
-        this.scene.start('level5');
+        this.scene.start('levelScene', {
+          level: 5
+        });
       }, this
       );
     }
@@ -186,7 +196,9 @@ export default class levelPicker extends Phaser.Scene {
       b6.on("pointerup", function () {
         sound.play('high');
         this.backgroundMusic.stop();
-        this.scene.start('level6');
+        this.scene.start('levelScene', {
+          level: 6
+        });
       }, this   // scope so above line works
       );
     }
@@ -205,7 +217,9 @@ export default class levelPicker extends Phaser.Scene {
     b7.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
-      this.scene.start('level7');
+      this.scene.start('levelScene', {
+        level: 7
+      });
       }, this
     );}
 
@@ -223,7 +237,9 @@ export default class levelPicker extends Phaser.Scene {
     b8.on("pointerup", function () {
       sound.play('high');
       //this.backgroundMusic.stop();
-      // this.scene.start('level8');
+      // this.scene.start('levelScene', {
+      //   level: 8
+      // });
     }, this
   );}
 
@@ -241,7 +257,9 @@ export default class levelPicker extends Phaser.Scene {
     b9.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
-      this.scene.start('finalBossLevel');
+      this.scene.start('levelScene', {
+        level: 0
+      });
     }, this
   );}
     console.log('configured buttons');

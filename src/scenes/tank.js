@@ -27,12 +27,6 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       defaultKey: "bomb"
     });
 
-    //ENEMIES
-    this.enemiesA = this.scene.physics.add.group();
-    this.enemiesA.enableBody = true;
-    this.enemiesS = this.scene.physics.add.group();
-    this.enemiesS.enableBody = true;
-
     //VARIABLES
     //general
     this.health = 100;
@@ -330,7 +324,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       enemy.play("archeologistAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
-      this.enemiesA.add(enemy);
+      this.scene.enemiesA.add(enemy);
     }
 
     var y;
@@ -344,7 +338,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
       enemy.play("soldierAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
-      this.enemiesS.add(enemy);
+      this.scene.enemiesS.add(enemy);
     }
   }
 

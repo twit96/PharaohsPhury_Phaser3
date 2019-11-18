@@ -26,7 +26,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("level5map", "../assets/tilemaps/level5map.json");
     this.load.tilemapTiledJSON("level6map", "../assets/tilemaps/level6map.json");
     this.load.tilemapTiledJSON("level7map", "../assets/tilemaps/level7map.json");
-    this.load.tilemapTiledJSON("finalBossMap", "../assets/tilemaps/finalBossMap.json");
+    this.load.tilemapTiledJSON("level0map", "../assets/tilemaps/finalBossMap.json");
 
     //items
     this.load.image("gem", "../assets/sprites/gem.png");
@@ -47,18 +47,22 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('bossbackground', './assets/images/bossbackground.jpg');
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
 
+    this.load.image("manaFill", "../assets/images/manaBarFilled.png");
+    this.load.image("manaFrame", "../assets/images/manaBarFrame.png");
+    this.load.image("scroll_BG", "../assets/images/Scroll_1.png");
+
+
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
-    // ASSETS
+    //ASSETS
     this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
       frameWidth: 48,
       frameHeight: 32
     });
 
-    //levelPicker
-
-    //player (mummy)
+    //PLAYER (mummy)
+    //walking/idle
     this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -75,7 +79,6 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
-    //Pharaoh mask load
     this.load.spritesheet("pharoahCaneIdle", "../assets/spriteSheets/Sprite_PharoahCane_Idle.png", {
       frameWidth: 64,
       frameHeight: 64
@@ -85,6 +88,7 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 64
     });
 
+    //attacks
     this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
       frameWidth: 28,
       frameHeight: 7
@@ -102,6 +106,10 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 64
     });
     this.load.spritesheet("pharoahRangeCane", "../assets/spriteSheets/Sprite_PharoahCane_RangeAttack.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/mummyCaneHitbox.png", {
       frameWidth: 64,
       frameHeight: 64
     });

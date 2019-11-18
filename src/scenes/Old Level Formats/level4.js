@@ -4,13 +4,13 @@ import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
 
-export default class level8 extends Phaser.Scene {
+export default class level4 extends Phaser.Scene {
   constructor () {
-    super('level8');
+    super('level4');
   }
 
   preload() {
-    console.log('\n[level8]');
+    console.log('\n[level4]');
     console.log('[preload]')
     this.load.json("levelSetting","./src/data/levelSetting.json");
     this.load.image('background1', './assets/images/egyptianbackground.jpg');
@@ -39,14 +39,14 @@ export default class level8 extends Phaser.Scene {
 
     //VARIABLES
     //player
-    this.spawnX = 50;
-    this.spawnY = 100;
-    this.levelName = 8;
+    this.spawnX = 94;
+    this.spawnY = 630;
+    this.levelName = 4;
 
     //declare map and tilesets
       //addTilesetImage parameters: name of tileset in Tiled, key for tileset in bootscene
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
-    const map = this.makelevel.tilemap({ key: "level8map" });
+    const map = this.make.tilemap({ key: "level4map" });
     const below2Tileset =map.addTilesetImage("inca_back2", "incaBack2Tiles");
     //const belowTileset = map.addTilesetImage("inca_back", "incaBackTiles");
     const worldTileset = map.addTilesetImage("inca_front", "incaFrontTiles");
@@ -56,6 +56,7 @@ export default class level8 extends Phaser.Scene {
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
     const worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
+    invisLayer.setCollisionByProperty({ collides: true });
     worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
 
@@ -74,6 +75,7 @@ export default class level8 extends Phaser.Scene {
     this.chests = this.physics.add.group({
       defaultKey: "chest"
     });
+
     //create enemies group
     this.enemiesA = this.add.group();
     this.enemiesA.enableBody = true;
@@ -83,16 +85,15 @@ export default class level8 extends Phaser.Scene {
     //CREATE LEVEL
     // level Data parse from json, read cordination into array of [x,y];
     this.levelSettingInfo = this.cache.json.get('levelSetting');
-    this.enemyACor = this.levelSettingInfo.level8.enemyA;
-    this.enemySCor = this.levelSettingInfo.level8.enemyS;
-    this.gemCor = this.levelSettingInfo.level8.gem;
-    this.chestCor = this.levelSettingInfo.level8.chest;
+    this.enemyACor = this.levelSettingInfo.level4.enemyA;
+    this.enemySCor = this.levelSettingInfo.level4.enemyS;
+    this.gemCor = this.levelSettingInfo.level4.gem;
+    this.chestCor = this.levelSettingInfo.level4.chest;
 
     console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     console.log("populating enemyS at " + this.enemySCor);
     console.log("populating gem at " + this.gemCor);
     console.log("populating chest at " + this.chestCor);
-
     // spawn
     for (var count in this.enemyACor) {
       var x = this.enemyACor[count][0];
@@ -147,6 +148,7 @@ export default class level8 extends Phaser.Scene {
     });
 
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
+    this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
 
     console.log('created map layers and sprites');
 
@@ -173,10 +175,19 @@ export default class level8 extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
 
+
     this.physics.add.overlap(
       this.player,
       this.enemiesA,
       this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    this.hiddenCaveLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.overlap(
+      this.player,
+      this.hiddenCaveLayer,
+      this.uncoverHiddenCave,
       null,
       this
     );
@@ -244,11 +255,12 @@ export default class level8 extends Phaser.Scene {
     this.score = 0;
 
     // Generate  text
+    this.UserLevel = this.add.text(10,20, this.registry.get("userName")+" at Level "+this.levelName).setScrollFactor(0,0);
     this.LifeDisplay = this.add.text(10,20, "Life Left: " + this.player.lives).setScrollFactor(0,0);
     this.HealthDisplay = this.add.text(10,40, "Health: " + this.player.health).setScrollFactor(0,0);
     this.timerDisplay = this.add.text(10,60, "Timer: "+ this.duration).setScrollFactor(0,0);
     this.ScoreDisplay = this.add.text(10,80, "Score: "+ this.score).setScrollFactor(0,0);
-    // this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
+    this.location = this.add.text(10,100, "Score: "+ this.player.x + "," + this.player.y).setScrollFactor(0,0);
 
     // display heart for life
     var h;
@@ -277,7 +289,8 @@ export default class level8 extends Phaser.Scene {
     this.ScoreDisplay.setText("Score: "+ this.score);
     this.HealthDisplay.setText("Health: " + this.player.health);
     this.LifeDisplay.setText("Life Left: " + this.player.lives);
-    // this.location.setText("Score: "+ this.player.x + "," + this.player.y);
+    this.location.setText("Location: "+ this.player.x + "," + this.player.y);
+
 
     this.updateHealthBar();
 
@@ -289,14 +302,17 @@ export default class level8 extends Phaser.Scene {
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
-      var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[7] = 1;
+      if (this.player.levelCompleted){
+        var newLevelCompletion = this.registry.pop("levelCompletion");
+        newLevelCompletion[0] = 1;
 
-      this.registry.set({levelCompletion:newLevelCompletion});
-      console.log(this.registry);
+        this.registry.set({levelCompletion:newLevelCompletion});
+        console.log(this.registry);
+      }
       this.backgroundMusic.stop();
+
       var newLevelCompletion = this.registry.pop("levelCompletion");
-      newLevelCompletion[7] = 1;
+      newLevelCompletion[3] = 1;
 
       this.registry.set({levelCompletion:newLevelCompletion});
       console.log(this.registry);
@@ -546,5 +562,13 @@ export default class level8 extends Phaser.Scene {
   }
   updateHealthBar(){
     this.healthBarFill.setCrop(0,0,this.healthBarOrgWidth*this.player.health /100,this.healthBarOrgHeight);
+  }
+  uncoverHiddenCave(player,hiddenCaveLayer){
+    if (hiddenCaveLayer.collides) {
+      console.log("uncoverHiddenCave");
+      this.hiddenCaveLayer.setAlpha(0);
+    }else {
+      this.hiddenCaveLayer.setAlpha(1);
+    }
   }
 }
