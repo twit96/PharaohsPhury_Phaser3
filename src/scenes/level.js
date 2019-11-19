@@ -550,7 +550,7 @@ export default class levelScene extends Phaser.Scene {
     //USER INTERFACE
     //duration and score
     this.endTime = new Date();
-    this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
+    this.duration = Math.floor((this.endTime.getTime() - this.startTime.getTime())/1000);
     this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
 
     //display
