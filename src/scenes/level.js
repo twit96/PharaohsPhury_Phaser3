@@ -913,6 +913,7 @@ export default class levelScene extends Phaser.Scene {
         );
       }, this);
 
+
       //between arrows and player
       this.arrows.children.each(function(arrow) {
         this.physics.add.overlap(
@@ -1217,6 +1218,7 @@ export default class levelScene extends Phaser.Scene {
         var arrow = this.arrows.get();
         arrow
           .enableBody(true, x+num, y, true, true);
+        arrow.body.setCollideWorldBounds(true);
         arrow.body.setAllowGravity(false);
         arrow.body.setVelocityY(-1000);
       }
