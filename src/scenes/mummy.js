@@ -30,7 +30,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     this.beamSpeed = 750;
     this.beamAngle;
     this.beamDirection = 0;
-    this.MP = 0;
+    this.MP = 5;
     this.diamondsCollected = 0;
     this.enemiesKilled = 0;
     this.gameOver = false;

@@ -313,7 +313,6 @@ export default class levelScene extends Phaser.Scene {
 
     console.log('created sprites');
 
-
     //RENDER LEVEL MAP (layers above sprites only)
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
@@ -510,11 +509,11 @@ export default class levelScene extends Phaser.Scene {
          stroke: '#000000',
          strokeThickness: 1
        }).setScrollFactor(0,0);
-    // this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
-    //      color: '#3C3431',
-    //      stroke: '#000000',
-    //      strokeThickness: 1
-    //    }).setScrollFactor(0,0);
+    this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
 
     //life & hearts
     var h;
@@ -543,10 +542,6 @@ export default class levelScene extends Phaser.Scene {
 
     console.log("configured on-screen display");
 
-    // provide player an initial MP at level 6 when introduce the shooting
-    if (this.levelNum == 6) {
-      this.player.MP = 5;
-    }
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
@@ -609,7 +604,7 @@ export default class levelScene extends Phaser.Scene {
     this.HealthDisplay.setText("HP: " + this.player.health);
     this.MPDisplay.setText("MP: "+this.player.MP);
     this.LifeDisplay.setText("LIFE(s): " + this.player.lives);
-    //this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
+    this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
     this.updateMPBar();
@@ -622,7 +617,6 @@ export default class levelScene extends Phaser.Scene {
     if (this.player.lives != this.hearts.countActive()) {
       this.hearts.killAndHide(this.hearts.getFirstAlive());
     }
-
 
     //SPRITE MOVEMENT
     //player motion
@@ -904,20 +898,16 @@ export default class levelScene extends Phaser.Scene {
       //configure overlaps for active arrow traps
       //between arrows and worldLayer
       this.arrows.children.each(function(arrow) {
-        this.physics.add.overlap(
-          arrow,
-          this.worldLayer,
-          this.arrowHitWall,
-          null,
-          this
-        );
+        if (arrow.y < 30){
+          arrow.destroy();
+          console.log('arrow world layer function in update');
+        };
       }, this);
 
-      //between arrows and worldLayer worldBounds
       this.arrows.children.each(function(arrow) {
         this.physics.add.overlap(
           arrow,
-          this.worldBounds,
+          this.worldLayer,
           this.arrowHitWall,
           null,
           this
@@ -935,7 +925,7 @@ export default class levelScene extends Phaser.Scene {
         );
       }, this);
 
-      
+
   }
 
 
@@ -1162,7 +1152,6 @@ export default class levelScene extends Phaser.Scene {
     (i.e. tank shell hit player)
     */
     console.log('[arrowHitPlayer]');
-    //disable shell
     arrow.destroy();
 
     //update player stats
