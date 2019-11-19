@@ -3,7 +3,7 @@ import * as ChangeScene from './ChangeScene.js';
 import Mummy from "./mummy.js";
 import EnemyArch from './enemyArch.js';
 import EnemySoldier from './enemySoldier.js';
-//import EnemyGunner from '';
+import EnemyGunner from './enemyGunner.js';
 import Tank from "./tank.js";
 
 export default class levelScene extends Phaser.Scene {
@@ -67,6 +67,10 @@ export default class levelScene extends Phaser.Scene {
     //enemy soldiers
     this.enemiesS = this.add.group();
     this.enemiesS.enableBody = true;
+
+    //enemy gunners
+    this.enemiesG = this.add.group();
+    this.enemiesG.enableBody = true;
 
     //arrow traps
     this.arrows = this.physics.add.group({
@@ -135,6 +139,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level0.enemyA;
       this.enemySCor = this.levelSettingInfo.level0.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level0.enemyG;
       this.gemCor = this.levelSettingInfo.level0.gem;
       this.chestCor = this.levelSettingInfo.level0.chest;
       this.tankCor = this.levelSettingInfo.level0.tank;
@@ -142,6 +147,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level1.enemyA;
       this.enemySCor = this.levelSettingInfo.level1.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level1.enemyG;
       this.gemCor = this.levelSettingInfo.level1.gem;
       this.chestCor = this.levelSettingInfo.level1.chest;
       this.arrowCor = this.levelSettingInfo.level1.arrow;
@@ -150,6 +156,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level2.enemyA;
       this.enemySCor = this.levelSettingInfo.level2.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level2.enemyG;
       this.gemCor = this.levelSettingInfo.level2.gem;
       this.chestCor = this.levelSettingInfo.level2.chest;
       this.arrowCor = this.levelSettingInfo.level2.arrow;
@@ -158,6 +165,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level3.enemyA;
       this.enemySCor = this.levelSettingInfo.level3.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level3.enemyG;
       this.gemCor = this.levelSettingInfo.level3.gem;
       this.chestCor = this.levelSettingInfo.level3.chest;
       this.arrowCor = this.levelSettingInfo.level3.arrow;
@@ -166,6 +174,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level4.enemyA;
       this.enemySCor = this.levelSettingInfo.level4.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level4.enemyG;
       this.gemCor = this.levelSettingInfo.level4.gem;
       this.chestCor = this.levelSettingInfo.level4.chest;
       this.arrowCor = this.levelSettingInfo.level4.arrow;
@@ -174,6 +183,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level5.enemyA;
       this.enemySCor = this.levelSettingInfo.level5.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level5.enemyG;
       this.gemCor = this.levelSettingInfo.level5.gem;
       this.chestCor = this.levelSettingInfo.level5.chest;
       this.arrowCor = this.levelSettingInfo.level5.arrow;
@@ -182,6 +192,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level6.enemyA;
       this.enemySCor = this.levelSettingInfo.level6.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level6.enemyG;
       this.gemCor = this.levelSettingInfo.level6.gem;
       this.chestCor = this.levelSettingInfo.level6.chest;
       this.arrowCor = this.levelSettingInfo.level6.arrow;
@@ -190,6 +201,7 @@ export default class levelScene extends Phaser.Scene {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level7.enemyA;
       this.enemySCor = this.levelSettingInfo.level7.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level7.enemyG;
       this.gemCor = this.levelSettingInfo.level7.gem;
       this.chestCor = this.levelSettingInfo.level7.chest;
       this.arrowCor = this.levelSettingInfo.level7.arrow;
@@ -197,6 +209,7 @@ export default class levelScene extends Phaser.Scene {
     }
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     //console.log("populating enemyS at " + this.enemySCor);
+    console.log("populating enemyG at " + this.enemyGCor);
     //console.log("populating gem at " + this.gemCor);
     //console.log("populating chest at " + this.chestCor);
 
@@ -230,6 +243,22 @@ export default class levelScene extends Phaser.Scene {
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
       this.enemiesS.add(enemy);
+    }
+
+    //Gunners
+    for (var count in this.enemyGCor) {
+      var x = this.enemyGCor[count][0];
+      var y = this.enemyGCor[count][1];
+      var enemy = new EnemyGunner({
+        scene: this,
+        key: "gunner",
+        x: x,
+        y: y,
+      });
+      enemy.play("gunnerAnim");
+      enemy.body.setCollideWorldBounds(true);
+      enemy.setInteractive();
+      this.enemiesG.add(enemy);
     }
 
     //tank
@@ -308,6 +337,7 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.worldLayer);
     this.physics.add.collider(this.enemiesA, this.worldLayer);
     this.physics.add.collider(this.enemiesS, this.worldLayer);
+    this.physics.add.collider(this.enemiesG, this.worldLayer);
     this.physics.add.collider(this.collectItems, this.worldLayer);
     this.physics.add.collider(this.collectItems, this.collectItems);
     this.physics.add.collider(this.scroll, this.scroll);
@@ -315,6 +345,8 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.chests, this.worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
+    this.physics.add.collider(this.enemiesG, invisLayer);
+
 
     if (this.levelNum == 0) {
       this.physics.add.collider(this.tank, this.worldLayer);
@@ -341,6 +373,14 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.enemiesS,
+      this.playerRanIntoEnemy,
+      null,
+      this
+    );
+    //between player and gunners
+    this.physics.add.overlap(
+      this.player,
+      this.enemiesG,
       this.playerRanIntoEnemy,
       null,
       this
@@ -383,6 +423,16 @@ export default class levelScene extends Phaser.Scene {
         enemyS.bullets,
         this.worldLayer,
         enemyS.bulletHitWall,
+        null,
+        this
+      );
+    }, this);
+    //between enemy gunner bullets and player
+    this.enemiesG.children.each(function(enemyG) {
+      this.physics.add.overlap(
+        enemyG.bullets,
+        this.worldLayer,
+        enemyG.bulletHitWall,
         null,
         this
       );
@@ -460,11 +510,11 @@ export default class levelScene extends Phaser.Scene {
          stroke: '#000000',
          strokeThickness: 1
        }).setScrollFactor(0,0);
-    this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
-         color: '#3C3431',
-         stroke: '#000000',
-         strokeThickness: 1
-       }).setScrollFactor(0,0);
+    // this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
+    //      color: '#3C3431',
+    //      stroke: '#000000',
+    //      strokeThickness: 1
+    //    }).setScrollFactor(0,0);
 
     //life & hearts
     var h;
@@ -559,7 +609,7 @@ export default class levelScene extends Phaser.Scene {
     this.HealthDisplay.setText("HP: " + this.player.health);
     this.MPDisplay.setText("MP: "+this.player.MP);
     this.LifeDisplay.setText("LIFE(s): " + this.player.lives);
-    this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
+    //this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
     this.updateMPBar();
@@ -587,6 +637,10 @@ export default class levelScene extends Phaser.Scene {
     this.enemiesS.children.each(function(enemyS) {
       enemyS.move();
     }, this);
+    this.enemiesG.children.each(function(enemyG) {
+      enemyG.move();
+    }, this);
+
 
     if (this.levelNum == 0) {
       this.tank.move();
@@ -610,6 +664,14 @@ export default class levelScene extends Phaser.Scene {
           this.physics.add.overlap(
             c,
             this.enemiesS,
+            this.player.caneHitEnemy,
+            null,
+            this
+          );
+          //between canes and enemy gunners
+          this.physics.add.overlap(
+            c,
+            this.enemiesG,
             this.player.caneHitEnemy,
             null,
             this
@@ -650,6 +712,14 @@ export default class levelScene extends Phaser.Scene {
           this.physics.add.overlap(
             b,
             this.enemiesS,
+            this.player.beamHitEnemy,
+            null,
+            this
+          );
+          //between beams and enemy gunners
+          this.physics.add.overlap(
+            b,
+            this.enemiesG,
             this.player.beamHitEnemy,
             null,
             this
@@ -715,6 +785,40 @@ export default class levelScene extends Phaser.Scene {
             }.bind(this)
           )
         }, this);
+
+        //configure overlaps for active enemy bullets
+        this.enemiesG.children.each(function(enemyG) {
+              enemyG.bullets.children.each(
+                function (b) {
+                  if (b.active) {
+                    //between bullets and player
+                    this.physics.add.overlap(
+                      b,
+                      this.player,
+                      enemyG.bulletHitPlayer,
+                      null,
+                      this
+                    );
+
+                    //deactivate bullets once they leave the screen
+                    if (b.y < 0) {
+                      b.setActive(false)
+                    } else if (b.y > this.cameras.main.height) {
+                      b.setActive(false)
+                    } else if (b.x < 0) {
+                      b.setActive(false)
+                    } else if (b.x > this.cameras.main.width) {
+                      b.setActive(false)
+                    }
+
+                    //deactivate bullets at a set distance from enemy
+                    if (Math.abs(b.x - enemyG.x) > 100) {
+                      b.setActive(false);
+                    }
+                  }
+                }.bind(this)
+              )
+            }, this);
 
       if (this.levelNum == 0) {
         //configure overlaps for active player beams

@@ -10,16 +10,16 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
 
     //variables
     this.moveCounter = 0
-    this.health = 25;
+    this.health = 50;
 
     this.speed = 100;
-    this.bulletSpeed = 100;
+    this.bulletSpeed = 2000;
     this.isActive = true;
 
     //soldier bullets
     this.bullets = this.scene.physics.add.group({
       defaultKey: "bullet",
-      allowGravity: false
+      allowGravity: false,
     });
 
   }
@@ -89,22 +89,18 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
       } else if (this.moveCounter == 100) {
         //shooting animation
         this.anims.play("gunnerShotAnim", true);
-        this.scene.time.addEvent({
-          delay: 500,
-          callback: this.shoot,
-          callbackScope: this,
-          loop: false
-          });
+
+      } else if (this.moveCounter == 120) {
+        //shoot bullet at exactly 130
+        this.shoot(this);
 
       } else if (this.moveCounter == 130) {
         //shoot bullet at exactly 130
-        this.scene.time.addEvent({
-          delay: 500,
-          callback: this.shoot,
-          callbackScope: this,
-          loop: false
-          });
+        this.shoot(this);
 
+      } else if (this.moveCounter == 140) {
+        //shoot bullet at exactly 130
+        this.shoot(this);
 
       } else if (this.moveCounter == 170) {
         //change to walking animation in opposite direction
@@ -135,16 +131,19 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     /*
     function to define behavior of enemy shooting at the player
     */
-
-    var bullet = this.bullets.get();
-    console.log("GUnner shot");
-    console.log(this);
+    console.log("gunnershot");
+    var bullet = this.bullets.create();
     bullet.setAngle(180);
-    bullet
-      .enableBody(true, this.x, (this.y+5), true, true)
-      .setVelocity(100,0)
-
+    bullet.enableBody(true, this.x, (this.y+5), true, true);
+    if (this.scene.player.x > this.x) {
+      bullet.setVelocity(2000,0);
+    } else {
+      this.setFlipX(true);
+      bullet.setVelocity(-2000,0);
+    }
   }
+
+
 
 
   //SOLDIER BULLETS HELPER FUNCTIONS
@@ -155,7 +154,7 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     collides = true (i.e. the bullet hit a wall tile)
     */
     if (worldLayer.collides) {
-      console.log('[gunnerSoldier.bulletHitWall]');
+      console.log('[enemyGunner.bulletHitWall]');
       bullet.disableBody(true, true);
     }
 
@@ -166,14 +165,14 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     function to handle overlap between player and tank shell
     (i.e. tank shell hit player)
     */
-    console.log('[gunnerSoldier.bulletHitPlayer]');
+    console.log('[enemyGunner.bulletHitPlayer]');
     this.bomb.play();
 
     //disable shell
     bullet.disableBody(true, true);
 
     //update player stats
-    this.player.updateHealth(50);
+    this.player.updateHealth(10);
   }
 
 }
