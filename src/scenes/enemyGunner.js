@@ -171,8 +171,10 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
     //disable shell
     bullet.disableBody(true, true);
 
-    //update player stats
-    this.player.updateHealth(10);
+    if (player.isAttacking == false) {
+      //update player stats
+      this.player.updateHealth(10);
+    }
   }
 
 }

@@ -376,8 +376,10 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     //disable shell
     shell.disableBody(true, true);
 
-    //update player stats
-    this.player.updateHealth(5);
+    if (player.isAttacking == false) {
+      //update player stats
+      this.player.updateHealth(5);  
+    }
   }
 
 }
