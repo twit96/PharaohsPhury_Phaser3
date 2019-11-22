@@ -96,28 +96,32 @@ export default class gameOverScene extends Phaser.Scene {
     */
     console.log("[getLevelScene]");
 
-    if (this.levelNum == "Final Boss") {
-      if (levelCompleted) {
-        //player finished the level, levelScene string takes player to next level
-        levelScene = "levelPicker";
-      } else {
-        //player died, levelScene string makes player repeat the same level
-        levelScene = "finalBossLevel";
-      }
+    //stop audio
+    this.backgroundMusic.stop();
 
-    } else {
-      //all other levels
-      if (levelCompleted) {
-        //player finished the level, levelScene string takes player to next level
+    if (levelCompleted) {
+      if (this.levelNum == 0) {
+        //final boss level completed, player goes back to levelPicker
+        this.scene.start('levelPicker');
+      } else if (this.levelNum == 7) {
+        //player finished level7, take player to final boss
+        this.scene.start('levelScene', {
+          level: 0
+        });
+      } else {
+        //player finished a regular level, take player to next level
         this.levelNum +=  1;
+        this.scene.start('levelScene', {
+          level: this.levelNum
+        });
       }
+    } else {
+      //player died, repeat same level
+      this.scene.start('levelScene', {
+        level: this.levelNum
+      });
     }
 
-    //stop audio, start correct level scene
-    this.backgroundMusic.stop();
-    this.scene.start('levelScene', {
-      level: this.levelNum
-    });
   }
 
   quitGame() {
