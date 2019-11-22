@@ -313,7 +313,6 @@ export default class levelScene extends Phaser.Scene {
 
     console.log('created sprites');
 
-
     //RENDER LEVEL MAP (layers above sprites only)
     const aboveLayer = map.createStaticLayer("Above Player", worldTileset, 0, 0);
     this.hiddenCaveLayer = map.createStaticLayer("Above Player Change", worldTileset, 0, 0);
@@ -543,10 +542,6 @@ export default class levelScene extends Phaser.Scene {
 
     console.log("configured on-screen display");
 
-    // provide player an initial MP at level 6 when introduce the shooting
-    if (this.levelNum == 6) {
-      this.player.MP = 5;
-    }
     //AUDIO
     this.backgroundMusic = this.sound.add("bg");
     this.backgroundMusic.play({loop:true});
@@ -600,7 +595,7 @@ export default class levelScene extends Phaser.Scene {
     //USER INTERFACE
     //duration and score
     this.endTime = new Date();
-    this.duration = (this.endTime.getTime() - this.startTime.getTime())/1000;
+    this.duration = Math.floor((this.endTime.getTime() - this.startTime.getTime())/1000);
     this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
 
     //display
@@ -622,7 +617,6 @@ export default class levelScene extends Phaser.Scene {
     if (this.player.lives != this.hearts.countActive()) {
       this.hearts.killAndHide(this.hearts.getFirstAlive());
     }
-
 
     //SPRITE MOVEMENT
     //player motion
@@ -904,6 +898,13 @@ export default class levelScene extends Phaser.Scene {
       //configure overlaps for active arrow traps
       //between arrows and worldLayer
       this.arrows.children.each(function(arrow) {
+        if (arrow.y < 30){
+          arrow.destroy();
+          console.log('arrow world layer function in update');
+        };
+      }, this);
+
+      this.arrows.children.each(function(arrow) {
         this.physics.add.overlap(
           arrow,
           this.worldLayer,
@@ -923,6 +924,8 @@ export default class levelScene extends Phaser.Scene {
           this
         );
       }, this);
+
+
   }
 
 
@@ -1149,7 +1152,6 @@ export default class levelScene extends Phaser.Scene {
     (i.e. tank shell hit player)
     */
     console.log('[arrowHitPlayer]');
-    //disable shell
     arrow.destroy();
 
     //update player stats
@@ -1217,6 +1219,7 @@ export default class levelScene extends Phaser.Scene {
         var arrow = this.arrows.get();
         arrow
           .enableBody(true, x+num, y, true, true);
+        arrow.body.setCollideWorldBounds(true);
         arrow.body.setAllowGravity(false);
         arrow.body.setVelocityY(-1000);
       }
