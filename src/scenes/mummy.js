@@ -25,6 +25,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //variables
     this.lives = 3;
     this.health = 100;
+    this.isActive = true;
     this.canAttack = true;
     this.isAttacking = false;
     this.beamSpeed = 750;
@@ -65,6 +66,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     this.body.setSize(20, 55, 50, 80);
     this.setTint();
+    this.isActive = true;
     this.canAttack = true;
     this.isAttacking = false;
     var x = this.x;
@@ -91,7 +93,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //give damage to player health
     this.tint = 0xff0000;
     this.canAttack = false;
-    this.health -= damage
+    this.isActive = false;
+    this.health -= damage;
     console.log('player health: ' + this.health);
 
     //update player lives if needed
@@ -123,87 +126,93 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
   move() {
     //movement
-    if (this.cursors.left.isDown) {
-      this.flipX = true;
-      this.beamDirection = 1;
-      this.body.setVelocityX(-220);
+    if (this.isActive) {
+      if (this.cursors.left.isDown) {
+        this.flipX = true;
+        this.beamDirection = 1;
+        this.body.setVelocityX(-220);
 
-      if (this.canAttack) {
-        //animations only play while player is not attacking
-        //animation dependent on level
-        if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
-          this.anims.play("mummyWalkAnim", true);
-        } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
-          this.anims.play("mummyCaneWalkAnim", true);
-        } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-         this.scene.levelNum == "0") {
-          this.anims.play("pharoahCaneWalkAnim", true);
+        if (this.canAttack) {
+          //animations only play while player is not attacking
+          //animation dependent on level
+          if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
+            this.anims.play("mummyWalkAnim", true);
+          } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
+            this.anims.play("mummyCaneWalkAnim", true);
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
+           this.scene.levelNum == "0") {
+            this.anims.play("pharoahCaneWalkAnim", true);
+          }
+        }
+
+        this.beamAngle = Phaser.ANGLE_LEFT;
+        //this.beam.flipX;
+        this.beamSpeed = -750;
+
+      } else if (this.cursors.right.isDown) {
+        this.flipX = false;
+        this.beamDirection = 0;
+        this.body.setVelocityX(220);
+
+        if (this.canAttack) {
+          //animations only play while player is not attacking
+          //animations dependent on level
+          if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
+            this.anims.play("mummyWalkAnim", true);
+          } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
+            this.anims.play("mummyCaneWalkAnim", true);
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
+           this.scene.levelNum == "0"){
+            this.anims.play("pharoahCaneWalkAnim", true);
+          }
+        }
+        this.beamAngle = Phaser.ANGLE_RIGHT;
+        this.beamSpeed = 750;
+
+      //idle
+      } else {
+        this.body.setVelocityX(0);
+        if (this.canAttack) {
+          //animations only play while player is not attacking
+          if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
+            this.anims.play("mummyIdleAnim", true);
+          } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
+            this.anims.play("mummyCaneIdleAnim", true);
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
+           this.scene.levelNum == "0") {
+            this.anims.play("pharoahCaneIdleAnim", true);
+          }
         }
       }
 
-      this.beamAngle = Phaser.ANGLE_LEFT;
-      //this.beam.flipX;
-      this.beamSpeed = -750;
-
-    } else if (this.cursors.right.isDown) {
-      this.flipX = false;
-      this.beamDirection = 0;
-      this.body.setVelocityX(220);
-
-      if (this.canAttack) {
-        //animations only play while player is not attacking
-        //animations dependent on level
-        if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
-          this.anims.play("mummyWalkAnim", true);
-        } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
-          this.anims.play("mummyCaneWalkAnim", true);
-        } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-         this.scene.levelNum == "0"){
-          this.anims.play("pharoahCaneWalkAnim", true);
-        }
+      //jumping
+      if (this.cursors.up.isDown && this.body.onFloor())  {
+        //only jumps if sprite body is on ground
+        this.body.setVelocityY(-530);
       }
-      this.beamAngle = Phaser.ANGLE_RIGHT;
-      this.beamSpeed = 750;
 
-    //idle
+      //short range attacks
+      if ((this.cursors.space.isDown) && (this.canAttack)) {
+        this.shortRangeAttack();
+      }
+
+      //long range attacks
+      if (this.cursors.m.isDown && this.canAttack && (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
+       this.scene.levelNum == "0")) {
+        this.canAttack = false;
+        this.anims.play("pharoahRangeCaneAnim");
+
+        this.scene.time.addEvent({
+          delay: 500,
+          callback: this.shoot,
+          callbackScope: this,
+          loop: false
+        });
+      }
     } else {
+      //player is briefly stunned
       this.body.setVelocityX(0);
-      if (this.canAttack) {
-        //animations only play while player is not attacking
-        if (this.scene.levelNum == "1" || this.scene.levelNum == "2"){
-          this.anims.play("mummyIdleAnim", true);
-        } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
-          this.anims.play("mummyCaneIdleAnim", true);
-        } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-         this.scene.levelNum == "0") {
-          this.anims.play("pharoahCaneIdleAnim", true);
-        }
-      }
-    }
-
-    //jumping
-    if (this.cursors.up.isDown && this.body.onFloor())  {
-      //only jumps if sprite body is on ground
-      this.body.setVelocityY(-530);
-    }
-
-    //short range attacks
-    if ((this.cursors.space.isDown) && (this.canAttack)) {
-      this.shortRangeAttack();
-    }
-
-    //long range attacks
-    if (this.cursors.m.isDown && this.canAttack && (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-     this.scene.levelNum == "0")) {
-      this.canAttack = false;
-      this.anims.play("pharoahRangeCaneAnim");
-
-      this.scene.time.addEvent({
-        delay: 500,
-        callback: this.shoot,
-        callbackScope: this,
-        loop: false
-      });
+      this.body.setVelocityY(0);
     }
   }
 
