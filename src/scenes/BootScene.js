@@ -27,7 +27,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("level5map", "../assets/tilemaps/level5map.json");
     this.load.tilemapTiledJSON("level6map", "../assets/tilemaps/level6map.json");
     this.load.tilemapTiledJSON("level7map", "../assets/tilemaps/level7map.json");
-    this.load.tilemapTiledJSON("level0map", "../assets/tilemaps/finalBossMapOld.json");
+    this.load.tilemapTiledJSON("level0map", "../assets/tilemaps/finalBossMap.json");
 
     //items
     this.load.image("gem", "../assets/sprites/gem.png");
