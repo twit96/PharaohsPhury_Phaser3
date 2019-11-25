@@ -301,7 +301,6 @@ export default class levelScene extends Phaser.Scene {
 
     //player
     this.spawnPoints = [
-      [25, 450],  //final boss
       [180, 550], //level1
       [286, 500], //level2
       [58, 400],  //level3
@@ -309,13 +308,14 @@ export default class levelScene extends Phaser.Scene {
       [173, 375], //level5
       [75, 550],  //level6
       [94, 250],  //level7
+      [25, 450],  //final boss
     ];
     if (this.levelNum == 0) {
       this.player = new Mummy({
         scene: this,
         key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum][0],
-        y: this.spawnPoints[this.levelNum][1]
+        x: this.spawnPoints[7][0],
+        y: this.spawnPoints[7][1]
       });
     } else {
       this.player = new Mummy({
