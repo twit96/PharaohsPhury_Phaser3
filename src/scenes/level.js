@@ -1228,6 +1228,8 @@ export default class levelScene extends Phaser.Scene {
     for (var count in this.arrowCor) {
       var x = this.arrowCor[count][0];
       var y = this.arrowCor[count][1];
+      var distance = (this.player.x - x);
+      if (distance > -300 && distance < 300){
       for (var i = 0; i < 3; i++) {
         var num = Math.floor(Math.random()*19) + 1;
         num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
@@ -1237,6 +1239,7 @@ export default class levelScene extends Phaser.Scene {
         arrow.body.setCollideWorldBounds(true);
         arrow.body.setAllowGravity(false);
         arrow.body.setVelocityY(-1000);
+      }
       }
     }
   }
