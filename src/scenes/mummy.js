@@ -146,6 +146,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
         }
 
         this.beamAngle = Phaser.ANGLE_LEFT;
+        //this.beam.flipX;
         this.beamSpeed = -750;
 
       } else if (this.cursors.right.isDown) {

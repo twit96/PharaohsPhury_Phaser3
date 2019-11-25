@@ -148,6 +148,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
       console.log('[enemySoldier.bulletHitWall]');
       bullet.disableBody(true, true);
     }
+
   }
 
   bulletHitPlayer(bullet, player) {
