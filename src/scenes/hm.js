@@ -346,7 +346,7 @@ export default class levelScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
     //sprite collisions
-    this.boundaryBox = map.heightInPixels - (this.player.body.height/2) - 2;
+    this.boundaryBox = map.heightInPixels - this.player.body.height;
 
     this.physics.add.collider(this.player, this.worldLayer);
     this.physics.add.collider(this.enemiesA, this.worldLayer);
