@@ -92,7 +92,10 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
 
       } else if (this.moveCounter == 130) {
         //shoot bullet at exactly 130
+        var distance = (this.scene.player.x - this.x)
+        if (distance > -600 && distance <600) {
         this.shoot();
+      }
 
       } else if (this.moveCounter == 170) {
         //change to walking animation in opposite direction
