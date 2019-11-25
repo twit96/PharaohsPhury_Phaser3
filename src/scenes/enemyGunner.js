@@ -92,15 +92,24 @@ export default class EnemyGunner extends Phaser.GameObjects.Sprite {
 
       } else if (this.moveCounter == 120) {
         //shoot bullet at exactly 130
-        this.shoot(this);
+        var distance = (this.scene.player.x - this.x)
+        if (distance > -800 && distance <800) {
+        this.shoot();
+      }
 
       } else if (this.moveCounter == 130) {
         //shoot bullet at exactly 130
-        this.shoot(this);
+        var distance = (this.scene.player.x - this.x)
+        if (distance > -800 && distance <800) {
+        this.shoot();
+      }
 
       } else if (this.moveCounter == 140) {
         //shoot bullet at exactly 130
-        this.shoot(this);
+        var distance = (this.scene.player.x - this.x)
+        if (distance > -800 && distance <800) {
+        this.shoot();
+      }
 
       } else if (this.moveCounter == 170) {
         //change to walking animation in opposite direction
