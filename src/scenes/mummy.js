@@ -100,8 +100,13 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //update player lives if needed
     if (this.health <= 0) {
       this.body.setVelocityY(0);
-      this.x = this.scene.spawnPoints[this.scene.levelNum][0];
-      this.y = this.scene.spawnPoints[this.scene.levelNum][1];
+      if (this.scene.levelNum == 0) {
+        this.x = this.scene.spawnPoints[7][0];
+        this.y = this.scene.spawnPoints[7][1];
+      } else {
+        this.x = this.scene.spawnPoints[this.scene.levelNum - 1][0];
+        this.y = this.scene.spawnPoints[this.scene.levelNum - 1][1];
+      }
 
       this.lives -= 1;
       console.log('player lives: ' + this.lives);
