@@ -548,7 +548,7 @@ export default class levelScene extends Phaser.Scene {
 
     //final boss health bar
     if (this.levelNum == 0) {
-      this.enemyHealth = this.add.container(400, 450);
+      this.enemyHealth = this.add.container(700, 865);
       this.EhealthBar = this.add.sprite(0,0,"healthBarFrame").setOrigin(0,0).setScale(0.1);
       this.EhealthBarFill = this.add.sprite(0,0,"healthBarFill").setOrigin(0,0).setScale(0.1);
       this.EhealthBarOrgWidth = this.EhealthBarFill.width;
