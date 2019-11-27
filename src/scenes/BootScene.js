@@ -14,12 +14,13 @@ export default class BootScene extends Phaser.Scene {
       color: '#FFFFFF'});
 
     //LOAD LEVEL ASSETS
-    //tile maps
+    //tile sets
     this.load.image("incaBackTiles", "../assets/tilesets/inca_back.png");
     this.load.image("incaFrontTiles", "../assets/tilesets/inca_front.png");
     this.load.image("incaBack2Tiles", "../assets/tilesets/inca_back2.png");
     this.load.image("sandTiles", "../assets/tilesets/sand_tiles.png");
 
+    //tile maps
     this.load.tilemapTiledJSON("level1map", "../assets/tilemaps/level1map.json");
     this.load.tilemapTiledJSON("level2map", "../assets/tilemaps/level2map.json");
     this.load.tilemapTiledJSON("level3map", "../assets/tilemaps/level3map.json");
