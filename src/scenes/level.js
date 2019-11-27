@@ -311,6 +311,7 @@ export default class levelScene extends Phaser.Scene {
       [94, 250],  //level7
       [50, 900],  //final boss
     ];
+    this.player;
     if (this.levelNum == 0) {
       this.player = new Mummy({
         scene: this,
@@ -743,6 +744,16 @@ export default class levelScene extends Phaser.Scene {
             this
           );
 
+          if (this.levelNum == 0) {
+            this.physics.add.overlap(
+              b,
+              this.tank,
+              this.player.beamHitTank,
+              null,
+              this
+            );
+          }
+
           //deactivate beams once they leave the screen
           if (b.y < 0) {
             b.setActive(false);
@@ -831,32 +842,6 @@ export default class levelScene extends Phaser.Scene {
             }, this);
 
       if (this.levelNum == 0) {
-        //configure overlaps for active player beams
-        this.player.beams.children.each(
-          function (b) {
-            if (b.active) {
-              this.physics.add.overlap(
-                b,
-                this.tank,
-                this.player.beamHitTank,
-                null,
-                this
-              );
-
-              //deactivate beams once they leave the screen
-              if (b.y < 0) {
-                b.setActive(false)
-              } else if (b.y > this.cameras.main.height) {
-                b.setActive(false)
-              } else if (b.x < 0) {
-                b.setActive(false)
-              } else if (b.x > this.cameras.main.width) {
-                b.setActive(false)
-              }
-            }
-          }.bind(this)  //binds the function to each of the children. scope of function
-        );
-
         //configure overlaps for active tank shells
         this.tank.shells.children.each(
           function (s) {
@@ -940,8 +925,6 @@ export default class levelScene extends Phaser.Scene {
           this
         );
       }, this);
-
-
   }
 
 
