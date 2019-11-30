@@ -44,7 +44,7 @@ export default class gameOverScene extends Phaser.Scene {
     //create the text that displays on the screen
     var level;
     if (this.levelNum == 0) {
-      level = "Tutorial"
+      level = "Demo/Tutorial"
     } else if (this.levelNum == 8) {
       level = "Final Boss";
     } else {
