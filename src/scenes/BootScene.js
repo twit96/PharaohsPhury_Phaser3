@@ -21,6 +21,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("sandTiles", "../assets/tilesets/sand_tiles.png");
 
     //tile maps
+    this.load.tilemapTiledJSON("level0map", "../assets/tilemaps/tutorialMap.json");
     this.load.tilemapTiledJSON("level1map", "../assets/tilemaps/level1map.json");
     this.load.tilemapTiledJSON("level2map", "../assets/tilemaps/level2map.json");
     this.load.tilemapTiledJSON("level3map", "../assets/tilemaps/level3map.json");
@@ -28,7 +29,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("level5map", "../assets/tilemaps/level5map.json");
     this.load.tilemapTiledJSON("level6map", "../assets/tilemaps/level6map.json");
     this.load.tilemapTiledJSON("level7map", "../assets/tilemaps/level7map.json");
-    this.load.tilemapTiledJSON("level0map", "../assets/tilemaps/finalBossMap.json");
+    this.load.tilemapTiledJSON("level8map", "../assets/tilemaps/finalBossMap.json");
 
     //items
     this.load.image("gem", "../assets/sprites/gem.png");

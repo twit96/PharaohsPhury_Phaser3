@@ -37,7 +37,7 @@ export default class levelScene extends Phaser.Scene {
     this.load.image('awdbtn', './assets/images/awdbuttons.png');
     this.load.image('spacebtn', './assets/images/spacebutton.png');
     this.load.image('mbtn', './assets/images/mbutton.png');
-}
+  }
 
   create() {
     console.log('[create]');
@@ -83,10 +83,14 @@ export default class levelScene extends Phaser.Scene {
 
     //RENDER LEVEL MAP (layers below sprites only)
     //background image
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       //final boss level
       this.background = this.add.image(2240,384,'bossBackground');
       this.background.setScale(2);
+    } else if (this.levelNum == 0) {
+      //tutorial level
+      this.background = this.add.image(2240,384,'levelBackground');
+      this.background.setScale(1.2);
     } else {
       //all other levels
       this.add.image(2240,384,'levelBackground');
@@ -97,7 +101,7 @@ export default class levelScene extends Phaser.Scene {
       //createStaticLayer parameters: layer name (or index) from Tiled, tileset, x, y
     const map = this.make.tilemap({ key: "level" + this.levelNum.toString() + "map" });
 
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       var worldTileset = map.addTilesetImage("sand_tiles", "sandTiles");
       var below2Tileset = map.addTilesetImage("sand_tiles", "sandTiles");
     } else {
@@ -106,7 +110,7 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //render lower map layers
-    const bgLayer = map.createStaticLayer("Below Player", worldTileset, 0, 0);
+    const bgLayer = map.createStaticLayer("Below Player", below2Tileset, 0, 0);
     const invisLayer = map.createStaticLayer("Invisible", worldTileset, 0, 0);
     this.worldLayer = map.createStaticLayer("World", worldTileset, 0, 0);
 
@@ -151,6 +155,7 @@ export default class levelScene extends Phaser.Scene {
       this.gemCor = this.levelSettingInfo.level0.gem;
       this.chestCor = this.levelSettingInfo.level0.chest;
       this.tankCor = this.levelSettingInfo.level0.tank;
+      this.playerCor = this.levelSettingInfo.level0.player;
     } else if (this.levelNum == 1) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level1.enemyA;
@@ -160,6 +165,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level1.chest;
       this.arrowCor = this.levelSettingInfo.level1.arrow;
       this.tankCor = this.levelSettingInfo.level1.tank;
+      this.playerCor = this.levelSettingInfo.level1.player;
     } else if (this.levelNum == 2) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level2.enemyA;
@@ -169,6 +175,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level2.chest;
       this.arrowCor = this.levelSettingInfo.level2.arrow;
       this.tankCor = this.levelSettingInfo.level2.tank;
+      this.playerCor = this.levelSettingInfo.level2.player;
     } else if (this.levelNum == 3) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level3.enemyA;
@@ -178,6 +185,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level3.chest;
       this.arrowCor = this.levelSettingInfo.level3.arrow;
       this.tankCor = this.levelSettingInfo.level3.tank;
+      this.playerCor = this.levelSettingInfo.level3.player;
     } else if (this.levelNum == 4) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level4.enemyA;
@@ -187,6 +195,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level4.chest;
       this.arrowCor = this.levelSettingInfo.level4.arrow;
       this.tankCor = this.levelSettingInfo.level4.tank;
+      this.playerCor = this.levelSettingInfo.level4.player;
     } else if (this.levelNum == 5) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level5.enemyA;
@@ -196,6 +205,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level5.chest;
       this.arrowCor = this.levelSettingInfo.level5.arrow;
       this.tankCor = this.levelSettingInfo.level5.tank;
+      this.playerCor = this.levelSettingInfo.level5.player;
     } else if (this.levelNum == 6) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level6.enemyA;
@@ -205,6 +215,7 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level6.chest;
       this.arrowCor = this.levelSettingInfo.level6.arrow;
       this.tankCor = this.levelSettingInfo.level6.tank;
+      this.playerCor = this.levelSettingInfo.level6.player;
     } else if (this.levelNum == 7) {
       this.levelSettingInfo = this.cache.json.get('levelSetting');
       this.enemyACor = this.levelSettingInfo.level7.enemyA;
@@ -214,10 +225,21 @@ export default class levelScene extends Phaser.Scene {
       this.chestCor = this.levelSettingInfo.level7.chest;
       this.arrowCor = this.levelSettingInfo.level7.arrow;
       this.tankCor = this.levelSettingInfo.level7.tank;
+      this.playerCor = this.levelSettingInfo.level7.player;
+    } else if (this.levelNum == 8) {
+      this.levelSettingInfo = this.cache.json.get('levelSetting');
+      this.enemyACor = this.levelSettingInfo.level8.enemyA;
+      this.enemySCor = this.levelSettingInfo.level8.enemyS;
+      this.enemyGCor = this.levelSettingInfo.level8.enemyG;
+      this.gemCor = this.levelSettingInfo.level8.gem;
+      this.chestCor = this.levelSettingInfo.level8.chest;
+      this.arrowCor = this.levelSettingInfo.level8.arrow;
+      this.tankCor = this.levelSettingInfo.level8.tank;
+      this.playerCor = this.levelSettingInfo.level8.player;
     }
     //console.log("populating enemyA at " + this.enemyACor + ". There are " + Object.keys(this.enemyACor).length);
     //console.log("populating enemyS at " + this.enemySCor);
-    console.log("populating enemyG at " + this.enemyGCor);
+    //console.log("populating enemyG at " + this.enemyGCor);
     //console.log("populating gem at " + this.gemCor);
     //console.log("populating chest at " + this.chestCor);
 
@@ -301,32 +323,14 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //player
-    this.spawnPoints = [
-      [180, 550], //level1
-      [286, 500], //level2
-      [58, 400],  //level3
-      [94, 630],  //level4
-      [173, 375], //level5
-      [75, 550],  //level6
-      [94, 250],  //level7
-      [50, 900],  //final boss
-    ];
-    this.player;
-    if (this.levelNum == 0) {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[7][0],
-        y: this.spawnPoints[7][1]
-      });
-    } else {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum - 1][0],
-        y: this.spawnPoints[this.levelNum - 1][1]
-      });
-    }
+    this.spawnX = this.playerCor[0][0];
+    this.spawnY = this.playerCor[0][1];
+    this.player = new Mummy({
+      scene: this,
+      key: "mummyWalk",
+      x: this.spawnX,
+      y: this.spawnY
+    });
 
     console.log('created sprites');
 
@@ -364,7 +368,7 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.enemiesG, invisLayer);
 
 
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       this.physics.add.collider(this.tank, this.worldLayer);
     }
 
@@ -454,7 +458,7 @@ export default class levelScene extends Phaser.Scene {
       );
     }, this);
 
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       //final boss overlaps
       this.physics.add.overlap(
         this.player,
@@ -547,7 +551,7 @@ export default class levelScene extends Phaser.Scene {
     this.healthBarOrgHeight = this.healthBarFill.width;
 
     //final boss health bar
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       this.enemyHealth = this.add.container(700, 865);
       this.EhealthBar = this.add.sprite(0,0,"healthBarFrame").setOrigin(0,0).setScale(0.1);
       this.EhealthBarFill = this.add.sprite(0,0,"healthBarFill").setOrigin(0,0).setScale(0.1);
@@ -578,7 +582,7 @@ export default class levelScene extends Phaser.Scene {
 
     //CHECK/HANDLE END OF LEVEL
     //detect if tank died on final level
-    if ((this.levelNum == 0) && (this.tank.health <= 0)) {
+    if ((this.levelNum == 8) && (this.tank.health <= 0)) {
       this.player.levelCompleted = true;
     }
     if (this.player.gameOver || this.player.levelCompleted) {
@@ -587,7 +591,7 @@ export default class levelScene extends Phaser.Scene {
 
       if (this.player.levelCompleted) {
         var newLevelCompletion = this.registry.pop("levelCompletion");
-        newLevelCompletion[this.levelNum - 1] = 1;
+        newLevelCompletion[this.levelNum] = 1;
         this.registry.set({levelCompletion:newLevelCompletion});
         console.log(this.registry);
       }
@@ -625,7 +629,7 @@ export default class levelScene extends Phaser.Scene {
 
     this.updateHealthBar();
     this.updateMPBar();
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       this.updateEHealthBar();
       this.enemyHealth.x = this.tank.x - 60;
     }
@@ -653,7 +657,7 @@ export default class levelScene extends Phaser.Scene {
     }, this);
 
 
-    if (this.levelNum == 0) {
+    if (this.levelNum == 8) {
       this.tank.move();
     }
 
@@ -744,7 +748,7 @@ export default class levelScene extends Phaser.Scene {
             this
           );
 
-          if (this.levelNum == 0) {
+          if (this.levelNum == 8) {
             this.physics.add.overlap(
               b,
               this.tank,
@@ -841,7 +845,7 @@ export default class levelScene extends Phaser.Scene {
               )
             }, this);
 
-      if (this.levelNum == 0) {
+      if (this.levelNum == 8) {
         //configure overlaps for active tank shells
         this.tank.shells.children.each(
           function (s) {
