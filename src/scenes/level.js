@@ -572,11 +572,11 @@ export default class levelScene extends Phaser.Scene {
          stroke: '#000000',
          strokeThickness: 1
        }).setScrollFactor(0,0);
-    this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
-         color: '#3C3431',
-         stroke: '#000000',
-         strokeThickness: 1
-       }).setScrollFactor(0,0);
+    // this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
+    //      color: '#3C3431',
+    //      stroke: '#000000',
+    //      strokeThickness: 1
+    //    }).setScrollFactor(0,0);
 
     //life & hearts
     var h;
@@ -673,7 +673,7 @@ export default class levelScene extends Phaser.Scene {
     this.HealthDisplay.setText("HP: " + this.player.health);
     this.MPDisplay.setText("MP: "+this.player.MP);
     this.LifeDisplay.setText("LIFE(s): " + this.player.lives);
-    this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
+    //this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
     this.updateMPBar();
