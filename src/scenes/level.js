@@ -303,6 +303,11 @@ export default class levelScene extends Phaser.Scene {
       //tank physics
       this.tank.body.setCollideWorldBounds(true);
       this.tank.setInteractive();
+
+      //tutorial tank disabled
+      if (this.levelNum == 0) {
+        this.tank.isActive = false;
+      }
     }
 
     //diamonds (gems)
@@ -368,7 +373,7 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.enemiesG, invisLayer);
 
 
-    if (this.levelNum == 8) {
+    if ((this.levelNum == 8) || (this.levelNum == 0)) {
       this.physics.add.collider(this.tank, this.worldLayer);
     }
 
@@ -458,7 +463,7 @@ export default class levelScene extends Phaser.Scene {
       );
     }, this);
 
-    if (this.levelNum == 8) {
+    if ((this.levelNum == 8) || (this.levelNum == 0)) {
       //final boss overlaps
       this.physics.add.overlap(
         this.player,
@@ -581,10 +586,16 @@ export default class levelScene extends Phaser.Scene {
   update() {
 
     //CHECK/HANDLE END OF LEVEL
+
     //detect if tank died on final level
     if ((this.levelNum == 8) && (this.tank.health <= 0)) {
       this.player.levelCompleted = true;
     }
+    //detect if player finished tutorial
+    if ((this.levelNum == 0) && (this.player.x > 4400)) {
+      this.player.levelCompleted = true;
+    }
+
     if (this.player.gameOver || this.player.levelCompleted) {
       console.log('end of level triggered');
       console.log('[LEVEL ENDING]');
