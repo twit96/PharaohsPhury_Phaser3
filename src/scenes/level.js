@@ -122,7 +122,29 @@ export default class levelScene extends Phaser.Scene {
     console.log('created level map layers below sprites');
 
     //SPAWN SPRITES
-    //tutorial images
+    //demo level images
+    if (this.levelNum == 0) {
+      //for controls
+      this.add.image(200,375, 'bubble').setScale(.4,.4);
+      this.add.image(200,375, 'awdbtn').setScale(.3,.3);
+      this.add.text(145,415, "Left   Right");
+      this.add.text(182, 320, "Jump");
+
+      //for gumba jump
+      this.add.image(1685, 150, 'bubble').setScale(.4, .4);
+      this.add.text(1625, 115, "Jump on top\n\nof enemies\n\nto kill them.");
+
+      //for melee
+      this.add.image(1900,425, 'bubble').setScale(.4,.4);
+      this.add.image(1900,425, 'spacebtn').setScale(.3,.3);
+      this.add.text(1875, 375, "Melee");
+
+      //for shooting beam
+      this.add.image(2250,425, 'bubble').setScale(.4,.4);
+      this.add.image(2250,425, 'mbtn').setScale(.3,.3);
+      this.add.text(2225, 375, "Shoot");
+
+    }
     if (this.levelNum == 1) {
       //for controls
       this.add.image(180,530, 'bubble').setScale(.4,.4);
@@ -256,6 +278,11 @@ export default class levelScene extends Phaser.Scene {
       enemy.play("archeologistAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
+
+      //tutorial enemies disabled
+      if (this.levelNum == 0) {
+        enemy.isActive = false;
+      }
       this.enemiesA.add(enemy);
     }
 
@@ -272,6 +299,11 @@ export default class levelScene extends Phaser.Scene {
       enemy.play("soldierAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
+
+      //tutorial enemies disabled
+      if (this.levelNum == 0) {
+        enemy.isActive = false;
+      }
       this.enemiesS.add(enemy);
     }
 
@@ -288,6 +320,11 @@ export default class levelScene extends Phaser.Scene {
       enemy.play("gunnerAnim");
       enemy.body.setCollideWorldBounds(true);
       enemy.setInteractive();
+
+      //tutorial enemies disabled
+      if (this.levelNum == 0) {
+        enemy.isActive = false;
+      }
       this.enemiesG.add(enemy);
     }
 
@@ -535,11 +572,11 @@ export default class levelScene extends Phaser.Scene {
          stroke: '#000000',
          strokeThickness: 1
        }).setScrollFactor(0,0);
-    // this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
-    //      color: '#3C3431',
-    //      stroke: '#000000',
-    //      strokeThickness: 1
-    //    }).setScrollFactor(0,0);
+    this.location = this.add.text(14,155, "Location: "+ this.player.x + "," + this.player.y, {
+         color: '#3C3431',
+         stroke: '#000000',
+         strokeThickness: 1
+       }).setScrollFactor(0,0);
 
     //life & hearts
     var h;
@@ -636,7 +673,7 @@ export default class levelScene extends Phaser.Scene {
     this.HealthDisplay.setText("HP: " + this.player.health);
     this.MPDisplay.setText("MP: "+this.player.MP);
     this.LifeDisplay.setText("LIFE(s): " + this.player.lives);
-    //this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
+    this.location.setText("LOCATION: "+ this.player.x + "," + this.player.y);
 
     this.updateHealthBar();
     this.updateMPBar();
