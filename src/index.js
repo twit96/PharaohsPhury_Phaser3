@@ -5,7 +5,6 @@ import menu from './scenes/menu.js';
 import userScene from './scenes/userRegister.js';
 import levelPicker from './scenes/levelPicker.js';
 import levelScene from './scenes/level.js';
-import finalBossLevel from './scenes/finalBossLevel.js';
 import gameOverScene from './scenes/gameOverScene.js';
 
 class Game extends Phaser.Game {
@@ -16,7 +15,6 @@ class Game extends Phaser.Game {
     this.scene.add('userScene', userScene);
     this.scene.add('levelPicker', levelPicker);
     this.scene.add('levelScene', levelScene);
-    this.scene.add('finalBossLevel', finalBossLevel);
     this.scene.add('gameOverScene', gameOverScene);
     this.scene.start('Boot');
   }
