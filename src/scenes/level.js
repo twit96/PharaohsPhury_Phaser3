@@ -542,11 +542,12 @@ export default class levelScene extends Phaser.Scene {
     this.add.image(-5,-5,"scroll_BG").setOrigin(0,0).setScale(.27).setScrollFactor(0,0);
 
     //text
-    this.UserLevel = this.add.text(20,30, this.registry.get("userName")+" at Level "+ this.levelNum, {
+    this.UserLevel = this.add.text(15,30, this.registry.get("userName")+" at Level "+ this.levelNum, {
       color: '#fcba03',
       stroke: '#000000',
+      align: 'center',
       strokeThickness: 7
-       }).setScrollFactor(0,0);
+    }).setScrollFactor(0,0);
     this.LifeDisplay = this.add.text(14,55, "LIFE(s): " + this.player.lives, {
          color: '#3C3431',
          stroke: '#000000',
