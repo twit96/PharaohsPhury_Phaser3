@@ -650,6 +650,8 @@ export default class levelScene extends Phaser.Scene {
         level: this.levelNum,
         diamond: this.player.diamondsCollected,
         killed: this.player.enemiesKilled,
+        time: this.duration,
+        score: this.score,
         done: this.player.levelCompleted
       });
       return;
@@ -666,7 +668,7 @@ export default class levelScene extends Phaser.Scene {
     //duration and score
     this.endTime = new Date();
     this.duration = Math.floor((this.endTime.getTime() - this.startTime.getTime())/1000);
-    this.score = 50*this.player.enemiesKilled + 10*this.player.diamondsCollected;
+    this.score = 10*this.player.enemiesKilled + this.player.diamondsCollected;
 
     //display
     this.timerDisplay.setText("TIMER: "+ this.duration);

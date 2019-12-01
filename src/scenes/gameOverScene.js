@@ -18,6 +18,8 @@ export default class gameOverScene extends Phaser.Scene {
     this.levelNum = data.level;
     this.diamondCollected = data.diamond;
     this.enemiesKilled = data.killed;
+    this.duration = data.time;
+    this.score = data.score;
     this.levelCompleted = data.done;
   }
 
@@ -48,14 +50,17 @@ export default class gameOverScene extends Phaser.Scene {
     } else if (this.levelNum == 8) {
       level = "Final Boss";
     } else {
-      level = "Level:      " + this.levelNum;
+      level = "Level:     " + this.levelNum;
     }
     const diamond = "Jewels:   " + this.diamondCollected;
     const enemyKilled = "Kills:       " + this.enemiesKilled;
-
+    const timer = "Time:      " + this.duration;
+    const levelscore = "Score:     " + this.score;
     this.add.text(300, 150, level, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5  });
-    this.add.text(300, 250, diamond, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
-    this.add.text(300, 350, enemyKilled, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 220, diamond, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 290, enemyKilled, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 360, timer, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 430, levelscore, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
 
     //button text
     const menuText = "menu";
