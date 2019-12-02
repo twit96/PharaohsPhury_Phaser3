@@ -11,8 +11,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Characters](#introduction)
-- [The World](#gameplay-mechanics)
+- [Characters](#characters)
+- [The World](#the-world)
 - [Contributors](#contributors)
 - [File Structure](#file-structure)
 - [Acknowledgments](#acknowledgments)
