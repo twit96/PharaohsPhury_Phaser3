@@ -818,8 +818,8 @@ export default class levelScene extends Phaser.Scene {
           }
 
           //deactivate beams at a set distance from player
-          if (Math.abs(b.x - this.player.x) > 100) {
-            b.setActive(false);
+          if (Math.abs(b.x - this.player.x) > 300) {
+            b.disableBody(true, true);
           }
         }
       }.bind(this)
@@ -851,8 +851,8 @@ export default class levelScene extends Phaser.Scene {
                 }
 
                 //deactivate bullets at a set distance from enemy
-                if (Math.abs(b.x - enemyS.x) > 100) {
-                  b.setActive(false);
+                if (Math.abs(b.x - enemyS.x) > 200) {
+                  b.disableBody(true, true);
                 }
               }
             }.bind(this)
@@ -885,8 +885,8 @@ export default class levelScene extends Phaser.Scene {
                     }
 
                     //deactivate bullets at a set distance from enemy
-                    if (Math.abs(b.x - enemyG.x) > 100) {
-                      b.setActive(false);
+                    if (Math.abs(b.x - enemyG.x) > 200) {
+                      b.disableBody(true, true);
                     }
                   }
                 }.bind(this)
