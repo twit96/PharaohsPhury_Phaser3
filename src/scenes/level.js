@@ -116,8 +116,9 @@ export default class levelScene extends Phaser.Scene {
 
     this.worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
-    this.worldLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
     invisLayer.setAlpha(0);
+    this.exitLayer = map.createStaticLayer("Player Exit", worldTileset, 0, 0);
+    this.exitLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
 
     console.log('created level map layers below sprites');
 
@@ -397,6 +398,7 @@ export default class levelScene extends Phaser.Scene {
     this.boundaryBox = map.heightInPixels - (this.player.body.height/2) - 2;
 
     this.physics.add.collider(this.player, this.worldLayer);
+    this.physics.add.collider(this.player, this.exitLayer);
     this.physics.add.collider(this.enemiesA, this.worldLayer);
     this.physics.add.collider(this.enemiesS, this.worldLayer);
     this.physics.add.collider(this.enemiesG, this.worldLayer);
