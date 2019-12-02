@@ -117,8 +117,10 @@ export default class levelScene extends Phaser.Scene {
     this.worldLayer.setCollisionByProperty({ collides: true });
     invisLayer.setCollisionByProperty({ collides: true });
     invisLayer.setAlpha(0);
-    this.exitLayer = map.createStaticLayer("Player Exit", worldTileset, 0, 0);
-    this.exitLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    if (this.levelNum != 0 && this.levelNum != 8) {
+      this.exitLayer = map.createStaticLayer("Player Exit", worldTileset, 0, 0);
+      this.exitLayer.setTileIndexCallback﻿﻿([30,28], this.hitExit, this);
+    }
 
     console.log('created level map layers below sprites');
 
@@ -398,7 +400,9 @@ export default class levelScene extends Phaser.Scene {
     this.boundaryBox = map.heightInPixels - (this.player.body.height/2) - 2;
 
     this.physics.add.collider(this.player, this.worldLayer);
-    this.physics.add.collider(this.player, this.exitLayer);
+    if (this.levelNum != 0 && this.levelNum != 8) {
+      this.physics.add.collider(this.player, this.exitLayer);
+    }
     this.physics.add.collider(this.enemiesA, this.worldLayer);
     this.physics.add.collider(this.enemiesS, this.worldLayer);
     this.physics.add.collider(this.enemiesG, this.worldLayer);
@@ -588,6 +592,20 @@ export default class levelScene extends Phaser.Scene {
       var xLocation = 130 + h*20 ;
       this.hearts.add(this.add.image(xLocation,63, "heart").setScrollFactor(0,0).setScale(0.03));
     }
+
+    this.time.addEvent({
+      delay: 1400,
+      callback: this.rotateHeartsBack,
+      callbackScope: this,
+      loop: false
+    });
+    this.time.addEvent({
+      delay: 1700,
+      callback: this.rotateHearts,
+      callbackScope: this,
+      loop: false
+    });
+
     this.healthBar = this.add.image(90,75,"healthBarFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.healthBarFill = this.add.image(90,75,"healthBarFill").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
     this.manaBar = this.add.image(90,95,"manaFrame").setOrigin(0,0).setScale(0.08).setScrollFactor(0,0);
@@ -1280,5 +1298,17 @@ export default class levelScene extends Phaser.Scene {
         arrow.body.setVelocityY(-1000);
       }
     }
+  }
+
+  rotateHearts(){
+    this.hearts.children.each(function(heart) {
+      heart.rotation = 0;
+    }, this);
+  }
+
+  rotateHeartsBack(){
+    this.hearts.children.each(function(heart) {
+      heart.rotation = 90;
+    }, this);
   }
 }
