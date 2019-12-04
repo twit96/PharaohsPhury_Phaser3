@@ -79,4 +79,4 @@ Location: '../assets/tilesets/'
 # Tilemaps
 Location: '../assets/tilemaps/'
 
-There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software] (https://www.mapeditor.org/).
+There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software](https://www.mapeditor.org/).
