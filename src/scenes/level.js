@@ -674,7 +674,19 @@ export default class levelScene extends Phaser.Scene {
         score: this.score,
         done: this.player.levelCompleted
       });
-      return;
+      //this.cameras.main.fadeIn(2500);
+      // this.cameras.main.once('camerafadeincomplete', function () {
+      //   console.log("function is called");
+      //   this.scene.start('gameOverScene', {
+      //     level: this.levelNum,
+      //     diamond: this.player.diamondsCollected,
+      //     killed: this.player.enemiesKilled,
+      //     time: this.duration,
+      //     score: this.score,
+      //     done: this.player.levelCompleted
+      //   });
+      // });
+
     }
 
     // Arrow timer
