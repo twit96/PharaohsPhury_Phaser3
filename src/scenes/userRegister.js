@@ -20,7 +20,6 @@ export default class userScene extends Phaser.Scene {
     this.centerY = this.cameras.main.height / 2;
     this.keySpace;
     this.keyBackspace;
-    this.textEntry;
     this.alert;
   }
 
@@ -45,6 +44,7 @@ export default class userScene extends Phaser.Scene {
       start: 1.1,
       duration: 1.5
     });
+
     this.alert = this.add.text(300, 400, '', {
       fontFamily: 'Arial',
       fontSize: 20,
@@ -52,20 +52,25 @@ export default class userScene extends Phaser.Scene {
       stroke: '#000000',
       strokeThickness: 7
     });
-    this.add.text(240, 320, 'Please type your name:',{
+
+    this.add.text(240, 320, 'Please type your name (Less than 6 characters):',{
       fontFamily: 'Arial',
-      fontSize: 26,
+      fontSize: 20,
       color: '#fcba03',
       stroke: '#000000',
-      strokeThickness: 7
+      strokeThickness: 4
     });
+
     var textEntry = this.add.text(240, 360, '', { font: '32px Courier', fill: '#000000' });
 
     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.keyBackspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
 
     this.input.keyboard.on('keydown', function (event) {
-        if (event.keyCode === 8 && textEntry.text.length > 0)
+        if (textEntry.text.length >= 6 && event.keyCode !== 8){
+          console.log("user name is more than 6 characters");
+        }
+        else if (event.keyCode === 8 && textEntry.text.length > 0)
         {
             textEntry.text = textEntry.text.substr(0, textEntry.text.length - 1);
         }
@@ -123,55 +128,56 @@ export default class userScene extends Phaser.Scene {
       this.backgroundMusic.stop();
       this.scene.start("menu");
     }, this);
-}
+  }
 
-checkUserName (input){
-  this.allUser = this.cache.json.get('users');
-  var foundUser = this.getUserFromJson(input);
-  console.log("Found in storage");
-  console.log(foundUser);
-  this.registry.reset();
+  checkUserName (input){
+    this.allUser = this.cache.json.get('users');
+    var foundUser = this.getUserFromJson(input);
+    console.log("Found in storage");
+    console.log(foundUser);
+    this.registry.reset();
 
-  // create new profile
-  if (this.isNew){
-    console.log("New user creating....");
-    if (foundUser == null){
-      // Set user data to registry for runtime get and set
-      this.registry.set({ userName: input, levelCompletion:[0,0,0,0,0,0,0,0,0]});
-      this.backgroundMusic.stop();
-      console.log("New name received, created new user");
-      this.scene.start('levelPicker');
-    } else { // if already exist
-      this.alert.setText("Name has been taken!! \nPlease Try Again!!");
+    // create new profile
+    if (this.isNew){
+      console.log("New user creating....");
+      if (foundUser == null){
+        // Set user data to registry for runtime get and set
+        this.registry.set({ userName: input, levelCompletion:[0,0,0,0,0,0,0,0,0]});
+        this.backgroundMusic.stop();
+        console.log("New name received, created new user");
+        this.scene.start('levelPicker');
+      } else {
+        // if already exist
+        this.alert.setText("Name has been taken!! \nPlease Try Again!!");
+      }
+    }
+    // Retrive old profile
+    else {
+      console.log("Old user searching....");
+      if (foundUser == null){
+        // if did not exist
+        this.alert.setText("Name Not Found!!");
+      } else {
+        // Found user; then instanciate an object using the info;
+        // Set user to registry for runtime get and set
+        this.registry.set({ userName: foundUser.userName, levelCompletion:foundUser.levelCompletion});
+        this.backgroundMusic.stop();
+        console.log("Name found; directing to level picker");
+        this.scene.start('levelPicker');
+      }
     }
   }
-  // Retrive old profile
-  else {
-    console.log("Old user searching....");
-    if (foundUser == null){ // if did not exist
-      this.alert.setText("Name Not Found!!");
-      console.log("");
-    } else {
-      // Found user; then instanciate an object using the info;
-      // Set user to registry for runtime get and set
-      this.registry.set({ userName: foundUser.userName, levelCompletion:foundUser.levelCompletion});
-      this.backgroundMusic.stop();
-      console.log("Old name found, directing to level picker");
-      this.scene.start('levelPicker');
-    }
-  }
-}
 
-getUserFromJson(name) {
-  for (var user of this.allUser) {
-    if (user.userName == name ) {
-      return user
+  getUserFromJson(name) {
+    for (var user of this.allUser) {
+      if (user.userName == name ) {
+        return user
+      }
     }
+    return null;
   }
-  return null;
-}
 
-update (time, delta) {
-    // Update the scene
+  update (time, delta) {
+
   }
 }

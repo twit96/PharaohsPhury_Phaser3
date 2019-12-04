@@ -432,6 +432,7 @@ export default class levelScene extends Phaser.Scene {
     }
 >>>>>>> Stashed changes
 
+
     console.log('created sprites');
 
     //RENDER LEVEL MAP (layers above sprites only)
