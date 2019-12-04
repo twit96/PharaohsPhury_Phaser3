@@ -1,6 +1,6 @@
 # Sources
 
-## Background Music
+# Background Music
 Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
@@ -29,7 +29,7 @@ Location: '../assets/sounds/'
  - Used in: 'gameOverScene.js'
 
 
-## Sound Effects
+# Sound Effects
 Location: '../assets/sounds/'
 
 #### Mummy Beam
@@ -68,11 +68,7 @@ Location: '../assets/sounds/'
  - Used in:
 
 
-# Images
-Needs to be filled out.
-
-
-## Tilesets
+# Tilesets
 Location: '../assets/tilesets/'
 
 #### [Inca Tileset: ](https://opengameart.org/content/inca-tileset) Used in 'level.js' for our Level 0 through Level 7 tilemaps.
@@ -80,7 +76,7 @@ Location: '../assets/tilesets/'
 #### Sand Tileset: Created by our very own Devyn Garza with photoshop. Used in 'level.js' for our Level 8 (Final Boss) tilemap.
 
 
-## Tilemaps
+# Tilemaps
 Location: '../assets/tilemaps/'
 
 There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software] (https://www.mapeditor.org/).
