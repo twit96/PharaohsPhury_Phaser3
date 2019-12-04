@@ -285,6 +285,7 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        enemy.setFlipX(true);
       }
       this.enemiesA.add(enemy);
     }
@@ -306,6 +307,7 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        enemy.setFlipX(true);
       }
       this.enemiesS.add(enemy);
     }
@@ -327,6 +329,7 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        enemy.setFlipX(true);
       }
       this.enemiesG.add(enemy);
     }
