@@ -1,10 +1,7 @@
 # Sources
 
-
-# Audio Files
-Location: '../assets/sounds/'
-
 ## Background Music
+Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
 * This audio file is a compilation of several Egyptian pieces created by the same two brothers. Their music is open source, as stated in their channel's [About Page](https://www.youtube.com/channel/UCjMZjGhrFq_4llVS_x2XJ_w/about). We used samples from two of the tracks in this compilation for our game audio, 'Hathor' and 'Bastet'.
@@ -33,6 +30,7 @@ Location: '../assets/sounds/'
 
 
 ## Sound Effects
+Location: '../assets/sounds/'
 
 #### Mummy Beam
  - Source:
