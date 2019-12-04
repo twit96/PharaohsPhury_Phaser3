@@ -60,6 +60,11 @@ export default class levelScene extends Phaser.Scene {
       defaultKey: "chest"
     });
 
+    //special chests
+    this.sChests = this.physics.add.group({
+      defaultKey: "chest"
+    });
+
     //enemy archaeologists
     this.enemiesA = this.add.group();
     this.enemiesA.enableBody = true;
@@ -179,6 +184,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level0.enemyG;
       this.gemCor = this.levelSettingInfo.level0.gem;
       this.chestCor = this.levelSettingInfo.level0.chest;
+      this.sChestCor = this.levelSettingInfo.level0.sChest;
       this.tankCor = this.levelSettingInfo.level0.tank;
       this.playerCor = this.levelSettingInfo.level0.player;
     } else if (this.levelNum == 1) {
@@ -188,6 +194,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level1.enemyG;
       this.gemCor = this.levelSettingInfo.level1.gem;
       this.chestCor = this.levelSettingInfo.level1.chest;
+      this.sChestCor = this.levelSettingInfo.level1.sChest;
       this.arrowCor = this.levelSettingInfo.level1.arrow;
       this.tankCor = this.levelSettingInfo.level1.tank;
       this.playerCor = this.levelSettingInfo.level1.player;
@@ -198,6 +205,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level2.enemyG;
       this.gemCor = this.levelSettingInfo.level2.gem;
       this.chestCor = this.levelSettingInfo.level2.chest;
+      this.sChestCor = this.levelSettingInfo.level2.sChest;
       this.arrowCor = this.levelSettingInfo.level2.arrow;
       this.tankCor = this.levelSettingInfo.level2.tank;
       this.playerCor = this.levelSettingInfo.level2.player;
@@ -208,6 +216,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level3.enemyG;
       this.gemCor = this.levelSettingInfo.level3.gem;
       this.chestCor = this.levelSettingInfo.level3.chest;
+      this.sChestCor = this.levelSettingInfo.level3.sChest;
       this.arrowCor = this.levelSettingInfo.level3.arrow;
       this.tankCor = this.levelSettingInfo.level3.tank;
       this.playerCor = this.levelSettingInfo.level3.player;
@@ -218,6 +227,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level4.enemyG;
       this.gemCor = this.levelSettingInfo.level4.gem;
       this.chestCor = this.levelSettingInfo.level4.chest;
+      this.sChestCor = this.levelSettingInfo.level4.sChest;
       this.arrowCor = this.levelSettingInfo.level4.arrow;
       this.tankCor = this.levelSettingInfo.level4.tank;
       this.playerCor = this.levelSettingInfo.level4.player;
@@ -228,6 +238,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level5.enemyG;
       this.gemCor = this.levelSettingInfo.level5.gem;
       this.chestCor = this.levelSettingInfo.level5.chest;
+      this.sChestCor = this.levelSettingInfo.level5.sChest;
       this.arrowCor = this.levelSettingInfo.level5.arrow;
       this.tankCor = this.levelSettingInfo.level5.tank;
       this.playerCor = this.levelSettingInfo.level5.player;
@@ -238,6 +249,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level6.enemyG;
       this.gemCor = this.levelSettingInfo.level6.gem;
       this.chestCor = this.levelSettingInfo.level6.chest;
+      this.sChestCor = this.levelSettingInfo.level6.sChest;
       this.arrowCor = this.levelSettingInfo.level6.arrow;
       this.tankCor = this.levelSettingInfo.level6.tank;
       this.playerCor = this.levelSettingInfo.level6.player;
@@ -248,6 +260,7 @@ export default class levelScene extends Phaser.Scene {
       this.enemyGCor = this.levelSettingInfo.level7.enemyG;
       this.gemCor = this.levelSettingInfo.level7.gem;
       this.chestCor = this.levelSettingInfo.level7.chest;
+      this.sChestCor = this.levelSettingInfo.level7.sChest;
       this.arrowCor = this.levelSettingInfo.level7.arrow;
       this.tankCor = this.levelSettingInfo.level7.tank;
       this.playerCor = this.levelSettingInfo.level7.player;
@@ -364,13 +377,24 @@ export default class levelScene extends Phaser.Scene {
     for (var count in this.chestCor) {
       var x = this.chestCor[count][0];
       var y = this.chestCor[count][1];
-
+      console.log("special chest",x,y);
       var chest = this.chests.get();
       chest
         .enableBody(true, x, y, true, true);
     }
 
+    //super chests
+    for (var count in this.sChestCor) {
+      var x = this.sChestCor[count][0];
+      var y = this.sChestCor[count][1];
+      console.log("special chest BAMMM");
+      var sChest = this.sChests.get();
+      sChest
+        .enableBody(true, x, y, true, true);
+    }
+
     //player
+<<<<<<< Updated upstream
     this.spawnX = this.playerCor[0][0];
     this.spawnY = this.playerCor[0][1];
     this.player = new Mummy({
@@ -379,6 +403,34 @@ export default class levelScene extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
+=======
+    this.spawnPoints = [
+
+      [180, 550], //level1
+      [286, 500], //level2
+      [58, 400],  //level3
+      [94, 630],  //level4
+      [173, 375], //level5
+      [75, 550],  //level6
+      [94, 250],  //level7
+      [25, 450],  //final boss
+    ];
+    if (this.levelNum == 0) {
+      this.player = new Mummy({
+        scene: this,
+        key: "mummyWalk",
+        x: this.spawnPoints[this.levelNum][0],
+        y: this.spawnPoints[this.levelNum][1]
+      });
+    } else {
+      this.player = new Mummy({
+        scene: this,
+        key: "mummyWalk",
+        x: this.spawnPoints[this.levelNum - 1][0],
+        y: this.spawnPoints[this.levelNum - 1][1]
+      });
+    }
+>>>>>>> Stashed changes
 
     console.log('created sprites');
 
@@ -414,6 +466,7 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.scroll, this.scroll);
     this.physics.add.collider(this.scroll, this.worldLayer);
     this.physics.add.collider(this.chests, this.worldLayer);
+    this.physics.add.collider(this.sChests, this.worldLayer);
     this.physics.add.collider(this.enemiesA, invisLayer);
     this.physics.add.collider(this.enemiesS, invisLayer);
     this.physics.add.collider(this.enemiesG, invisLayer);
@@ -477,6 +530,14 @@ export default class levelScene extends Phaser.Scene {
       this.player,
       this.chests,
       this.pickupChests,
+      null,
+      this
+    );
+    //between player and super chests
+    this.physics.add.overlap(
+      this.player,
+      this.sChests,
+      this.pickupsChests,
       null,
       this
     );
@@ -1019,10 +1080,10 @@ export default class levelScene extends Phaser.Scene {
     /**
     function to handle player picking up diamonds in the level
     */
-    item.destroy();
-    this.player.diamondsCollected++;
-    console.log("diamonds collected:" + this.player.diamondsCollected);
-    this.pickupSound.play();
+      item.destroy();
+      this.player.diamondsCollected++;
+      console.log("diamonds collected:" + this.player.diamondsCollected);
+      this.pickupSound.play();
   }
 
   pickupChests(player,chest) {
@@ -1031,6 +1092,20 @@ export default class levelScene extends Phaser.Scene {
     */
     chest.play("chestOpen");
     this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    chest.setFrame(2);
+    chest.disableBody(true,false);
+    this.pickupSound.play();
+  }
+  pickupsChests(player,chest) {
+    /**
+    function to handle player picking up chests in the level
+    */
+    chest.play("chestOpen");
+    if (this.levelNum == 2){
+      var cane = this.collectItems.add(this.physics.add.sprite(chest.x,chest.y-50,'cane'));
+    } else if (this.levelNum == 5){
+      this.collectItems.add(this.physics.add.sprite(chest.x,chest.y-50,'mask'));
+    }
     chest.setFrame(2);
     chest.disableBody(true,false);
     this.pickupSound.play();
