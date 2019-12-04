@@ -3,8 +3,8 @@
 # Audio Files
 Location: '../assets/sounds/'
 
-## Original Audio Name: 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
-This audio file is a compilation of several Egyptian pieces created by the same two brothers. Their music is open source, as stated in their channel's [About Page](https://www.youtube.com/channel/UCjMZjGhrFq_4llVS_x2XJ_w/about). We used samples from two of the tracks in this compilation for our game audio, 'Hathor' and 'Bastet'.
+'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
+* This audio file is a compilation of several Egyptian pieces created by the same two brothers. Their music is open source, as stated in their channel's [About Page](https://www.youtube.com/channel/UCjMZjGhrFq_4llVS_x2XJ_w/about). We used samples from two of the tracks in this compilation for our game audio, 'Hathor' and 'Bastet'.
 
 [Main Menu Background Music: ](http://www.youtube.com/watch?v=GI6dOS5ncFc&t=0m0s)  'Hathor' (0:00 - 0:39)
 File Name: 'background1'
