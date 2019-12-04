@@ -1,8 +1,10 @@
 # Sources
 
+
 # Audio Files
 Location: '../assets/sounds/'
 
+## Background Music
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
 * This audio file is a compilation of several Egyptian pieces created by the same two brothers. Their music is open source, as stated in their channel's [About Page](https://www.youtube.com/channel/UCjMZjGhrFq_4llVS_x2XJ_w/about). We used samples from two of the tracks in this compilation for our game audio, 'Hathor' and 'Bastet'.
@@ -24,20 +26,63 @@ Location: '../assets/sounds/'
  - File Name: 'background'
  - Used in: 'level.js'
 
+### End of Level Music
+ - Source:
+ - File Name: 'HappyEndingPlay'
+ - Used in: 'gameOverScene.js'
+
+
+## Sound Effects
+
+#### Mummy Beam
+ - Source:
+ - File Name: 'beam'
+ - Used in: 'mummy.js'
+
+#### Level Picker Button Pops
+ - Source:
+ - File Name: 'buttonPops'
+ - Used in: 'levelPicker.js'
+
+#### Died Cry
+ - Source:
+ - File Name: 'dyingSound_1'
+ - Used in: 'level.js'
+
+#### Died Yell
+ - Source:
+ - File Name: 'dyingSound_2'
+ - Used in: 'level.js'
+
+#### Explosion
+ - Source:
+ - File Name: 'explosion'
+ - Used in:
+
+#### Melee Attack Swoosh
+ - Source:
+ - File Name: 'MeleeAttack'
+ - Used in: 'mummy.js'
+
+#### Pick Up Item
+ - Source:
+ - File Name: 'pickup'
+ - Used in:
+
 
 # Images
 Needs to be filled out.
 
 
-# Tilesets
+## Tilesets
 Location: '../assets/tilesets/'
 
-### [Inca Tileset: ](https://opengameart.org/content/inca-tileset) Used in 'level.js' for our Level 0 through Level 7 tilemaps.
+#### [Inca Tileset: ](https://opengameart.org/content/inca-tileset) Used in 'level.js' for our Level 0 through Level 7 tilemaps.
 
-### Sand Tileset: Created by our very own Devyn Garza with photoshop. Used in 'level.js' for our Level 8 (Final Boss) tilemap.
+#### Sand Tileset: Created by our very own Devyn Garza with photoshop. Used in 'level.js' for our Level 8 (Final Boss) tilemap.
 
 
-# Tilemaps
+## Tilemaps
 Location: '../assets/tilemaps/'
 
 There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software] (https://www.mapeditor.org/).
