@@ -44,7 +44,7 @@ export default class levelScene extends Phaser.Scene {
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
-
+    // this.fadeIsHappening = true;
 
     //SPRITE GROUPS
     //gems (diamonds)
@@ -285,7 +285,6 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
-        enemy.setFlipX(true);
       }
       this.enemiesA.add(enemy);
     }
@@ -307,7 +306,6 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
-        enemy.setFlipX(true);
       }
       this.enemiesS.add(enemy);
     }
@@ -329,7 +327,6 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
-        enemy.setFlipX(true);
       }
       this.enemiesG.add(enemy);
     }
@@ -677,19 +674,7 @@ export default class levelScene extends Phaser.Scene {
         score: this.score,
         done: this.player.levelCompleted
       });
-      //this.cameras.main.fadeIn(2500);
-      // this.cameras.main.once('camerafadeincomplete', function () {
-      //   console.log("function is called");
-      //   this.scene.start('gameOverScene', {
-      //     level: this.levelNum,
-      //     diamond: this.player.diamondsCollected,
-      //     killed: this.player.enemiesKilled,
-      //     time: this.duration,
-      //     score: this.score,
-      //     done: this.player.levelCompleted
-      //   });
-      // });
-
+      // this.fadingOut();
     }
 
     // Arrow timer
@@ -1326,4 +1311,22 @@ export default class levelScene extends Phaser.Scene {
       heart.rotation = 90;
     }, this);
   }
+
+  // fadingOut(){
+  //   if (!this.fadeIsHappening) {
+  //     this.fadeIsHappening = true;
+  //     this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+  //       this.scene.start('gameOverScene', {
+  //         level: this.levelNum,
+  //         diamond: this.player.diamondsCollected,
+  //         killed: this.player.enemiesKilled,
+  //         time: this.duration,
+  //         score: this.score,
+  //         done: this.player.levelCompleted
+  //       });
+  //     },this);
+  //     this.cameras.main.fadeOut(1500);
+  //     console.log("i am here");
+  //   }
+  // }
 }
