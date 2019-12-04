@@ -7,7 +7,7 @@ export default class gameOverScene extends Phaser.Scene {
 
   init (data) {
     /*
-    TO CALL THIS SCENE FROM ANY LEVEL:
+    TO CALL THIS SCENE FROM level:
       this.scene.start('gameOverScene', {
         level: this.levelNum ,
         diamond: this.diamondSCollected,
@@ -18,6 +18,8 @@ export default class gameOverScene extends Phaser.Scene {
     this.levelNum = data.level;
     this.diamondCollected = data.diamond;
     this.enemiesKilled = data.killed;
+    this.duration = data.time;
+    this.score = data.score;
     this.levelCompleted = data.done;
   }
 
@@ -44,16 +46,21 @@ export default class gameOverScene extends Phaser.Scene {
     //create the text that displays on the screen
     var level;
     if (this.levelNum == 0) {
+      level = "Demo"
+    } else if (this.levelNum == 8) {
       level = "Final Boss";
     } else {
-      level = "Level:      " +this.levelNum;
+      level = "Level:     " + this.levelNum;
     }
     const diamond = "Jewels:   " + this.diamondCollected;
     const enemyKilled = "Kills:       " + this.enemiesKilled;
-
+    const timer = "Time:      " + this.duration;
+    const levelscore = "Score:     " + this.score;
     this.add.text(300, 150, level, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5  });
-    this.add.text(300, 250, diamond, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
-    this.add.text(300, 350, enemyKilled, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 220, diamond, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 290, enemyKilled, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 360, timer, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
+    this.add.text(300, 430, levelscore, { font: '42px Georgia', fill: '#FFFFFF', fontStyle: 'bold',stroke: '#000000', strokeThickness: 5 });
 
     //button text
     const menuText = "menu";
@@ -64,7 +71,7 @@ export default class gameOverScene extends Phaser.Scene {
       btnText = "Continue";
     }
 
-    if (this.levelNum == "0" && this.levelCompleted ) {
+    if (this.levelNum == "8" && this.levelCompleted) {
       btnText = "You Won! \n You are now free";
     }
 
@@ -100,14 +107,9 @@ export default class gameOverScene extends Phaser.Scene {
     this.backgroundMusic.stop();
 
     if (levelCompleted) {
-      if (this.levelNum == 0) {
-        //final boss level completed, player goes back to levelPicker
+      if (this.levelNum == 0 || this.levelNum == 8) {
+        //final boss level or tutorial completed, player goes back to levelPicker
         this.scene.start('levelPicker');
-      } else if (this.levelNum == 7) {
-        //player finished level7, take player to final boss
-        this.scene.start('levelScene', {
-          level: 0
-        });
       } else {
         //player finished a regular level, take player to next level
         this.levelNum +=  1;

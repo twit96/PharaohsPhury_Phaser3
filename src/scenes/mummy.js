@@ -59,8 +59,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
       this.anims.play("mummyIdleAnim", true);
     } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
       this.anims.play("mummyCaneIdleAnim", true);
-    } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-     this.scene.levelNum == "0") {
+    } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" || this.scene.levelNum == "0") {
       this.anims.play("pharoahCaneIdleAnim", true);
     }
 
@@ -100,8 +99,9 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     //update player lives if needed
     if (this.health <= 0) {
       this.body.setVelocityY(0);
-      this.x = this.scene.spawnPoints[this.scene.levelNum][0];
-      this.y = this.scene.spawnPoints[this.scene.levelNum][1];
+
+      this.x = this.scene.spawnX;
+      this.y = this.scene.spawnY;
 
       this.lives -= 1;
       console.log('player lives: ' + this.lives);
@@ -139,8 +139,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
             this.anims.play("mummyWalkAnim", true);
           } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
             this.anims.play("mummyCaneWalkAnim", true);
-          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-           this.scene.levelNum == "0") {
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" || this.scene.levelNum == "0") {
             this.anims.play("pharoahCaneWalkAnim", true);
           }
         }
@@ -161,8 +160,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
             this.anims.play("mummyWalkAnim", true);
           } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
             this.anims.play("mummyCaneWalkAnim", true);
-          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-           this.scene.levelNum == "0"){
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" || this.scene.levelNum == "0"){
             this.anims.play("pharoahCaneWalkAnim", true);
           }
         }
@@ -178,8 +176,7 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
             this.anims.play("mummyIdleAnim", true);
           } else if (this.scene.levelNum == "3" || this.scene.levelNum == "4" || this.scene.levelNum == "5"){
             this.anims.play("mummyCaneIdleAnim", true);
-          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" ||
-           this.scene.levelNum == "0") {
+          } else if (this.scene.levelNum == "6" || this.scene.levelNum == "7" || this.scene.levelNum == "8" || this.scene.levelNum == "0") {
             this.anims.play("pharoahCaneIdleAnim", true);
           }
         }

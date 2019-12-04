@@ -11,7 +11,13 @@ export default class levelPicker extends Phaser.Scene {
   preload () {
     console.log('\n[LEVELPICKER]');
     console.log('[preload]');
+
+    this.load.json("users","./src/data/users.json");
     this.load.image('background', './assets/images/lvlselect.jpg');
+
+    //buttons
+    this.load.image('tutorial', './assets/images/slabT.png');
+    this.load.image('demo', './assets/images/slabD.png');
     this.load.image('slab1', './assets/images/slab1.png');
     this.load.image('slab2', './assets/images/slab2.png');
     this.load.image('slab3', './assets/images/slab3.png');
@@ -19,52 +25,26 @@ export default class levelPicker extends Phaser.Scene {
     this.load.image('slab5', './assets/images/slab5.png');
     this.load.image('slab6', './assets/images/slab6.png');
     this.load.image('slab7', './assets/images/slab7.png');
-    this.load.image('slab8', './assets/images/slab8.png');
     this.load.image('final', './assets/images/final1.png');
-    this.load.json("users","./src/data/users.json");
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
   }
 
   create (data) {
-    // User information
-    console.log(this.registry.get("userName"));
-    console.log(this.registry.get("levelCompletion"));
-    this.levelCompletion = this.registry.get("levelCompletion");
-
     console.log('[create]');
+
+    // User information
+    this.levelCompletion = this.registry.get("levelCompletion");
+    console.log(this.registry.get("userName"));
+    console.log(this.levelCompletion);
+
+    //background
     this.add.image(400,300,'background').setScale(.5,.5);
-    var saveLeaveBtn = this.add.sprite(this.centerX - 180,555,"exit").setScale(.15,.15).setFlipX(true);
-    // var saveLeaveBtn = this.add.text(
-    //   this.centerX - 200,
-    //   500,
-    //   "Exit", {
-    //     fontFamily: 'Arial',
-    //     fontSize: 30,
-    //     color: '#fcba03',
-    //     stroke: '#000000',
-    //     strokeThickness: 7
-    //   }
-    // );
 
-    saveLeaveBtn.setInteractive().on("pointerover", function() {
-      sound.play('low');
-      this.setScale(.2);
-      //this.x += 25;
-    }).on("pointerout", function () {
-      this.setScale(.15);
-      //this.x -= 25;
-    }).on("pointerup", function () {
-      sound.play('high');
-      this.saveANDLeave();
-    }, this);
-
-    // Audio
+    //audio
     this.backgroundMusic = this.sound.add("bg3");
     this.backgroundMusic.play({loop:true});
-
-    //configure audio
     var sound = this.sound.add('pops');
     sound.addMarker({
       name: 'low',
@@ -76,10 +56,27 @@ export default class levelPicker extends Phaser.Scene {
       start: 1.1,
       duration: 1.5   // note: duration is the stopping point rather than the length of the sound. i.e. 'high' plays from 1.1 to 1.5 seconds
     });
-
-    console.log('configured audio and title');
+    console.log('configured audio');
 
     //create and configure buttons
+    if (this.registry.get("userName") == "demo") {
+      var b0 = this.add.image(675, 515, 'demo').setScale(.5,.5).setInteractive();
+      b0.on("pointerover", function() {
+        this.setScale(.7);
+        sound.play('low')
+      });
+      b0.on("pointerout", function () {
+        this.setScale(.5);
+      });
+      b0.on("pointerup", function () {
+        sound.play('high');
+        this.backgroundMusic.stop();
+        this.scene.start('levelScene', {
+          level: 0
+        });
+      }, this
+      );
+    }
 
     var b1 = this.add.image(285, 140, 'slab1').setScale(.5,.5).setInteractive();
     b1.on("pointerover", function() {
@@ -99,7 +96,7 @@ export default class levelPicker extends Phaser.Scene {
     );
 
     var b2 = this.add.image(515, 140, 'slab2').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[0] != 1) {
+    if (this.levelCompletion[1] != 1) {
       b2.tint = 0x707070;
     } else {
       b2.on("pointerover", function() {
@@ -120,7 +117,7 @@ export default class levelPicker extends Phaser.Scene {
     }
 
     var b3 = this.add.image(285, 225, 'slab3').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[1] != 1) {
+    if (this.levelCompletion[2] != 1) {
       b3.tint = 0x707070;
     } else{
     b3.on("pointerover", function() {
@@ -141,7 +138,7 @@ export default class levelPicker extends Phaser.Scene {
   }
 
     var b4 = this.add.image(515, 225, 'slab4').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[2] != 1) {
+    if (this.levelCompletion[3] != 1) {
       b4.tint = 0x707070;
     } else {
       b4.on("pointerover", function() {
@@ -162,7 +159,7 @@ export default class levelPicker extends Phaser.Scene {
     }
 
     var b5 = this.add.sprite(285, 315, 'slab5').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[3] != 1) {
+    if (this.levelCompletion[4] != 1) {
       b5.tint = 0x707070;
     } else{
       b5.on("pointerover", function() {
@@ -183,7 +180,7 @@ export default class levelPicker extends Phaser.Scene {
     }
 
     var b6 = this.add.image(515, 315, 'slab6').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[4] != 1) {
+    if (this.levelCompletion[5] != 1) {
       b6.tint = 0x707070;
     } else {
       b6.on("pointerover", function() {
@@ -203,8 +200,8 @@ export default class levelPicker extends Phaser.Scene {
       );
     }
 
-    var b7 = this.add.image(400, 405, 'slab7').setScale(.5,.5).setInteractive();
-    if (this.levelCompletion[5] != 1) {
+    var b7 = this.add.image(410, 405, 'slab7').setScale(.5,.5).setInteractive();
+    if (this.levelCompletion[6] != 1) {
       b7.tint = 0x707070;
     } else {
     b7.on("pointerover", function() {
@@ -223,26 +220,40 @@ export default class levelPicker extends Phaser.Scene {
       }, this
     );}
 
-    var b0 = this.add.image(388, 538, 'final').setScale(.55,.55).setInteractive();
+    var b8 = this.add.image(388, 538, 'final').setScale(.55,.55).setInteractive();
     if (this.levelCompletion[7] != 1) {
-      b0.tint = 0x707070;
+      b8.tint = 0x707070;
     } else {
-    b0.on("pointerover", function() {
+    b8.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')
     });
-    b0.on("pointerout", function () {
+    b8.on("pointerout", function () {
       this.setScale(.5);
     });
-    b0.on("pointerup", function () {
+    b8.on("pointerup", function () {
       sound.play('high');
       this.backgroundMusic.stop();
       this.scene.start('levelScene', {
-        level: 0
+        level: 8
       });
     }, this
   );}
-    console.log('configured buttons');
+
+  var saveLeaveBtn = this.add.sprite(this.centerX - 180,555,"exit").setScale(.15,.15).setFlipX(true);
+  saveLeaveBtn.setInteractive().on("pointerover", function() {
+    sound.play('low');
+    this.setScale(.2);
+    //this.x += 25;
+  }).on("pointerout", function () {
+    this.setScale(.15);
+    //this.x -= 25;
+  }).on("pointerup", function () {
+    sound.play('high');
+    this.saveANDLeave();
+  }, this);
+
+  console.log('configured buttons');
 }
 
 saveANDLeave(){

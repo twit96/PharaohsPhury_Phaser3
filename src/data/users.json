@@ -1,5 +1,14 @@
-[{
+[
+  {
     "userName": "Amber",
+    "levelCompletion": [1,1,1,1,1,1,1,1,1]
+  },
+  {
+    "userName": "tdev",
+    "levelCompletion": [1,1,1,1,1,1,1,0,0]
+  },
+  {
+    "userName": "demo",
     "levelCompletion": [1,1,1,1,1,1,1,1,1]
   }
 ]
