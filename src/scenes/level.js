@@ -90,8 +90,8 @@ export default class levelScene extends Phaser.Scene {
     //background image
     if (this.levelNum == 8) {
       //final boss level
-      this.background = this.add.image(2240,384,'bossBackground');
-      this.background.setScale(2);
+      this.background = this.add.image(2440,720,'bossBackground');
+      this.background.setScale(1.1);
     } else if (this.levelNum == 0) {
       //tutorial level
       this.background = this.add.image(2240,384,'levelBackground');
