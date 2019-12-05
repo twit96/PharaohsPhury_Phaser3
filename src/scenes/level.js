@@ -1086,9 +1086,9 @@ export default class levelScene extends Phaser.Scene {
     */
     chest.play("chestOpen");
     if (this.levelNum == 2){
-      var cane = this.collectItems.add(this.physics.add.sprite(chest.x,chest.y-50,'cane'));
+      var cane = this.collectDiamonds.add(this.physics.add.sprite(chest.x,chest.y-50,'cane'));
     } else if (this.levelNum == 5){
-      this.collectItems.add(this.physics.add.sprite(chest.x,chest.y-50,'mask'));
+      this.collectDiamonds.add(this.physics.add.sprite(chest.x,chest.y-50,'mask'));
     }
     chest.setFrame(2);
     chest.disableBody(true,false);
