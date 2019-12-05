@@ -394,7 +394,6 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //player
-<<<<<<< Updated upstream
     this.spawnX = this.playerCor[0][0];
     this.spawnY = this.playerCor[0][1];
     this.player = new Mummy({
@@ -403,34 +402,7 @@ export default class levelScene extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
-=======
-    this.spawnPoints = [
 
-      [180, 550], //level1
-      [286, 500], //level2
-      [58, 400],  //level3
-      [94, 630],  //level4
-      [173, 375], //level5
-      [75, 550],  //level6
-      [94, 250],  //level7
-      [25, 450],  //final boss
-    ];
-    if (this.levelNum == 0) {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum][0],
-        y: this.spawnPoints[this.levelNum][1]
-      });
-    } else {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum - 1][0],
-        y: this.spawnPoints[this.levelNum - 1][1]
-      });
-    }
->>>>>>> Stashed changes
 
 
     console.log('created sprites');
@@ -1092,7 +1064,21 @@ export default class levelScene extends Phaser.Scene {
     function to handle player picking up chests in the level
     */
     chest.play("chestOpen");
-    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    //generate random number of diamonds to burst from chest
+    var randAmount = Math.floor(Math.random() * Math.floor(10));
+    var x;
+    for (x = 0; x < randAmount; x++) {
+      //within 75 pixels left or right from the chest
+      var randomShiftX = Math.floor(Math.random() * Math.floor(100)) - 75;
+
+      //up to 75 pixels above the chest
+      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+      //spawn diamond
+      var diamondX = chest.x + randomShiftX;
+      var diamondY = chest.y - randomShiftY;
+      this.spawnDiamond(diamondX, diamondY);
+    }
     chest.setFrame(2);
     chest.disableBody(true,false);
     this.pickupSound.play();
