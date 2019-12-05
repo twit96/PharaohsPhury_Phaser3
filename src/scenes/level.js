@@ -48,8 +48,8 @@ export default class levelScene extends Phaser.Scene {
 
     //SPRITE GROUPS
     //gems (diamonds)
-    this.collectItems = this.add.group();
-    this.collectItems.enableBody = true;
+    this.collectDiamonds = this.add.group();
+    this.collectDiamonds.enableBody = true;
 
     //scrolls
     this.scroll = this.add.group();
@@ -354,7 +354,7 @@ export default class levelScene extends Phaser.Scene {
     for (var count in this.gemCor) {
       var x = this.gemCor[count][0];
       var y = this.gemCor[count][1];
-      this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
+      this.collectDiamonds.add(this.physics.add.sprite(x,y,'gem'));
     }
 
     //chests
@@ -406,8 +406,8 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, this.worldLayer);
     this.physics.add.collider(this.enemiesS, this.worldLayer);
     this.physics.add.collider(this.enemiesG, this.worldLayer);
-    this.physics.add.collider(this.collectItems, this.worldLayer);
-    this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.collectDiamonds, this.worldLayer);
+    this.physics.add.collider(this.collectDiamonds, this.collectDiamonds);
     this.physics.add.collider(this.scroll, this.scroll);
     this.physics.add.collider(this.scroll, this.worldLayer);
     this.physics.add.collider(this.chests, this.worldLayer);
@@ -456,7 +456,7 @@ export default class levelScene extends Phaser.Scene {
     //between player and gems (diamonds)
     this.physics.add.overlap(
       this.player,
-      this.collectItems,
+      this.collectDiamonds,
       this.pickup,
       null,
       this
@@ -1191,7 +1191,7 @@ export default class levelScene extends Phaser.Scene {
     /**
     function to spawn a diamond sprite at a set coordinate
     */
-    this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
+    this.collectDiamonds.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
   }
   spawnScroll(diamondX, diamondY){
     this.scroll.add(this.physics.add.sprite(diamondX,diamondY,"scroll"));
