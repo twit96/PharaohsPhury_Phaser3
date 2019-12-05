@@ -165,9 +165,9 @@ export default class levelScene extends Phaser.Scene {
     }
     if (this.levelNum == 3) {
       //for melee
-      this.add.image(180,330, 'bubble').setScale(.4,.4);
-      this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-      this.add.text(155, 280, "Melee");
+      this.add.image(280,430, 'bubble').setScale(.4,.4);
+      this.add.image(280,430, 'spacebtn').setScale(.3,.3);
+      this.add.text(255, 380, "Melee");
     } else if (this.levelNum == 6) {
       //for shooting beam
       this.add.image(180,530, 'bubble').setScale(.4,.4);
