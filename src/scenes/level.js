@@ -511,14 +511,7 @@ export default class levelScene extends Phaser.Scene {
       null,
       this
     );
-    //between player beams and worldLayer
-    this.physics.add.overlap(
-      this.player.beams,
-      this.worldLayer,
-      this.player.beamHitWall,
-      null,
-      this
-    );
+
     //between enemy bullets and player
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
