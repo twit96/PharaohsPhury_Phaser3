@@ -1,8 +1,6 @@
 <h1 align="center"> Asset Sources </h1>
 
-
-
-## Audio: Background Music
+<h2 align="center"> Audio: Background Music </h1>
 Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
