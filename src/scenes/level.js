@@ -634,7 +634,7 @@ export default class levelScene extends Phaser.Scene {
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
     this.yell = this.sound.add("mummyDied");
-    this.cry = this.sound.add("diedCry");
+    this.cry = this.sound.add("enemyDied");
     this.pickupSound = this.sound.add("pickupSound");
     console.log('configured audio');
     // call once to reset the mana to 0;
