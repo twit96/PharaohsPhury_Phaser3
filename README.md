@@ -1,9 +1,13 @@
 <h1 align="center"> Pharaoh's Phury </h1> <br>
 
 <p align="center">
-  After thousands of years of slumber, you awaken to British Imperialists raiding your tomb. Reclaim your prized possessions and send them running home.
+  After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
 
-  <img width="373" height="210" src="./assets/trailer/Photos/menu (cropped).png">
+  <br>
+
+  <img width="559" height="315" src="./assets/trailer/Photos/menu (cropped).png">
+
+  <br>
 
   Built with Phaser 3.
 </p>
