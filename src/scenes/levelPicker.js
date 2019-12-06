@@ -59,24 +59,22 @@ export default class levelPicker extends Phaser.Scene {
     console.log('configured audio');
 
     //create and configure buttons
-    if (this.registry.get("userName") == "demo") {
-      var b0 = this.add.image(675, 515, 'demo').setScale(.5,.5).setInteractive();
-      b0.on("pointerover", function() {
-        this.setScale(.7);
-        sound.play('low')
+    var b0 = this.add.image(675, 515, 'demo').setScale(.5,.5).setInteractive();
+    b0.on("pointerover", function() {
+      this.setScale(.7);
+      sound.play('low')
+    });
+    b0.on("pointerout", function () {
+      this.setScale(.5);
+    });
+    b0.on("pointerup", function () {
+      sound.play('high');
+      this.backgroundMusic.stop();
+      this.scene.start('levelScene', {
+        level: 0
       });
-      b0.on("pointerout", function () {
-        this.setScale(.5);
-      });
-      b0.on("pointerup", function () {
-        sound.play('high');
-        this.backgroundMusic.stop();
-        this.scene.start('levelScene', {
-          level: 0
-        });
-      }, this
-      );
-    }
+    }, this
+    );
 
     var b1 = this.add.image(285, 140, 'slab1').setScale(.5,.5).setInteractive();
     b1.on("pointerover", function() {
