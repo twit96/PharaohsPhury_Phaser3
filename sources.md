@@ -1,6 +1,6 @@
 
 <p align="center">
-  <h1>Asset Sources</h1?
+  <h1>Asset Sources</h1>
 </p>
 
 
