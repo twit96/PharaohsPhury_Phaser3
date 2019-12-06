@@ -5,7 +5,7 @@
 
   <br>
 
-  <img width="559" height="254" src="./assets/trailer/Photos/menu (cropped).png">
+  <img width="559" height="254" src="./assets/trailer/Photos/titleCropped.png">
 
   <br>
 
