@@ -122,7 +122,7 @@ Location: '../assets/images/'
 ## Sprites
 Location: '../assets/sprites/'
 
-### The following sprite assets were created by [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/) for this project using [aseprite ](https://www.aseprite.org/) animated sprite editor and pixel art tool.
+### The following sprite assets were created by [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/) for this project using [aseprite animated sprite editor and pixel art tool ](https://www.aseprite.org/).
 
  - Arrow
  - Bullet
