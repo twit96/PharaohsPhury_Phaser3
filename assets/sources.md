@@ -23,8 +23,8 @@ Location: '../assets/sounds/'
  - File Name: 'background'
  - Used in: 'level.js'
 
-### End of Level Music
- - Source: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/) created this audio file using [GarageBand for iOS](https://apps.apple.com/us/app/garageband/id408709785).
+### End of Level / Game Over Music
+ - Source: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/) created this audio file for our project with [GarageBand for iOS](https://apps.apple.com/us/app/garageband/id408709785).
  - File Name: 'HappyEndingPlay'
  - Used in: 'gameOverScene.js'
 
@@ -74,7 +74,7 @@ Location: '../assets/tilesets/'
 #### [Inca Tileset: ](https://opengameart.org/content/inca-tileset) Used in 'level.js' for our Level 0 through Level 7 tilemaps.
 
 #### Sand Tileset: Created by our very own Devyn Garza with photoshop. Used in 'level.js' for our Level 8 (Final Boss) tilemap.
-
+[Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/) created this tileset for our project with [Adobe Photoshop](https://www.photoshop.com/).
 
 # Tilemaps
 Location: '../assets/tilemaps/'
