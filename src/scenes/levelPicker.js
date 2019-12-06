@@ -17,7 +17,6 @@ export default class levelPicker extends Phaser.Scene {
 
     //buttons
     this.load.image('tutorial', './assets/images/slabT.png');
-    this.load.image('demo', './assets/images/slabD.png');
     this.load.image('slab1', './assets/images/slab1.png');
     this.load.image('slab2', './assets/images/slab2.png');
     this.load.image('slab3', './assets/images/slab3.png');
@@ -25,7 +24,7 @@ export default class levelPicker extends Phaser.Scene {
     this.load.image('slab5', './assets/images/slab5.png');
     this.load.image('slab6', './assets/images/slab6.png');
     this.load.image('slab7', './assets/images/slab7.png');
-    this.load.image('final', './assets/images/final1.png');
+    this.load.image('final', './assets/images/final.png');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -59,7 +58,7 @@ export default class levelPicker extends Phaser.Scene {
     console.log('configured audio');
 
     //create and configure buttons
-    var b0 = this.add.image(675, 515, 'demo').setScale(.5,.5).setInteractive();
+    var b0 = this.add.image(675, 515, 'tutorial').setScale(.5,.5).setInteractive();
     b0.on("pointerover", function() {
       this.setScale(.7);
       sound.play('low')

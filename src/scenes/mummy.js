@@ -98,6 +98,8 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
 
     //update player lives if needed
     if (this.health <= 0) {
+      this.scene.yell.play({volume: 2});
+
       this.body.setVelocityY(0);
 
       this.x = this.scene.spawnX;

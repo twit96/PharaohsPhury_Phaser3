@@ -298,6 +298,7 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        enemy.setFlipX(true);
       }
       this.enemiesA.add(enemy);
     }
@@ -319,6 +320,7 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        enemy.setFlipX(true);
       }
       this.enemiesS.add(enemy);
     }
@@ -340,6 +342,10 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
+        if (count != 0) {
+          //flip all but first gunner for tutorial
+          enemy.setFlipX(true);
+        }
       }
       this.enemiesG.add(enemy);
     }
@@ -660,8 +666,8 @@ export default class levelScene extends Phaser.Scene {
     this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
-    this.yell = this.sound.add("diedYell");
-    this.cry = this.sound.add("diedCry");
+    this.yell = this.sound.add("mummyDied");
+    this.cry = this.sound.add("enemyDied");
     this.pickupSound = this.sound.add("pickupSound");
     console.log('configured audio');
     // call once to reset the mana to 0;
@@ -1259,7 +1265,6 @@ export default class levelScene extends Phaser.Scene {
     if (player.y > this.boundaryBox) {
       console.log('[level.playerFellOffMap]')
       this.player.updateHealth(100);
-      this.yell.play({volume: 5});
     }
   }
 

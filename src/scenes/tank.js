@@ -283,6 +283,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
     shell
       .enableBody(true, this.turret.x, this.turret.y, true, true)
       .setVelocity(velocity.x, velocity.y)
+      .setScale(1.2)
 
   }
 
@@ -378,7 +379,7 @@ export default class Tank extends Phaser.GameObjects.Sprite {
 
     if (player.isAttacking == false) {
       //update player stats
-      this.player.updateHealth(5);  
+      this.player.updateHealth(5);
     }
   }
 

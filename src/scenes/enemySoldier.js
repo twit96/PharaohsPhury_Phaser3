@@ -63,6 +63,8 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
 
     //handle "death" if necessary
     if (this.health <= 0) {
+      this.scene.cry.play();
+
       this.isActive = false;
       this.scene.physics.world.disable(this);
       this.visible = false;
