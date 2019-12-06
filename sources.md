@@ -58,8 +58,8 @@ Location: '../assets/sounds/'
 Location: '../assets/sounds/'
 
 ### Melee Attack Swoosh
-  - Source:
-  - File Name: 'MeleeAttack'
+  - Source: ['Blast / gunfire' ](http://www.aigei.com/fav/woxihuande_91196.html?id=246092&oldName=%E6%88%91%E5%96%9C%E6%AC%A2%E7%9A%84&name=%E6%88%91%E5%96%9C%E6%AC%A2%E7%9A%84&publish=true&desc=) was purchased by [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/) from [http://www.aigei.com/ ](http://www.aigei.com/) for our project.
+  - File Name: 'meleeAttack'
   - Used in: 'mummy.js'
 
 ### The following sound effect assets are from the [Fesliyan Studios website](https://www.fesliyanstudios.com/), and were tweaked for our project by [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) using [FL Studio ](https://www.image-line.com/flstudio/). The audio files used were ['Scream-Short-C1' and 'Scream-Short-B4'](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206), respectively.
