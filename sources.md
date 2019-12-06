@@ -1,6 +1,9 @@
 # Art and Audio Sources
 
-# Background Music
+
+
+
+## Audio: Background Music
 Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
@@ -29,7 +32,9 @@ Location: '../assets/sounds/'
  - Used in: 'gameOverScene.js'
 
 
-# Sound Effects
+
+
+## Audio: Sound Effects
 Location: '../assets/sounds/'
 
 ### Melee Attack Swoosh
@@ -65,7 +70,85 @@ Location: '../assets/sounds/'
     - File Name: 'pickup'
     - Used in: level.js
 
-# Tilesets
+
+
+
+## Images
+Location: '../assets/images/'
+
+### Background Images
+ - Menu Background
+ - Level Select Background
+ - Level Background
+ - Boss Background
+ - End of Level / Game Over Background
+
+### Tutorial Images
+ - AWD Buttons
+ - M Button
+ - Space Button
+ - Opaque Bubble
+
+### UI Images
+ - Health Bar
+ - Mana Bar
+ - Life Heart
+ - Scroll
+
+### Button Images
+ - Exit Button
+ - Level Buttons (1 - 7, Tutorial)
+ - Final Boss Button
+
+
+
+
+## Sprites
+Location: '../assets/sprites/'
+
+### The following sprite assets were created by [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/) for this project using [aseprite ](https://www.aseprite.org/) animated sprite editor and pixel art tool.
+
+ - Arrow
+ - Bullet
+ - Cane
+ - Gem
+ - Mask
+ - Scroll
+ - Shell
+
+### The Bomb sprite asset was provided to us by [Jason Harron ](https://www.linkedin.com/in/jason-harron-a5ba06b/) as part of his [Making games in Phaser 3 Tutorial ](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class.
+
+
+
+
+## Spritesheets
+Location: '../assets/spriteSheets/'
+
+### The following spritesheet assets were created by [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/) for this project using [aseprite ](https://www.aseprite.org/) animated sprite editor and pixel art tool.
+
+- Archaeologist
+- Chest
+- Gunner
+- Mummy
+- Mummy + Cane
+- Mummy + Mask
+- Soldier
+- Tank
+
+### The Beam spritesheet asset was provided to us by [Jason Harron ](https://www.linkedin.com/in/jason-harron-a5ba06b/) as part of his [Making games in Phaser 3 Tutorial ](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class.
+
+
+
+
+## Tilemaps
+Location: '../assets/tilemaps/'
+
+There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software](https://www.mapeditor.org/).
+
+
+
+
+## Tilesets
 Location: '../assets/tilesets/'
 
 ### [Inca Tileset: ](https://opengameart.org/content/inca-tileset)
@@ -74,7 +157,9 @@ Location: '../assets/tilesets/'
 ### Sand Tileset:
 * Created by [Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/) for our project with [Adobe Photoshop](https://www.photoshop.com/). Used in 'level.js' for our Level 8 (Final Boss) tilemap.
 
-# Tilemaps
-Location: '../assets/tilemaps/'
 
-There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps, and a final boss tilemap. We created each of these using the [Tiled Map Editing Software](https://www.mapeditor.org/).
+
+
+## Game Trailer
+Location: '../assets/trailer/'
+The files for our game trailer are stashed in our assets. All sources can be found [here](../assets/trailer/README.txt)
