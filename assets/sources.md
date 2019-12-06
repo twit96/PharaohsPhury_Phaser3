@@ -50,9 +50,9 @@ Location: '../assets/sounds/'
 
 ### The following sound effect assets were provided to us by [Jason Harron ](https://www.linkedin.com/in/jason-harron-a5ba06b/) as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class:
 
- - Explosion
-  - File Name: 'explosion'
-  - Used in: 'level.js'
+ * Explosion
+  * File Name: 'explosion'
+  * Used in: 'level.js'      
 
  - Level Picker Button Pops
   - File Name: 'buttonPops'
