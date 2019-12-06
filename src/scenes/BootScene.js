@@ -112,29 +112,29 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/caneHitbox.png", {
+    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/cane_hitbox.png", {
       frameWidth: 64,
       frameHeight: 64
     });
 
     //enemies
-    this.load.spritesheet("archeologist", "../assets/spriteSheets/archWalk.png", {
+    this.load.spritesheet("archeologist", "../assets/spriteSheets/arch_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldier", "../assets/spriteSheets/soldierWalk.png", {
+    this.load.spritesheet("soldier", "../assets/spriteSheets/soldier_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldierShot", "../assets/spriteSheets/soldierShot.png", {
+    this.load.spritesheet("soldierShot", "../assets/spriteSheets/soldier_shot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
-    this.load.spritesheet("gunner", "../assets/spriteSheets/gunnerWalk.png", {
+    this.load.spritesheet("gunner", "../assets/spriteSheets/gunner_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("gunnerShot", "../assets/spriteSheets/gunnerShot.png", {
+    this.load.spritesheet("gunnerShot", "../assets/spriteSheets/gunner_shot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
@@ -163,14 +163,14 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('bg4', './assets/sounds/background4.mp3');
     this.load.audio('beam', './assets/sounds/beam.mp3');
     this.load.audio('pops', './assets/sounds/buttonPops.mp3');
-    this.load.audio('mummyDied', './assets/sounds/dyingSound_1.1.mp3');
-    this.load.audio('enemyDied', './assets/sounds/dyingSound_2.1.mp3');
+    // this.load.audio('mummyDied', './assets/sounds/dyingSound_1.1.mp3');
+    // this.load.audio('enemyDied', './assets/sounds/dyingSound_2.1.mp3');
+    this.load.audio('mummyDied', './assets/sounds/dyingSound_1.mp3');
+    this.load.audio('enemyDied', './assets/sounds/dyingSound_2.mp3');
     this.load.audio('bomb', './assets/sounds/explosion.mp3');
-    this.load.audio('HE', './assets/sounds/HappyEndingPlay.mp3');
-    this.load.audio('meleeAttack', './assets/sounds/MeleeAttack.mp3');
+    this.load.audio('HE', './assets/sounds/happyEndingPlay.mp3');
+    this.load.audio('meleeAttack', './assets/sounds/meleeAttack.mp3');
     this.load.audio('pickupSound', './assets/sounds/pickup.mp3');
-    this.load.audio('short', './assets/sounds/short.mp3');
-    this.load.audio('platformerSound', './assets/sounds/typicalPlatformer.mp3');
     console.log('loaded audio assets');
   }
 
