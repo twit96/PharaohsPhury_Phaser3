@@ -32,16 +32,6 @@ Location: '../assets/sounds/'
 # Sound Effects
 Location: '../assets/sounds/'
 
-#### Mummy Beam
- - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
- - File Name: 'beam'
- - Used in: 'mummy.js'
-
-#### Level Picker Button Pops
- - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
- - File Name: 'buttonPops'
- - Used in: 'levelPicker.js'
-
 #### Mummy Died
  - Source: The initial royalty free sound effect file is called Scream-Short-C1 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) lowered the pitch using [FL Studio](https://www.image-line.com/flstudio/) for our project.
  - File Name: 'dyingSound_1.1'
@@ -52,21 +42,28 @@ Location: '../assets/sounds/'
  - File Name: 'dyingSound_2.1'
  - Used in: 'level.js'
 
-#### Explosion
- - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
+#### Melee Attack Swoosh
+  - Source:
+  - File Name: 'MeleeAttack'
+  - Used in: 'mummy.js'
+
+#### The following sound effect assets were provided to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class:
+
+##### Explosion
  - File Name: 'explosion'
  - Used in: 'level.js'
 
-#### Melee Attack Swoosh
- - Source:
- - File Name: 'MeleeAttack'
+#### Level Picker Button Pops
+ - File Name: 'buttonPops'
+ - Used in: 'levelPicker.js'
+
+#### Mummy Beam
+ - File Name: 'beam'
  - Used in: 'mummy.js'
 
 #### Pick Up Item
-- Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'pickup'
  - Used in: level.js
-
 
 # Tilesets
 Location: '../assets/tilesets/'
