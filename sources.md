@@ -1,8 +1,4 @@
-
-<p align="center">
-  <h1>Asset Sources</h1>
-</p>
-
+<h1 align="center"> Asset Sources </h1>
 
 
 
