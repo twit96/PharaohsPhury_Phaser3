@@ -1,7 +1,21 @@
 <h1 align="center"> Asset Sources </h1>
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
 
+- [Audio: Background Music](#audio:-background-music)
+- [Audio: Sound Effects](#audio:-sound-effects)
+- [Images](#images)
+- [Sprites](#sprites)
+- [File Spritesheets](#spritesheets)
+- [Tilemaps](#tilemaps)
+- [Tilesets](#tilesets)
+- [Game Trailer](#game-trailer)
 
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<br>
 
 ## Audio: Background Music
 Location: '../assets/sounds/'
