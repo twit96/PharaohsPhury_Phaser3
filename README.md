@@ -3,6 +3,8 @@
 <p align="center">
   After thousands of years of slumber, you awaken to British Imperialists raiding your tomb. Reclaim your prized possessions and send them running home.
 
+  <img width="373" height="210" src="./assets/trailer/Photos/menu (cropped).png">
+
   Built with Phaser 3.
 </p>
 
