@@ -21,8 +21,8 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Asset Sources
-Our assets were a mixture of files we created for our project and open-source files we found.
-To give proper credit, we have a [Asset Sources File](./sources.md) ('sources.md').
+Our assets were a mixture of files we created for our project, and open-source files we found.
+To give proper credit to the sources of our assets, we have a dedicated [Asset Sources ](./sources.md) file ('sources.md').
 
 
 ## Characters
