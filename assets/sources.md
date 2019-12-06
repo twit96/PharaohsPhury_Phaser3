@@ -42,12 +42,12 @@ Location: '../assets/sounds/'
  - File Name: 'buttonPops'
  - Used in: 'levelPicker.js'
 
-#### mummyDied
+#### Mummy Died
  - Source: The initial royalty free sound effect file is called Scream-Short-C1 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) lowered the pitch using [FL Studio](https://www.image-line.com/flstudio/) for our project.
  - File Name: 'dyingSound_1.1'
  - Used in: 'level.js'
 
-#### enemyDied
+#### Enemy Died
  - Source: The initial royalty free sound effect file is called Scream-Short-B4 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) trimmed the audio clip using [FL Studio](https://www.image-line.com/flstudio/) for our project.
  - File Name: 'dyingSound_2.1'
  - Used in: 'level.js'
@@ -55,7 +55,7 @@ Location: '../assets/sounds/'
 #### Explosion
  - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'explosion'
- - Used in:
+ - Used in: 'level.js'
 
 #### Melee Attack Swoosh
  - Source:
