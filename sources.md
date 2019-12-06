@@ -4,8 +4,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Audio: Background Music](#audio:-background-music)
-- [Audio: Sound Effects](#audio:-sound-effects)
+- [Audio: Background Music](#audio-background-music)
+- [Audio: Sound Effects](#audio-sound-effects)
 - [Images](#images)
 - [Sprites](#sprites)
 - [File Spritesheets](#spritesheets)
