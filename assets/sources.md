@@ -33,12 +33,12 @@ Location: '../assets/sounds/'
 Location: '../assets/sounds/'
 
 #### Mummy Beam
- - Source:
+ - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'beam'
  - Used in: 'mummy.js'
 
 #### Level Picker Button Pops
- - Source:
+ - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'buttonPops'
  - Used in: 'levelPicker.js'
 
@@ -53,7 +53,7 @@ Location: '../assets/sounds/'
  - Used in: 'level.js'
 
 #### Explosion
- - Source:
+ - Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'explosion'
  - Used in:
 
@@ -63,9 +63,9 @@ Location: '../assets/sounds/'
  - Used in: 'mummy.js'
 
 #### Pick Up Item
- - Source:
+- Source: This asset was given to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of the semester.
  - File Name: 'pickup'
- - Used in:
+ - Used in: level.js
 
 
 # Tilesets
