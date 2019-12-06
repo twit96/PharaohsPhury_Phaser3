@@ -1,5 +1,10 @@
 <h1 align="center"> Asset Sources </h1>
 
+<p align="center">
+  Our assets were a mixture of files we created for our project, and open-source files we found.
+  We have given proper credit to those who contributed to our assets below.
+</p>
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
