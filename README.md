@@ -12,65 +12,13 @@
 ## Table of Contents
 
 - [Asset Sources](#asset-sources)
-- [Characters](#characters)
-- [The World](#the-world)
-- [Contributors](#contributors)
-- [File Structure](#file-structure)
 - [Acknowledgments](#acknowledgments)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Asset Sources
 Our assets were a mixture of files we created for our project, and open-source files we found.
-To give proper credit to the sources of our assets, we have a dedicated [Asset Sources ](./sources.md) file ('sources.md').
-
-
-## Characters
-### Mummy
-100 health, 3 lives per level.
-#### Movement Controls
-* A - Left
-* W - Jump
-* D - Right
-#### 'Gumba' Jump
-Fall on your enemies from above to kill them instantly.
-#### Cane Attack
-Spacebar to use.
-#### Beam Attack
-M to use.
-
-### Archaeologist
-### Soldier
-### Gunner
-### Tank
-
-
-## The World
-### The Pyramid
-### Art
-### Audio
-
-
-## Contributors
-<!-- This project is brought to you by these [awesome contributors](./CONTRIBUTORS.md). -->
-
-
-## File Structure
-### BootScene.js
-### menu.js
-### levelPicker.js
-### level.js
-### gameOverScene.js
-### mummy.js
-### enemyArch.js
-### enemySoldier.js
-### enemyGunner.js
-### tank.js
-### changeScene.js
-### userRegister.js
-### levelSetting.json
-### users.json
-### save.php
+To give proper credit to those who contributed to our assets, we have a dedicated [Asset Sources ](./sources.md) file ('sources.md').
 
 
 ## Acknowledgments
