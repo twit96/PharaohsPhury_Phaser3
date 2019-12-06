@@ -37,15 +37,13 @@ Location: '../assets/sounds/'
   - File Name: 'MeleeAttack'
   - Used in: 'mummy.js'
 
-### The following sound effect assets are from the [Fesliyan Studios website](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206), and were tweaked for our project by [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) using [FL Studio ](https://www.image-line.com/flstudio/).
+### The following sound effect assets are from the [Fesliyan Studios website(https://www.fesliyanstudios.com/), and were tweaked for our project by [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) using [FL Studio ](https://www.image-line.com/flstudio/). The audio files used were ['Scream-Short-C1' and 'Scream-Short-B4'](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206), respectively.
 
  - Mummy Died
-    - Original File Name: 'Scream-Short-C1'
     - File Name: 'dyingSound_1.1'
     - Used in: 'level.js'
 
  - Enemy Died
-    - Original File Name: 'Scream-Short-B4'
     - File Name: 'dyingSound_2.1'
     - Used in: 'level.js'
 
