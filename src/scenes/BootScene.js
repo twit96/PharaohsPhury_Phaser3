@@ -33,10 +33,10 @@ export default class BootScene extends Phaser.Scene {
 
     //items
     this.load.image("gem", "../assets/sprites/gem.png");
-    this.load.image("cane", "../assets/sprites/mummyCane.png");
+    this.load.image("cane", "../assets/sprites/cane.png");
     this.load.image("scroll", "../assets/sprites/Scroll.png");
-    this.load.image("arrow", "../assets/sprites/Arrow.png");
-    this.load.image("mask", "../assets/sprites/Sprite_Pharoah_Mask.png");
+    this.load.image("arrow", "../assets/sprites/arrow.png");
+    this.load.image("mask", "../assets/sprites/mask.png");
     this.load.image("exit", "../assets/images/exit.png");
 
     this.load.image("bullet", "../assets/sprites/bullet.png");
