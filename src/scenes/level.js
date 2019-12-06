@@ -633,7 +633,7 @@ export default class levelScene extends Phaser.Scene {
     this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
-    this.yell = this.sound.add("diedYell");
+    this.yell = this.sound.add("mummyDied");
     this.cry = this.sound.add("diedCry");
     this.pickupSound = this.sound.add("pickupSound");
     console.log('configured audio');
@@ -1204,7 +1204,6 @@ export default class levelScene extends Phaser.Scene {
     if (player.y > this.boundaryBox) {
       console.log('[level.playerFellOffMap]')
       this.player.updateHealth(100);
-      this.yell.play({volume: 5});
     }
   }
 

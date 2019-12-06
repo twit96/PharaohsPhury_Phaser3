@@ -42,9 +42,9 @@ Location: '../assets/sounds/'
  - File Name: 'buttonPops'
  - Used in: 'levelPicker.js'
 
-#### Died Cry
- - Source:
- - File Name: 'dyingSound_1'
+#### Mummy Died
+ - Source: The initial royalty free sound effect file is called Scream-Short-C1 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) lowered the pitch using [FL Studio](https://www.image-line.com/flstudio/) for our project.
+ - File Name: 'dyingSound_1.1'
  - Used in: 'level.js'
 
 #### Died Yell
