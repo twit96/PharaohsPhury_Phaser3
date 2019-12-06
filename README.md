@@ -1,8 +1,8 @@
 <h1 align="center"> Pharaoh's Phury </h1> <br>
 
-<p align="center">
+<!-- <p align="center">
   <img width="559" height="254" src="./assets/trailer/Photos/titleCropped.png">
-</p>
+</p> -->
 
 <p align="center">
   After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
@@ -17,6 +17,6 @@
 ## Table of Contents
 
 - [Asset Sources](./sources.md)
-- [Acknowledgments](./contributors.md)
+- [Project Contributors](./contributors.md)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

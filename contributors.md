@@ -4,10 +4,10 @@
   Thanks to these awesome people for their work on this project!
 </p>
 
- - [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/)
- - [Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/)
- - [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/)
- - [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/)
+ - Audio, Programming, and UI Design: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/)
+ - Art, Level Design, and UI Design: [Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/)
+ - Programming and Art: [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/)
+ - Programming and Audio: [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/)
 
 <p align="center">
   Thank to these people for providing us with the tools and feedback to keep our project on its feet!
