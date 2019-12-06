@@ -1,6 +1,6 @@
 # Art and Audio Sources
 
-## Background Music
+# Background Music
 Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
@@ -29,7 +29,7 @@ Location: '../assets/sounds/'
  - Used in: 'gameOverScene.js'
 
 
-## Sound Effects
+# Sound Effects
 Location: '../assets/sounds/'
 
 ### Melee Attack Swoosh
