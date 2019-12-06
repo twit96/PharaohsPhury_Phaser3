@@ -162,4 +162,4 @@ Location: '../assets/tilesets/'
 
 ## Game Trailer
 Location: '../assets/trailer/'
-The files for our game trailer are stashed in our assets. All sources can be found [here](../assets/trailer/README.txt)
+The files for our game trailer are stashed in our assets. All sources can be found [here](./assets/trailer/README.txt)
