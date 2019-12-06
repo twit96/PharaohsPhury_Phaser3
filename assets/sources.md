@@ -53,15 +53,15 @@ Location: '../assets/sounds/'
  - File Name: 'explosion'
  - Used in: 'level.js'
 
-#### Level Picker Button Pops
+##### Level Picker Button Pops
  - File Name: 'buttonPops'
  - Used in: 'levelPicker.js'
 
-#### Mummy Beam
+##### Mummy Beam
  - File Name: 'beam'
  - Used in: 'mummy.js'
 
-#### Pick Up Item
+##### Pick Up Item
  - File Name: 'pickup'
  - Used in: level.js
 
