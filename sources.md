@@ -1,6 +1,9 @@
 <h1 align="center"> Asset Sources </h1>
 
-<h2 align="center"> Audio: Background Music </h1>
+
+
+
+## Audio: Background Music
 Location: '../assets/sounds/'
 
 ### 'Ancient Egyptian Music - Tomb of the Ancients' by Fantasy & World Music by the Fiechters on YouTube
@@ -30,7 +33,7 @@ Location: '../assets/sounds/'
 
 
 
-
+<br>
 ## Audio: Sound Effects
 Location: '../assets/sounds/'
 
@@ -68,8 +71,7 @@ Location: '../assets/sounds/'
     - Used in: level.js
 
 
-
-
+<br>
 ## Images
 Location: '../assets/images/'
 
@@ -99,7 +101,7 @@ Location: '../assets/images/'
 
 
 
-
+<br>
 ## Sprites
 Location: '../assets/sprites/'
 
@@ -117,7 +119,7 @@ Location: '../assets/sprites/'
 
 
 
-
+<br>
 ## Spritesheets
 Location: '../assets/spriteSheets/'
 
@@ -136,7 +138,7 @@ Location: '../assets/spriteSheets/'
 
 
 
-
+<br>
 ## Tilemaps
 Location: '../assets/tilemaps/'
 
@@ -144,7 +146,7 @@ There are 9 tilemaps in total for our game: A tutorial tilemap, 7 level tilemaps
 
 
 
-
+<br>
 ## Tilesets
 Location: '../assets/tilesets/'
 
@@ -156,7 +158,7 @@ Location: '../assets/tilesets/'
 
 
 
-
+<br>
 ## Game Trailer
 Location: '../assets/trailer/'
 The files for our game trailer are stashed in our assets. Gameplay clips were provided by [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/) and [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/), and the trailer was put together by [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) using [Windows Photo and Movie Editor ](https://www.microsoft.com/en-us/windows/photo-movie-editor). Detailed information about the project files can be found [here](./assets/trailer/README.txt).
