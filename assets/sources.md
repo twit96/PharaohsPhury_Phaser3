@@ -32,36 +32,36 @@ Location: '../assets/sounds/'
 # Sound Effects
 Location: '../assets/sounds/'
 
-#### Mummy Died
+### Mummy Died
  - Source: The initial royalty free sound effect file is called Scream-Short-C1 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) lowered the pitch using [FL Studio](https://www.image-line.com/flstudio/) for our project.
  - File Name: 'dyingSound_1.1'
  - Used in: 'level.js'
 
-#### Enemy Died
+### Enemy Died
  - Source: The initial royalty free sound effect file is called Scream-Short-B4 from [this ](https://www.fesliyanstudios.com/royalty-free-sound-effects-download/screams-gasps-yelling-206) website. [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/) trimmed the audio clip using [FL Studio](https://www.image-line.com/flstudio/) for our project.
  - File Name: 'dyingSound_2.1'
  - Used in: 'level.js'
 
-#### Melee Attack Swoosh
+### Melee Attack Swoosh
   - Source:
   - File Name: 'MeleeAttack'
   - Used in: 'mummy.js'
 
-#### The following sound effect assets were provided to us by Jason Harron as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class:
+### The following sound effect assets were provided to us by [Jason Harron ](https://www.linkedin.com/in/jason-harron-a5ba06b/) as part of his [Making games in Phaser 3 Tutorial](https://www.youtube.com/watch?v=j3ni3pMH5JY&feature=youtu.be) at the beginning of our Game Development class:
 
-##### Explosion
+#### Explosion
  - File Name: 'explosion'
  - Used in: 'level.js'
 
-##### Level Picker Button Pops
+#### Level Picker Button Pops
  - File Name: 'buttonPops'
  - Used in: 'levelPicker.js'
 
-##### Mummy Beam
+#### Mummy Beam
  - File Name: 'beam'
  - Used in: 'mummy.js'
 
-##### Pick Up Item
+#### Pick Up Item
  - File Name: 'pickup'
  - Used in: level.js
 
