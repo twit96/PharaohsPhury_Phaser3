@@ -1,12 +1,12 @@
 <h1 align="center"> Pharaoh's Phury </h1> <br>
 
 <p align="center">
-  After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
-
-  <br>
-  <br>
 
   <img width="559" height="254" src="./assets/trailer/Photos/titleCropped.png">
+
+  <br>
+
+  After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
 
   <br>
 
