@@ -59,74 +59,74 @@ export default class BootScene extends Phaser.Scene {
 
     //LOAD SPRITESHEET ASSETS
     //ASSETS
-    this.load.spritesheet("chest", "../assets/spriteSheets/Treasure_Chest.png", {
+    this.load.spritesheet("chest", "../assets/spriteSheets/chest.png", {
       frameWidth: 48,
       frameHeight: 32
     });
 
     //PLAYER (mummy)
     //walking/idle
-    this.load.spritesheet("mummyIdle", "../assets/spriteSheets/MummyIdle.png", {
+    this.load.spritesheet("mummyIdle", "../assets/spriteSheets/mummy_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyWalk", "../assets/spriteSheets/MummyWalk.png", {
+    this.load.spritesheet("mummyWalk", "../assets/spriteSheets/mummy_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyCaneIdle", "../assets/spriteSheets/Sprite_MummyCane_Idle.png", {
+    this.load.spritesheet("mummyCaneIdle", "../assets/spriteSheets/mummyCane_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyCaneWalk", "../assets/spriteSheets/Sprite_MummyCane_Walk.png", {
+    this.load.spritesheet("mummyCaneWalk", "../assets/spriteSheets/mummyCane_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCaneIdle", "../assets/spriteSheets/Sprite_PharoahCane_Idle.png", {
+    this.load.spritesheet("pharoahCaneIdle", "../assets/spriteSheets/mummyMask_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCaneWalk", "../assets/spriteSheets/Sprite_PharoahCane_Walk.png", {
+    this.load.spritesheet("pharoahCaneWalk", "../assets/spriteSheets/mummyMaskWalk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
 
     //attacks
-    this.load.spritesheet("mummyBeam", "../assets/spriteSheets/mummyBeam.png", {
+    this.load.spritesheet("mummyBeam", "../assets/spriteSheets/beam.png", {
       frameWidth: 28,
       frameHeight: 7
     });
-    this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCaneAttack.png", {
+    this.load.spritesheet("mummyCane", "../assets/spriteSheets/mummyCane_melee.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCane", "../assets/spriteSheets/Sprite_PharoahCane_Attack.png", {
+    this.load.spritesheet("pharoahCane", "../assets/spriteSheets/mummyMask_melee.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyRangeCane", "../assets/spriteSheets/Sprite_MummyCane_RangeAttack.png", {
+    this.load.spritesheet("mummyRangeCane", "../assets/spriteSheets/mummyCane_beam.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahRangeCane", "../assets/spriteSheets/Sprite_PharoahCane_RangeAttack.png", {
+    this.load.spritesheet("pharoahRangeCane", "../assets/spriteSheets/mummyMask_beam.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/mummyCaneHitbox.png", {
+    this.load.spritesheet("caneHitbox", "../assets/spriteSheets/caneHitbox.png", {
       frameWidth: 64,
       frameHeight: 64
     });
 
     //enemies
-    this.load.spritesheet("archeologist", "../assets/spriteSheets/Sprite_Archelogist_Walk.png", {
+    this.load.spritesheet("archeologist", "../assets/spriteSheets/archWalk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldier", "../assets/spriteSheets/britishSoldierWalk.png", {
+    this.load.spritesheet("soldier", "../assets/spriteSheets/soldierWalk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldierShot", "../assets/spriteSheets/Sprite_British_Soldier_Shot.png", {
+    this.load.spritesheet("soldierShot", "../assets/spriteSheets/soldierShot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
@@ -134,7 +134,7 @@ export default class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("gunnerShot", "../assets/spriteSheets/Gunner_Shot.png", {
+    this.load.spritesheet("gunnerShot", "../assets/spriteSheets/gunnerShot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
@@ -151,11 +151,6 @@ export default class BootScene extends Phaser.Scene {
     this.load.spritesheet("tankTurretHigh", "../assets/spriteSheets/tankTurretHigh.png", {
       frameWidth: 112,
       frameHeight: 64
-    });
-
-    this.load.spritesheet("explosion", "../assets/spriteSheets/explosion.png", {
-      frameWidth: 16,
-      frameHeight: 16
     });
 
     console.log('loaded spritesheet assets');
@@ -333,13 +328,6 @@ export default class BootScene extends Phaser.Scene {
       }),
       frameRate: 10,
       repeat: 0
-    });
-    this.anims.create({
-      key: "explode",
-      frames: this.anims.generateFrameNumbers("explosion"),
-      frameRate: 20,
-      repeat: 0,
-      hideOnComplete: true
     });
     console.log('created spritesheet animations');
 
