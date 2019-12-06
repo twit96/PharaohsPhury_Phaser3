@@ -11,6 +11,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
+- [Asset Sources](#asset-sources)
 - [Characters](#characters)
 - [The World](#the-world)
 - [Contributors](#contributors)
@@ -18,6 +19,10 @@
 - [Acknowledgments](#acknowledgments)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Asset Sources
+Our assets were a mixture of files we created for our project and open-source files we found.
+To give proper credit, we have a [Asset Sources File](./sources.md) ('sources.md').
 
 
 ## Characters
