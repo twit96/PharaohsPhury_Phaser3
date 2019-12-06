@@ -44,12 +44,12 @@ export default class levelScene extends Phaser.Scene {
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
-
+    // this.fadeIsHappening = true;
 
     //SPRITE GROUPS
     //gems (diamonds)
-    this.collectItems = this.add.group();
-    this.collectItems.enableBody = true;
+    this.collectDiamonds = this.add.group();
+    this.collectDiamonds.enableBody = true;
 
     //scrolls
     this.scroll = this.add.group();
@@ -90,8 +90,8 @@ export default class levelScene extends Phaser.Scene {
     //background image
     if (this.levelNum == 8) {
       //final boss level
-      this.background = this.add.image(2240,384,'bossBackground');
-      this.background.setScale(2);
+      this.background = this.add.image(2440,720,'bossBackground');
+      this.background.setScale(1.1);
     } else if (this.levelNum == 0) {
       //tutorial level
       this.background = this.add.image(2240,384,'levelBackground');
@@ -165,9 +165,9 @@ export default class levelScene extends Phaser.Scene {
     }
     if (this.levelNum == 3) {
       //for melee
-      this.add.image(180,330, 'bubble').setScale(.4,.4);
-      this.add.image(180,330, 'spacebtn').setScale(.3,.3);
-      this.add.text(155, 280, "Melee");
+      this.add.image(280,430, 'bubble').setScale(.4,.4);
+      this.add.image(280,430, 'spacebtn').setScale(.3,.3);
+      this.add.text(255, 380, "Melee");
     } else if (this.levelNum == 6) {
       //for shooting beam
       this.add.image(180,530, 'bubble').setScale(.4,.4);
@@ -342,7 +342,10 @@ export default class levelScene extends Phaser.Scene {
       //tutorial enemies disabled
       if (this.levelNum == 0) {
         enemy.isActive = false;
-        enemy.setFlipX(true);
+        if (count != 0) {
+          //flip all but first gunner for tutorial
+          enemy.setFlipX(true);
+        }
       }
       this.enemiesG.add(enemy);
     }
@@ -370,7 +373,7 @@ export default class levelScene extends Phaser.Scene {
     for (var count in this.gemCor) {
       var x = this.gemCor[count][0];
       var y = this.gemCor[count][1];
-      this.collectItems.add(this.physics.add.sprite(x,y,'gem'));
+      this.collectDiamonds.add(this.physics.add.sprite(x,y,'gem'));
     }
 
     //chests
@@ -394,7 +397,6 @@ export default class levelScene extends Phaser.Scene {
     }
 
     //player
-<<<<<<< Updated upstream
     this.spawnX = this.playerCor[0][0];
     this.spawnY = this.playerCor[0][1];
     this.player = new Mummy({
@@ -403,34 +405,8 @@ export default class levelScene extends Phaser.Scene {
       x: this.spawnX,
       y: this.spawnY
     });
-=======
-    this.spawnPoints = [
 
-      [180, 550], //level1
-      [286, 500], //level2
-      [58, 400],  //level3
-      [94, 630],  //level4
-      [173, 375], //level5
-      [75, 550],  //level6
-      [94, 250],  //level7
-      [25, 450],  //final boss
-    ];
-    if (this.levelNum == 0) {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum][0],
-        y: this.spawnPoints[this.levelNum][1]
-      });
-    } else {
-      this.player = new Mummy({
-        scene: this,
-        key: "mummyWalk",
-        x: this.spawnPoints[this.levelNum - 1][0],
-        y: this.spawnPoints[this.levelNum - 1][1]
-      });
-    }
->>>>>>> Stashed changes
+
 
     console.log('created sprites');
 
@@ -461,8 +437,8 @@ export default class levelScene extends Phaser.Scene {
     this.physics.add.collider(this.enemiesA, this.worldLayer);
     this.physics.add.collider(this.enemiesS, this.worldLayer);
     this.physics.add.collider(this.enemiesG, this.worldLayer);
-    this.physics.add.collider(this.collectItems, this.worldLayer);
-    this.physics.add.collider(this.collectItems, this.collectItems);
+    this.physics.add.collider(this.collectDiamonds, this.worldLayer);
+    this.physics.add.collider(this.collectDiamonds, this.collectDiamonds);
     this.physics.add.collider(this.scroll, this.scroll);
     this.physics.add.collider(this.scroll, this.worldLayer);
     this.physics.add.collider(this.chests, this.worldLayer);
@@ -512,7 +488,7 @@ export default class levelScene extends Phaser.Scene {
     //between player and gems (diamonds)
     this.physics.add.overlap(
       this.player,
-      this.collectItems,
+      this.collectDiamonds,
       this.pickup,
       null,
       this
@@ -543,12 +519,13 @@ export default class levelScene extends Phaser.Scene {
     );
     //between player beams and worldLayer
     this.physics.add.overlap(
-      this.player.beams,
-      this.worldLayer,
-      this.player.beamHitWall,
+      this.player,
+      this.sChests,
+      this.pickupsChests,
       null,
       this
     );
+
     //between enemy bullets and player
     this.enemiesS.children.each(function(enemyS) {
       this.physics.add.overlap(
@@ -697,8 +674,8 @@ export default class levelScene extends Phaser.Scene {
     this.bomb = this.sound.add("bomb");
     this.shootBeam = this.sound.add("beam");
     this.meleeSound = this.sound.add("meleeAttack");
-    this.yell = this.sound.add("diedYell");
-    this.cry = this.sound.add("diedCry");
+    this.yell = this.sound.add("mummyDied");
+    this.cry = this.sound.add("enemyDied");
     this.pickupSound = this.sound.add("pickupSound");
     console.log('configured audio');
     // call once to reset the mana to 0;
@@ -738,7 +715,7 @@ export default class levelScene extends Phaser.Scene {
         score: this.score,
         done: this.player.levelCompleted
       });
-      return;
+      // this.fadingOut();
     }
 
     // Arrow timer
@@ -1091,7 +1068,35 @@ export default class levelScene extends Phaser.Scene {
     function to handle player picking up chests in the level
     */
     chest.play("chestOpen");
-    this.scroll.add(this.physics.add.sprite(chest.x,chest.y-50,'scroll'));
+    //generate random number of diamonds to burst from chest
+    var randAmount = Math.floor(Math.random() * Math.floor(10));
+    var x;
+    for (x = 0; x < randAmount; x++) {
+      //within 75 pixels left or right from the chest
+      var randomShiftX = Math.floor(Math.random() * Math.floor(100)) - 75;
+
+      //up to 75 pixels above the chest
+      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+
+      //spawn diamond
+      var diamondX = chest.x + randomShiftX;
+      var diamondY = chest.y - randomShiftY;
+      this.spawnDiamond(diamondX, diamondY);
+    }
+    chest.setFrame(2);
+    chest.disableBody(true,false);
+    this.pickupSound.play();
+  }
+  pickupsChests(player,chest) {
+    /**
+    function to handle player picking up chests in the level
+    */
+    chest.play("chestOpen");
+    if (this.levelNum == 2){
+      var cane = this.collectDiamonds.add(this.physics.add.sprite(chest.x,chest.y-50,'cane'));
+    } else if (this.levelNum == 5){
+      this.collectDiamonds.add(this.physics.add.sprite(chest.x,chest.y-50,'mask'));
+    }
     chest.setFrame(2);
     chest.disableBody(true,false);
     this.pickupSound.play();
@@ -1269,7 +1274,7 @@ export default class levelScene extends Phaser.Scene {
     /**
     function to spawn a diamond sprite at a set coordinate
     */
-    this.collectItems.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
+    this.collectDiamonds.add(this.physics.add.sprite(diamondX,diamondY,"gem"));
   }
   spawnScroll(diamondX, diamondY){
     this.scroll.add(this.physics.add.sprite(diamondX,diamondY,"scroll"));
@@ -1282,7 +1287,6 @@ export default class levelScene extends Phaser.Scene {
     if (player.y > this.boundaryBox) {
       console.log('[level.playerFellOffMap]')
       this.player.updateHealth(100);
-      this.yell.play({volume: 5});
     }
   }
 
@@ -1389,4 +1393,22 @@ export default class levelScene extends Phaser.Scene {
       heart.rotation = 90;
     }, this);
   }
+
+  // fadingOut(){
+  //   if (!this.fadeIsHappening) {
+  //     this.fadeIsHappening = true;
+  //     this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+  //       this.scene.start('gameOverScene', {
+  //         level: this.levelNum,
+  //         diamond: this.player.diamondsCollected,
+  //         killed: this.player.enemiesKilled,
+  //         time: this.duration,
+  //         score: this.score,
+  //         done: this.player.levelCompleted
+  //       });
+  //     },this);
+  //     this.cameras.main.fadeOut(1500);
+  //     console.log("i am here");
+  //   }
+  // }
 }
