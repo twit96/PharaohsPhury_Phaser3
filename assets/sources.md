@@ -24,7 +24,7 @@ Location: '../assets/sounds/'
  - Used in: 'level.js'
 
 ### End of Level Music
- - Source:
+ - Source: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/) created this audio file using [GarageBand for iOS](https://apps.apple.com/us/app/garageband/id408709785).
  - File Name: 'HappyEndingPlay'
  - Used in: 'gameOverScene.js'
 
