@@ -286,21 +286,44 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     enemy.updateHealth(20);
     enemy.stun();
 
-    //generate random number of diamonds to burst from dead enemy when it dies
-    if (enemy.health < 0) {
-      var randAmount = Math.floor(Math.random() * Math.floor(10));
-      var x;
-      for (x = 0; x < randAmount; x++) {
-        //within 75 pixels left or right from the enemy
-        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+    //generate diamond pyramid to burst from dead enemy
 
-        //up to 75 pixels above the enemy
-        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+    // pyramid coordinates for diamonds
+    var x = enemy.x;
+    var y = enemy.y;
+    var coors = [[x, (y-20)],
+                 [(x-10), y], [(x+10), y],
+               ];
 
-        //spawn diamond
-        var diamondX = enemy.x + randomShiftX;
-        var diamondY = enemy.y - randomShiftY;
-        this.spawnDiamond(diamondX, diamondY);
+    //spawn diamond pyramid
+    var i;
+    for (i = 0; i < coors.length; i++) {
+      //spawn diamond
+      var dX = coors[i][0];
+      var dY = coors[i][1];
+      this.spawnDiamond(dX, dY);
+    }
+
+    //generate pyramid of scrolls to burst from dead enemy
+    if (this.levelNum >= 6 || this.levelNum == 0){
+      var doesSpawn = Math.floor(Math.random() * Math.floor(3));
+      if (doesSpawn > 0) {
+        //scroll coordinates
+        var x = enemy.x;
+        var y = enemy.y;
+        var coors = [[x, (y-30)],
+                     [(x-10), (y-10)], [(x+10), (y-10)],
+                   ];
+
+        //spawn scrolls
+        var randAmount = Math.floor(Math.random() * Math.floor(2) + 1);
+        var x;
+        for (i = 0; i < randAmount; i++) {
+          //spawn diamond
+          var dX = coors[i][0];
+          var dY = coors[i][1];
+          this.spawnScroll(dX, dY);
+        }
       }
     }
 
@@ -389,10 +412,49 @@ export default class Mummy extends Phaser.GameObjects.Sprite {
     beam.disableBody(true, true);
 
     //update player stats
-    enemy.updateHealth(20);
+    enemy.updateHealth(30);
     enemy.isActive = false;
 
-    //spawn diamond from enemy
-    this.spawnDiamond(enemy.x, enemy.y);
+    //generate pyramid of diamonds to burst from dead enemy
+    var x = enemy.x;
+    var y = enemy.y;
+    var coors = [[x, (y-40)],
+                 [(x-10), (y-20)], [(x+10), (y-20)],
+                 [(x-20), y], [x, y], [(x+20), y]
+               ];
+
+    //spawn diamond pyramid
+    var i;
+    for (i = 0; i < coors.length; i++) {
+      //spawn diamond
+      var dX = coors[i][0];
+      var dY = coors[i][1];
+      this.spawnDiamond(dX, dY);
     }
+
+    //generate pyramid of scrolls to burst from dead enemy
+    if (this.levelNum >= 6 || this.levelNum == 0){
+      var doesSpawn = Math.floor(Math.random() * Math.floor(3));
+      if (doesSpawn > 0) {
+        //scroll coordinates
+        var x = enemy.x;
+        var y = enemy.y;
+        var coors = [[x, (y-50)],
+                     [(x-10), (y-30)], [(x+10), (y-30)],
+                     [(x-20), (y-10)], [x, (y-10)], [(x+20), (y-10)]
+                   ];
+
+        //spawn scrolls
+        var randAmount = Math.floor(Math.random() * Math.floor(5) + 1);
+        var i;
+        for (i = 0; i < randAmount; i++) {
+          //spawn diamond
+          var dX = coors[i][0];
+          var dY = coors[i][1];
+          this.spawnScroll(dX, dY);
+        }
+      }
+    }
+
+  }
 }

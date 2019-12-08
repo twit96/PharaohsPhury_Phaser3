@@ -10,7 +10,7 @@ export default class EnemySoldier extends Phaser.GameObjects.Sprite {
 
     //variables
     this.moveCounter = 0
-    this.health = 25;
+    this.health = 20;
 
     this.speed = 100;
     this.bulletSpeed = 2000;

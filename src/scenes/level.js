@@ -1068,20 +1068,22 @@ export default class levelScene extends Phaser.Scene {
     function to handle player picking up chests in the level
     */
     chest.play("chestOpen");
-    //generate random number of diamonds to burst from chest
-    var randAmount = Math.floor(Math.random() * Math.floor(10));
-    var x;
-    for (x = 0; x < randAmount; x++) {
-      //within 75 pixels left or right from the chest
-      var randomShiftX = Math.floor(Math.random() * Math.floor(100)) - 75;
 
-      //up to 75 pixels above the chest
-      var randomShiftY = Math.floor(Math.random() * Math.floor(75));
+    // pyramid coordinates for diamonds
+    var x = chest.x;
+    var y = chest.y;
+    var coors = [[x, (y-40)],
+                 [(x-10), (y-20)], [(x+10), (y-20)],
+                 [(x-20), y], [x, y], [(x+20), y]
+               ];
 
+    //spawn diamond pyramid
+    var i;
+    for (i = 0; i < coors.length; i++) {
       //spawn diamond
-      var diamondX = chest.x + randomShiftX;
-      var diamondY = chest.y - randomShiftY;
-      this.spawnDiamond(diamondX, diamondY);
+      var dX = coors[i][0];
+      var dY = coors[i][1];
+      this.spawnDiamond(dX, dY);
     }
     chest.setFrame(2);
     chest.disableBody(true,false);
@@ -1200,42 +1202,20 @@ export default class levelScene extends Phaser.Scene {
 
     if (this.player.body.touching.down) {
       //collision on top or bottom of enemy
-      console.log('gumba jump: enemy died');
+      console.log('gumba jump');
 
-      //generate random number of diamonds to burst from dead enemy
-      var randAmount = Math.floor(Math.random() * Math.floor(10));
-      var x;
-      for (x = 0; x < randAmount; x++) {
-        //within 75 pixels left or right from the enemy
-        var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
+      //spawn diamond from enemy
+      this.spawnDiamond(enemy.x, enemy.y - 20);
 
-        //up to 75 pixels above the enemy
-        var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-        //spawn diamond
-        var diamondX = enemy.x + randomShiftX;
-        var diamondY = enemy.y - randomShiftY;
-        this.spawnDiamond(diamondX, diamondY);
-      }
       if (this.levelNum >= 6 || this.levelNum == 0){
-        var scrollRandAmount = Math.floor(Math.random() * Math.floor(10)+1);
-        if (scrollRandAmount > 6.5){
-          for (x = 0; x < randAmount; x++) {
-            //within 75 pixels left or right from the enemy
-            var randomShiftX = Math.floor(Math.random() * Math.floor(150)) - 75;
-
-            //up to 75 pixels above the enemy
-            var randomShiftY = Math.floor(Math.random() * Math.floor(75));
-
-            //spawn diamond
-            var diamondX = enemy.x + randomShiftX;
-            var diamondY = enemy.y - randomShiftY;
-            this.spawnScroll(diamondX, diamondY);
-          }
+        var doesSpawn = Math.floor(Math.random() * Math.floor(3));
+        if (doesSpawn > 0) {
+          this.spawnScroll(enemy.x, enemy.y);
         }
       }
+
       //"kill" enemy
-      enemy.updateHealth(1000); //soldier health is 25, arch health is 10, really really make sure they die with 1000 damage
+      enemy.updateHealth(30);
       enemy.isActive = false;
       this.cry.play();
 
