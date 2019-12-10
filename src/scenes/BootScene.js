@@ -163,7 +163,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('beam', './assets/sounds/beam.mp3');
     this.load.audio('pops', './assets/sounds/buttonPops.mp3');
     this.load.audio('mummyDied', './assets/sounds/dyingSound_1.1.mp3');
-    this.load.audio('enemyDied', './assets/sounds/dyingSound_2.1.mp3');
+    this.load.audio('enemyDied', './assets/sounds/dyingSound_2.2.mp3');
     this.load.audio('bomb', './assets/sounds/explosion.mp3');
     this.load.audio('HE', './assets/sounds/happyEndingPlay.mp3');
     this.load.audio('meleeAttack', './assets/sounds/meleeAttack.mp3');
