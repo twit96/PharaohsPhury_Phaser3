@@ -5,7 +5,7 @@
 </p> -->
 
 <p align="center">
-  A Game Built with Phaser 3.
+  A game built with Phaser 3.
 </p>
 
 <p align="center">
