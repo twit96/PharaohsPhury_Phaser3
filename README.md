@@ -5,11 +5,11 @@
 </p> -->
 
 <p align="center">
-  After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
+  A Game Built with Phaser 3.
 </p>
 
 <p align="center">
-  Built with Phaser 3.
+  After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
 </p>
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
