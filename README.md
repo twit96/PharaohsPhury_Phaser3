@@ -5,7 +5,7 @@
 </p> -->
 
 <p align="center">
-  A game built with Phaser 3.
+  A 2D Platformer Game Built with Phaser 3.
 </p>
 
 <p align="center">
