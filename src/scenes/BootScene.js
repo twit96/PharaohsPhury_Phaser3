@@ -165,8 +165,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('mummyDied', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/dyingSound_1.1.mp3');
     this.load.audio('enemyDied', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/dyingSound_2.2.mp3');
     this.load.audio('bomb', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/explosion.mp3');
+    this.load.audio('meleeAttack', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/MeleeAttack.mp3');
     this.load.audio('HE', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/HappyEndingPlay.mp3');
-    this.load.audio('meleeAttack', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/meleeAttack.mp3');
     this.load.audio('pickupSound', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/pickup.mp3');
     console.log('loaded audio assets');
   }
