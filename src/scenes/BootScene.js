@@ -13,9 +13,6 @@ export default class BootScene extends Phaser.Scene {
       fontSize: 30,
       color: '#FFFFFF'});
 
-
-    console.log('Current directory: ' + process.cwd());
-
     //LOAD LEVEL ASSETS
     //tile sets
     this.load.image("incaBackTiles", "../../assets/tilesets/inca_back.png");
