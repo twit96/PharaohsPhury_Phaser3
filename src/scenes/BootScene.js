@@ -15,7 +15,7 @@ export default class BootScene extends Phaser.Scene {
 
     //LOAD LEVEL ASSETS
     //tile sets
-    this.load.image("incaBackTiles", "./assets/tilesets/inca_back.png");
+    this.load.image("incaBackTiles", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilesets/inca_back.png");
     this.load.image("incaFrontTiles", "./assets/tilesets/inca_front.png");
     this.load.image("incaBack2Tiles", "./assets/tilesets/inca_back2.png");
     this.load.image("sandTiles", "./assets/tilesets/sand_tiles.png");
