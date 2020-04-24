@@ -15,7 +15,7 @@ export default class BootScene extends Phaser.Scene {
 
     //LOAD LEVEL ASSETS
     //tile sets
-    this.load.image("incaBackTiles", "../assets/tilesets/inca_back.png");
+    this.load.image("incaBackTiles", "../../PharaohsPhury_Phaser3/assets/tilesets/inca_back.png");
     this.load.image("incaFrontTiles", "../../PharaohsPhury_Phaser3/assets/tilesets/inca_front.png");
     this.load.image("incaBack2Tiles", "../../PharaohsPhury_Phaser3/assets/tilesets/inca_back2.png");
     this.load.image("sandTiles", "../../PharaohsPhury_Phaser3/assets/tilesets/sand_tiles.png");
@@ -35,7 +35,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("gem", "../../PharaohsPhury_Phaser3/assets/sprites/gem.png");
     this.load.image("cane", "../../PharaohsPhury_Phaser3/assets/sprites/cane.png");
     this.load.image("scroll", "../../PharaohsPhury_Phaser3/assets/sprites/Scroll.png");
-    this.load.image("arrow", "../../PharaohsPhury_Phaser3/assets/sprites/arrow.png");
+    this.load.image("arrow", "../../PharaohsPhury_Phaser3/assets/sprites/Arrow.png");
     this.load.image("mask", "../../PharaohsPhury_Phaser3/assets/sprites/mask.png");
     this.load.image("exit", "../../PharaohsPhury_Phaser3/assets/images/exit.png");
 
@@ -43,8 +43,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.image("shell", "../../PharaohsPhury_Phaser3/assets/sprites/shell.png");
     this.load.image("bomb", "../../PharaohsPhury_Phaser3/assets/sprites/bomb.png");
 
-    this.load.image("healthBarFrame","../../PharaohsPhury_Phaser3/assets/images/healthbarframe.png");
-    this.load.image("healthBarFill","../../PharaohsPhury_Phaser3/assets/images/healthbarfill.png");
+    this.load.image("healthBarFrame","../../PharaohsPhury_Phaser3/assets/images/healthBarFrame.png");
+    this.load.image("healthBarFill","../../PharaohsPhury_Phaser3/assets/images/healthBarFill.png");
     this.load.image("heart","../../PharaohsPhury_Phaser3/assets/images/lifeHeart.png");
 
     this.load.image('bossbackground', '../../PharaohsPhury_Phaser3/assets/images/bossbackground.jpg');
