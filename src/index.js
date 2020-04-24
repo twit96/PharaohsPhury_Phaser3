@@ -1,5 +1,5 @@
 /*global Phaser, window*/
-import Config from './src/config/config.js';
+import Config from './config/config.js';
 import BootScene from './scenes/BootScene.js';
 import menu from './scenes/menu.js';
 import userScene from './scenes/userRegister.js';
