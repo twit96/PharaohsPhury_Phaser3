@@ -1,11 +1,11 @@
 /*global Phaser, window*/
-import Config from './config/config.js';
-import BootScene from './scenes/BootScene.js';
-import menu from './scenes/menu.js';
-import userScene from './scenes/userRegister.js';
-import levelPicker from './scenes/levelPicker.js';
-import levelScene from './scenes/level.js';
-import gameOverScene from './scenes/gameOverScene.js';
+import Config from './PharaohsPhury_Phaser3/src/config/config.js';
+import BootScene from './PharaohsPhury_Phaser3/src/scenes/BootScene.js';
+import menu from './PharaohsPhury_Phaser3/src/scenes/menu.js';
+import userScene from './PharaohsPhury_Phaser3/src/scenes/userRegister.js';
+import levelPicker from './PharaohsPhury_Phaser3/src/scenes/levelPicker.js';
+import levelScene from './PharaohsPhury_Phaser3/src/scenes/level.js';
+import gameOverScene from './PharaohsPhury_Phaser3/src/scenes/gameOverScene.js';
 
 class Game extends Phaser.Game {
   constructor () {
