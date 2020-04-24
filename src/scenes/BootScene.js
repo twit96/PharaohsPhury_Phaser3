@@ -15,140 +15,140 @@ export default class BootScene extends Phaser.Scene {
 
     //LOAD LEVEL ASSETS
     //tile sets
-    this.load.image("incaBackTiles", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilesets/inca_back.png");
-    this.load.image("incaFrontTiles", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilesets/inca_front.png");
-    this.load.image("incaBack2Tiles", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilesets/inca_back2.png");
-    this.load.image("sandTiles", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilesets/sand_tiles.png");
+    this.load.image("incaBackTiles", "./PharaohsPhury_Phaser3/assets/tilesets/inca_back.png");
+    this.load.image("incaFrontTiles", "./PharaohsPhury_Phaser3/assets/tilesets/inca_front.png");
+    this.load.image("incaBack2Tiles", "./PharaohsPhury_Phaser3/assets/tilesets/inca_back2.png");
+    this.load.image("sandTiles", "./PharaohsPhury_Phaser3/assets/tilesets/sand_tiles.png");
 
     //tile maps
-    this.load.tilemapTiledJSON("level0map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/tutorialMap.json");
-    this.load.tilemapTiledJSON("level1map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level1map.json");
-    this.load.tilemapTiledJSON("level2map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level2map.json");
-    this.load.tilemapTiledJSON("level3map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level3map.json");
-    this.load.tilemapTiledJSON("level4map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level4map.json");
-    this.load.tilemapTiledJSON("level5map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level5map.json");
-    this.load.tilemapTiledJSON("level6map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level6map.json");
-    this.load.tilemapTiledJSON("level7map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/level7map.json");
-    this.load.tilemapTiledJSON("level8map", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/tilemaps/finalBossMap.json");
+    this.load.tilemapTiledJSON("level0map", "./PharaohsPhury_Phaser3/assets/tilemaps/tutorialMap.json");
+    this.load.tilemapTiledJSON("level1map", "./PharaohsPhury_Phaser3/assets/tilemaps/level1map.json");
+    this.load.tilemapTiledJSON("level2map", "./PharaohsPhury_Phaser3/assets/tilemaps/level2map.json");
+    this.load.tilemapTiledJSON("level3map", "./PharaohsPhury_Phaser3/assets/tilemaps/level3map.json");
+    this.load.tilemapTiledJSON("level4map", "./PharaohsPhury_Phaser3/assets/tilemaps/level4map.json");
+    this.load.tilemapTiledJSON("level5map", "./PharaohsPhury_Phaser3/assets/tilemaps/level5map.json");
+    this.load.tilemapTiledJSON("level6map", "./PharaohsPhury_Phaser3/assets/tilemaps/level6map.json");
+    this.load.tilemapTiledJSON("level7map", "./PharaohsPhury_Phaser3/assets/tilemaps/level7map.json");
+    this.load.tilemapTiledJSON("level8map", "./PharaohsPhury_Phaser3/assets/tilemaps/finalBossMap.json");
 
     //items
-    this.load.image("gem", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/gem.png");
-    this.load.image("cane", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/cane.png");
-    this.load.image("scroll", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/Scroll.png");
-    this.load.image("arrow", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/arrow.png");
-    this.load.image("mask", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/mask.png");
-    this.load.image("exit", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/exit.png");
+    this.load.image("gem", "./PharaohsPhury_Phaser3/assets/sprites/gem.png");
+    this.load.image("cane", "./PharaohsPhury_Phaser3/assets/sprites/cane.png");
+    this.load.image("scroll", "./PharaohsPhury_Phaser3/assets/sprites/Scroll.png");
+    this.load.image("arrow", "./PharaohsPhury_Phaser3/assets/sprites/arrow.png");
+    this.load.image("mask", "./PharaohsPhury_Phaser3/assets/sprites/mask.png");
+    this.load.image("exit", "./PharaohsPhury_Phaser3/assets/images/exit.png");
 
-    this.load.image("bullet", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/bullet.png");
-    this.load.image("shell", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/shell.png");
-    this.load.image("bomb", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/sprites/bomb.png");
+    this.load.image("bullet", "./PharaohsPhury_Phaser3/assets/sprites/bullet.png");
+    this.load.image("shell", "./PharaohsPhury_Phaser3/assets/sprites/shell.png");
+    this.load.image("bomb", "./PharaohsPhury_Phaser3/assets/sprites/bomb.png");
 
-    this.load.image("healthBarFrame",".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/healthbarframe.png");
-    this.load.image("healthBarFill",".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/healthbarfill.png");
-    this.load.image("heart",".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/lifeHeart.png");
+    this.load.image("healthBarFrame","./PharaohsPhury_Phaser3/assets/images/healthbarframe.png");
+    this.load.image("healthBarFill","./PharaohsPhury_Phaser3/assets/images/healthbarfill.png");
+    this.load.image("heart","./PharaohsPhury_Phaser3/assets/images/lifeHeart.png");
 
-    this.load.image('bossbackground', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/bossbackground.jpg');
-    this.load.image('background1', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/egyptianbackground.jpg');
+    this.load.image('bossbackground', './PharaohsPhury_Phaser3/assets/images/bossbackground.jpg');
+    this.load.image('background1', './PharaohsPhury_Phaser3/assets/images/egyptianbackground.jpg');
 
-    this.load.image("manaFill", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/manaBarFilled.png");
-    this.load.image("manaFrame", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/manaBarFrame.png");
-    this.load.image("scroll_BG", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/images/Scroll_1.png");
+    this.load.image("manaFill", "./PharaohsPhury_Phaser3/assets/images/manaBarFilled.png");
+    this.load.image("manaFrame", "./PharaohsPhury_Phaser3/assets/images/manaBarFrame.png");
+    this.load.image("scroll_BG", "./PharaohsPhury_Phaser3/assets/images/Scroll_1.png");
 
 
     console.log('loaded level assets');
 
     //LOAD SPRITESHEET ASSETS
     //ASSETS
-    this.load.spritesheet("chest", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/chest.png", {
+    this.load.spritesheet("chest", "./PharaohsPhury_Phaser3/assets/spriteSheets/chest.png", {
       frameWidth: 48,
       frameHeight: 32
     });
 
     //PLAYER (mummy)
     //walking/idle
-    this.load.spritesheet("mummyIdle", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummy_idle.png", {
+    this.load.spritesheet("mummyIdle", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummy_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyWalk", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummy_walk.png", {
+    this.load.spritesheet("mummyWalk", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummy_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyCaneIdle", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_idle.png", {
+    this.load.spritesheet("mummyCaneIdle", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyCaneWalk", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_walk.png", {
+    this.load.spritesheet("mummyCaneWalk", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCaneIdle", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_idle.png", {
+    this.load.spritesheet("pharoahCaneIdle", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_idle.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCaneWalk", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyMaskWalk.png", {
+    this.load.spritesheet("pharoahCaneWalk", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyMaskWalk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
 
     //attacks
-    this.load.spritesheet("mummyBeam", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/beam.png", {
+    this.load.spritesheet("mummyBeam", "./PharaohsPhury_Phaser3/assets/spriteSheets/beam.png", {
       frameWidth: 28,
       frameHeight: 7
     });
-    this.load.spritesheet("mummyCane", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_melee.png", {
+    this.load.spritesheet("mummyCane", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_melee.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahCane", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_melee.png", {
+    this.load.spritesheet("pharoahCane", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_melee.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("mummyRangeCane", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_beam.png", {
+    this.load.spritesheet("mummyRangeCane", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyCane_beam.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("pharoahRangeCane", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_beam.png", {
+    this.load.spritesheet("pharoahRangeCane", "./PharaohsPhury_Phaser3/assets/spriteSheets/mummyMask_beam.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("caneHitbox", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/cane_hitbox.png", {
+    this.load.spritesheet("caneHitbox", "./PharaohsPhury_Phaser3/assets/spriteSheets/cane_hitbox.png", {
       frameWidth: 64,
       frameHeight: 64
     });
 
     //enemies
-    this.load.spritesheet("archeologist", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/arch_walk.png", {
+    this.load.spritesheet("archeologist", "./PharaohsPhury_Phaser3/assets/spriteSheets/arch_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldier", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/soldier_walk.png", {
+    this.load.spritesheet("soldier", "./PharaohsPhury_Phaser3/assets/spriteSheets/soldier_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("soldierShot", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/soldier_shot.png", {
+    this.load.spritesheet("soldierShot", "./PharaohsPhury_Phaser3/assets/spriteSheets/soldier_shot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
-    this.load.spritesheet("gunner", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/gunner_walk.png", {
+    this.load.spritesheet("gunner", "./PharaohsPhury_Phaser3/assets/spriteSheets/gunner_walk.png", {
       frameWidth: 64,
       frameHeight: 64
     });
-    this.load.spritesheet("gunnerShot", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/gunner_shot.png", {
+    this.load.spritesheet("gunnerShot", "./PharaohsPhury_Phaser3/assets/spriteSheets/gunner_shot.png", {
       frameWidth: 96,
       frameHeight: 64
     });
 
     //final boss (tank)
-    this.load.spritesheet("tankBase", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/tankBase.png", {
+    this.load.spritesheet("tankBase", "./PharaohsPhury_Phaser3/assets/spriteSheets/tankBase.png", {
       frameWidth: 192,
       frameHeight: 64
     });
-    this.load.spritesheet("tankTurret", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/tankTurret.png", {
+    this.load.spritesheet("tankTurret", "./PharaohsPhury_Phaser3/assets/spriteSheets/tankTurret.png", {
       frameWidth: 128,
       frameHeight: 30
     });
-    this.load.spritesheet("tankTurretHigh", ".https://twit96.github.io/PharaohsPhury_Phaser3/assets/spriteSheets/tankTurretHigh.png", {
+    this.load.spritesheet("tankTurretHigh", "./PharaohsPhury_Phaser3/assets/spriteSheets/tankTurretHigh.png", {
       frameWidth: 112,
       frameHeight: 64
     });
@@ -156,18 +156,18 @@ export default class BootScene extends Phaser.Scene {
     console.log('loaded spritesheet assets');
 
     //LOAD AUDIO ASSETS
-    this.load.audio('bg', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/background.mp3');
-    this.load.audio('bg1', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/background1.mp3');
-    this.load.audio('bg2', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/background2.mp3');
-    this.load.audio('bg3', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/background3.mp3')
-    this.load.audio('beam', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/beam.mp3');
-    this.load.audio('pops', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/buttonPops.mp3');
-    this.load.audio('mummyDied', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/dyingSound_1.1.mp3');
-    this.load.audio('enemyDied', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/dyingSound_2.2.mp3');
-    this.load.audio('bomb', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/explosion.mp3');
-    this.load.audio('meleeAttack', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/MeleeAttack.mp3');
-    this.load.audio('HE', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/HappyEndingPlay.mp3');
-    this.load.audio('pickupSound', '.https://twit96.github.io/PharaohsPhury_Phaser3/assets/sounds/pickup.mp3');
+    this.load.audio('bg', './PharaohsPhury_Phaser3/assets/sounds/background.mp3');
+    this.load.audio('bg1', './PharaohsPhury_Phaser3/assets/sounds/background1.mp3');
+    this.load.audio('bg2', './PharaohsPhury_Phaser3/assets/sounds/background2.mp3');
+    this.load.audio('bg3', './PharaohsPhury_Phaser3/assets/sounds/background3.mp3')
+    this.load.audio('beam', './PharaohsPhury_Phaser3/assets/sounds/beam.mp3');
+    this.load.audio('pops', './PharaohsPhury_Phaser3/assets/sounds/buttonPops.mp3');
+    this.load.audio('mummyDied', './PharaohsPhury_Phaser3/assets/sounds/dyingSound_1.1.mp3');
+    this.load.audio('enemyDied', './PharaohsPhury_Phaser3/assets/sounds/dyingSound_2.2.mp3');
+    this.load.audio('bomb', './PharaohsPhury_Phaser3/assets/sounds/explosion.mp3');
+    this.load.audio('meleeAttack', './PharaohsPhury_Phaser3/assets/sounds/MeleeAttack.mp3');
+    this.load.audio('HE', './PharaohsPhury_Phaser3/assets/sounds/HappyEndingPlay.mp3');
+    this.load.audio('pickupSound', './PharaohsPhury_Phaser3/assets/sounds/pickup.mp3');
     console.log('loaded audio assets');
   }
 
