@@ -15,6 +15,13 @@
   After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
 </p>
 
+<!-- Links -->
+<p align="center">
+      <a href="https://youtu.be/IQX4wJzflHA">Watch the Trailer</a>
+      •
+      <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now</a>
+</p>
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
