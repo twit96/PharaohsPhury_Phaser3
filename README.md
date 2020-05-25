@@ -15,14 +15,17 @@
   After thousands of years of slumber, your place of rest has been invaded. Reclaim your prized possessions, avoid traps and enemy attacks, and run the British Imperialists out of your pyramid, or become their next museum display.
 </p>
 
-<!-- Links -->
+<!-- Links - Trailer, Play Game, Sources -->
 <p align="center">
   <a href="https://youtu.be/IQX4wJzflHA">Watch the Trailer</a>
   •
   <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now</a>
+  •
+  <a href="./sources.md">Asset Sources</a>
 </p>
 
-## Contributors
+<!-- Links - Contributors -->
+<h2 align="center"> Project Contributors</h2>
 Thanks to these awesome people for their work on this project!
  - Audio, Programming, and UI Design: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/)
  - Art and Level Design: [Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/)
