@@ -3,7 +3,9 @@
 
 <!-- Title Image -->
 <p align="center">
-  <img src="/assets/images/menuCropped.png" alt="Pharaoh's Phury - Title Card">
+  <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">
+    <img border="0" alt="Pharaoh's Phury - Title Card" src="/assets/images/menuCropped.png">
+  </a>
 </p>
 
 <!-- Game Description -->
