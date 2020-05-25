@@ -29,15 +29,15 @@
 
 
 <p align="center">
-  Thanks to these awesome people for their work on this project!<br />
-  Audio, Programming, and UI Design: <a href="https://www.linkedin.com/in/xuxian-chen-81b648b5/">Xuxian Chen</a>
- Art and Level Design: <a href="https://www.linkedin.com/in/devyn-garza-858541160/">Devyn Garza</a>
- Art and Programming: <a href="https://www.linkedin.com/in/grey-huffines-45364a137/">Grey Huffines</a>
+  Thanks to these awesome people for their work on this project!<br /><br />
+  Audio, Programming, and UI Design: <a href="https://www.linkedin.com/in/xuxian-chen-81b648b5/">Xuxian Chen</a><br />
+ Art and Level Design: <a href="https://www.linkedin.com/in/devyn-garza-858541160/">Devyn Garza</a><br />
+ Art and Programming: <a href="https://www.linkedin.com/in/grey-huffines-45364a137/">Grey Huffines</a><br />
  Audio and Programming: <a href="https://www.linkedin.com/in/tylerwittig/">Tyler Wittig</a>
 </p>
 
 <p align="center">
-  Thank to these people for providing us with the tools and feedback to keep our project on its feet!<br />
- Producer: <a href="https://www.linkedin.com/in/paultoprac/">Dr. Paul Toprac</a>
+  Thank to these people for providing us with the tools and feedback to keep our project on its feet!<br /><br />
+ Producer: <a href="https://www.linkedin.com/in/paultoprac/">Dr. Paul Toprac</a><br />
  Associate Producer: <a href="https://www.linkedin.com/in/jason-harron-a5ba06b/">Jason Harron</a>
 </p>
