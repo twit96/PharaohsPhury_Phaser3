@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  [Asset Sources](./sources.md)
+  <a href="./sources.md">Asset Sources</a>
   •
-  [Project Contributors](./contributors.md)
+  <a href="./contributors.md">Project Contributors</a>
 </p>
