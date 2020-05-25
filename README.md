@@ -17,16 +17,13 @@
 
 <!-- Links -->
 <p align="center">
-      <a href="https://youtu.be/IQX4wJzflHA">Watch the Trailer</a>
-      •
-      <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now</a>
+  <a href="https://youtu.be/IQX4wJzflHA">Watch the Trailer</a>
+  •
+  <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now</a>
 </p>
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Table of Contents
-
-- [Asset Sources](./sources.md)
-- [Project Contributors](./contributors.md)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p align="center">
+  [Asset Sources](./sources.md)
+  •
+  [Project Contributors](./contributors.md)
+</p>
