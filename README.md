@@ -19,7 +19,7 @@
 <p align="center">
   <a href="https://youtu.be/IQX4wJzflHA">Watch the Trailer</a>
   •
-  <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now!</a>
+  <a href="https://twit96.github.io/PharaohsPhury_Phaser3/"><b>Click to Play Now!</b></a>
   •
   <a href="./sources.md">Asset Sources</a>
 </p>
