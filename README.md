@@ -1,9 +1,12 @@
+<!-- Page Title -->
 <h1 align="center"> Pharaoh's Phury </h1> <br>
 
-<!-- <p align="center">
-  <img width="559" height="254" src="./assets/trailer/Photos/titleCropped.png">
-</p> -->
+<!-- Title Image -->
+<p align="center">
+  <img border="0" alt="Pharaoh's Phury - Title Card" src="/assets/images/menuCropped.png" width="450">
+</p>
 
+<!-- Game Description -->
 <p align="center">
   A 2D Platformer Game Built with Phaser 3.
 </p>
