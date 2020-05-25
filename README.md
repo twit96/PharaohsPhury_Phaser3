@@ -25,7 +25,7 @@
 </p>
 
 <!-- Links - Contributors -->
-<h2 align="center"> Project Contributors</h2>
+<h1 align="center"> Project Contributors</h1>
 
 
 <p align="center">
