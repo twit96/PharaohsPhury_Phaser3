@@ -8,7 +8,7 @@
 
 <!-- Game Description -->
 <p align="center">
-  A 2D Platformer Game Built with Phaser 3.
+  <b>A 2D Platformer Game Built with Phaser 3</b>
 </p>
 
 <p align="center">
