@@ -22,8 +22,6 @@
   <a href="https://twit96.github.io/PharaohsPhury_Phaser3/">Click to Play Now</a>
 </p>
 
-<hr>
-
 ## Contributors
 Thanks to these awesome people for their work on this project!
  - Audio, Programming, and UI Design: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/)
