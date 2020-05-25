@@ -26,18 +26,18 @@
 
 <!-- Links - Contributors -->
 <h2 align="center"> Project Contributors</h2>
-<p align="center">
-  Thanks to these awesome people for their work on this project!
-</p>
 
- - Audio, Programming, and UI Design: [(Amber) Xuxian Chen ](https://www.linkedin.com/in/xuxian-chen-81b648b5/)
- - Art and Level Design: [Devyn Garza ](https://www.linkedin.com/in/devyn-garza-858541160/)
- - Art and Programming: [Grey Huffines ](https://www.linkedin.com/in/grey-huffines-45364a137/)
- - Audio and Programming: [Tyler Wittig ](https://www.linkedin.com/in/tylerwittig/)
 
 <p align="center">
-  Thank to these people for providing us with the tools and feedback to keep our project on its feet!
+  Thanks to these awesome people for their work on this project!<br />
+  Audio, Programming, and UI Design: <a href="https://www.linkedin.com/in/xuxian-chen-81b648b5/">Xuxian Chen</a>
+ Art and Level Design: <a href="https://www.linkedin.com/in/devyn-garza-858541160/">Devyn Garza</a>
+ Art and Programming: <a href="https://www.linkedin.com/in/grey-huffines-45364a137/">Grey Huffines</a>
+ Audio and Programming: <a href="https://www.linkedin.com/in/tylerwittig/">Tyler Wittig</a>
 </p>
 
- - Producer: [Dr. Paul Toprac ](https://www.linkedin.com/in/paultoprac/)
- - Associate Producer: [Jason Harron ](https://www.linkedin.com/in/jason-harron-a5ba06b/)
+<p align="center">
+  Thank to these people for providing us with the tools and feedback to keep our project on its feet!<br />
+ Producer: <a href="https://www.linkedin.com/in/paultoprac/">Dr. Paul Toprac</a>
+ Associate Producer: <a href="https://www.linkedin.com/in/jason-harron-a5ba06b/">Jason Harron</a>
+</p>
