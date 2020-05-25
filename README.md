@@ -3,7 +3,7 @@
 
 <!-- Title Image -->
 <p align="center">
-  <img border="0" alt="Pharaoh's Phury - Title Card" src="/assets/images/menuCropped.png" width="450">
+  <img border="0" alt="Pharaoh's Phury - Title Card" src="/assets/images/menuCropped.png">
 </p>
 
 <!-- Game Description -->
