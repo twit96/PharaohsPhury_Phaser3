@@ -35,7 +35,7 @@
   Audio, Programming, and UI Design: <a href="https://www.linkedin.com/in/xuxian-chen-81b648b5/">Xuxian Chen</a><br />
  Art and Level Design: <a href="https://www.linkedin.com/in/devyn-garza-858541160/">Devyn Garza</a><br />
  Art and Programming: <a href="https://www.linkedin.com/in/grey-huffines-45364a137/">Grey Huffines</a><br />
- Audio and Programming: <a href="https://www.linkedin.com/in/tylerwittig/">Tyler Wittig</a>
+ Game Trailer and Programming: <a href="https://www.linkedin.com/in/tylerwittig/">Tyler Wittig</a>
 </p>
 
 <p align="center">
