@@ -10,7 +10,7 @@
 
 <!-- Game Description -->
 <p align="center">
-  <b>A 2D Platformer Game Built with Phaser 3</b>
+  <b>A 2D Platformer Browser Game Built with Phaser 3</b>
 </p>
 
 <p align="center">
